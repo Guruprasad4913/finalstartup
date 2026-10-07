@@ -272,6 +272,12 @@ export const StepInput: React.FC<StepInputProps> = ({
     initialProfile?.targetLocation || null
   );
 
+  // Check if customContext matches another category preset while current selection differs
+  const matchingCategory = INDUSTRY_CATEGORIES.find(
+    (c) => c.exampleProblem.trim() === customContext.trim()
+  );
+  const hasMismatch = !!(matchingCategory && selectedCategory && matchingCategory.id !== selectedCategory);
+
   const parseList = (str: string, fallback: string[]): string[] => {
     const list = str
       .split(",")
@@ -297,7 +303,10 @@ export const StepInput: React.FC<StepInputProps> = ({
     if (cat.id === "others") {
       setCustomBusinessType("");
     }
-    if (!customContext || customContext.length < 10) {
+    const isExistingPresetProblem = INDUSTRY_CATEGORIES.some(
+      (c) => c.exampleProblem.trim() === customContext.trim()
+    );
+    if (!customContext.trim() || isExistingPresetProblem) {
       setCustomContext(cat.exampleProblem);
     }
     setSkillsInput(cat.skills);
@@ -412,19 +421,44 @@ export const StepInput: React.FC<StepInputProps> = ({
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
           Launch &amp; Validate Any <span className="gradient-text">Startup Concept</span>
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          From Food &amp; Dining, D2C (Direct-to-Consumer) Physical Brands, Manufacturing, and Agriculture to Healthcare Clinics and Enterprise AI (Artificial Intelligence) Software — get institutional market sizing: TAM (Total Addressable Market), SAM (Serviceable Addressable Market), and SOM (Serviceable Obtainable Market), competitor feature battlecards, and cloud architecture blueprints.
+        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          From Food &amp; Dining, D2C brands, manufacturing, and agriculture to healthcare clinics and AI software — test and validate any concept with live market sizing, competitor analysis, and cloud blueprints.
         </p>
+      </div>
+
+      {/* 3-Step Quick Guide Banner */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900 to-cyan-950/30 border border-indigo-500/30 shadow-lg text-left">
+        <div className="flex items-start gap-3">
+          <div className="w-7 h-7 rounded-xl bg-indigo-500/20 text-indigo-300 font-bold text-xs flex items-center justify-center border border-indigo-400/40 flex-shrink-0 mt-0.5 shadow-sm">1</div>
+          <div>
+            <span className="font-bold text-white text-xs block">Choose Industry</span>
+            <span className="text-xs text-slate-300 leading-normal">Click a sector below to auto-fill templates, or enter custom details.</span>
+          </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <div className="w-7 h-7 rounded-xl bg-cyan-500/20 text-cyan-300 font-bold text-xs flex items-center justify-center border border-cyan-400/40 flex-shrink-0 mt-0.5 shadow-sm">2</div>
+          <div>
+            <span className="font-bold text-white text-xs block">Enter Your Vision</span>
+            <span className="text-xs text-slate-300 leading-normal">Describe the problem you solve, target buyer, and your budget.</span>
+          </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <div className="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs flex items-center justify-center border border-emerald-400/40 flex-shrink-0 mt-0.5 shadow-sm">3</div>
+          <div>
+            <span className="font-bold text-white text-xs block">Get Full Audit</span>
+            <span className="text-xs text-slate-300 leading-normal">Instant TAM sizing, competitor battlecards, cloud costs, and MVP sprint.</span>
+          </div>
+        </div>
       </div>
 
       {/* 1. Industry Category Picker Cards */}
       <div className="space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
             <Compass className="w-4 h-4 text-indigo-400" />
             <span>Select Industry Sector (Tech &amp; Real-World Commercial)</span>
           </label>
-          <span className="text-[11px] text-slate-400">Click to auto-populate domain, skills &amp; problem template</span>
+          <span className="text-xs text-slate-300 font-medium">Click to auto-populate domain, skills &amp; problem template</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -486,6 +520,23 @@ export const StepInput: React.FC<StepInputProps> = ({
             placeholder="Describe what you want to build or the problem you are solving (e.g. Specialty single-origin micro-roastery cafe chain, bamboo tableware brand, solar cold storage for farmers, or B2B (Business-to-Business) SaaS (Software as a Service))..."
             className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition resize-none leading-relaxed shadow-inner"
           />
+          {hasMismatch && (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 animate-in fade-in duration-200">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-400 flex-shrink-0 animate-pulse" />
+                <span>
+                  Notice: Your problem statement belongs to <strong>{matchingCategory.label}</strong>, but domain is set to <strong>{domainsInput}</strong>.
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleSelectCategory(matchingCategory)}
+                className="px-3 py-1 rounded-lg bg-amber-500/25 hover:bg-amber-500/35 text-amber-300 font-bold border border-amber-500/40 text-[11px] transition cursor-pointer flex-shrink-0"
+              >
+                Auto-Align to {matchingCategory.label}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* 2-Column Clean Entries Grid */}

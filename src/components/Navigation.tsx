@@ -14,6 +14,9 @@ import {
   LogOut,
   User as UserIcon,
   HelpCircle,
+  Coins,
+  TrendingUp,
+  Bell,
 } from "lucide-react";
 import { User } from "@/types";
 
@@ -26,12 +29,14 @@ interface NavigationProps {
   currentUser: User | null;
   onSignOut: () => void;
   onOpenAdminPortal?: () => void;
-  adminView?: "dashboard" | "wizard";
-  onSetAdminView?: (view: "dashboard" | "wizard") => void;
-  userView?: "reports" | "wizard";
-  onSetUserView?: (view: "reports" | "wizard") => void;
+  adminView?: "dashboard" | "wizard" | "investor";
+  onSetAdminView?: (view: "dashboard" | "wizard" | "investor") => void;
+  userView?: "reports" | "wizard" | "investor";
+  onSetUserView?: (view: "reports" | "wizard" | "investor") => void;
   userReportsCount?: number;
   onOpenHelp?: () => void;
+  unreadNotificationCount?: number;
+  onOpenNotifications?: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -49,9 +54,11 @@ export const Navigation: React.FC<NavigationProps> = ({
   onSetUserView,
   userReportsCount = 0,
   onOpenHelp,
+  unreadNotificationCount = 0,
+  onOpenNotifications,
 }) => {
   return (
-    <header className="border-b border-indigo-500/20 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-40 shadow-lg shadow-black/30">
+    <header className="no-print border-b border-indigo-500/20 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-40 shadow-lg shadow-black/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo & Brand */}
         <div className="flex items-center gap-3">
@@ -94,6 +101,18 @@ export const Navigation: React.FC<NavigationProps> = ({
               </button>
               <button
                 type="button"
+                onClick={() => onSetAdminView("investor")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  adminView === "investor"
+                    ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30 border border-emerald-400/40"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                <Coins className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Investor Hub</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => onSetAdminView("wizard")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                   adminView === "wizard"
@@ -107,8 +126,40 @@ export const Navigation: React.FC<NavigationProps> = ({
             </div>
           )}
 
+          {/* Investor View Switcher (If user logged in as Investor) */}
+          {currentUser?.role === "investor" && onSetUserView && (
+            <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-emerald-500/30 shadow-md">
+              <button
+                type="button"
+                onClick={() => onSetUserView("investor")}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  userView === "investor"
+                    ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30 border border-emerald-400/40"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+                title="Curated Startup Dealflow & Valuation Lab"
+              >
+                <Coins className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Investor Dealflow</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onSetUserView("reports")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  userView === "reports"
+                    ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md border border-indigo-400/40"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+                title="My Saved Reports"
+              >
+                <FolderHeart className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Saved Vault</span>
+              </button>
+            </div>
+          )}
+
           {/* Founder View Switcher (If user is regular Founder) */}
-          {currentUser?.role !== "admin" && onSetUserView && (
+          {currentUser?.role === "user" && onSetUserView && (
             <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-indigo-500/30 shadow-md">
               <button
                 type="button"
@@ -171,6 +222,32 @@ export const Navigation: React.FC<NavigationProps> = ({
             </button>
           )}
 
+          {/* Notification Bell (Investor Interest Inquiries) */}
+          {onOpenNotifications && currentUser?.role !== "investor" && (
+            <button
+              type="button"
+              onClick={onOpenNotifications}
+              className={`relative px-2.5 py-1.5 rounded-xl border transition flex items-center gap-1.5 cursor-pointer text-xs font-bold ${
+                unreadNotificationCount > 0
+                  ? "bg-gradient-to-r from-emerald-950/80 to-teal-950/80 border-emerald-400 text-emerald-300 hover:border-emerald-300 shadow-lg shadow-emerald-500/25"
+                  : "bg-slate-900/90 border-indigo-500/30 text-slate-300 hover:text-white hover:border-cyan-400"
+              }`}
+              title={
+                unreadNotificationCount > 0
+                  ? `🔔 ${unreadNotificationCount} New Investor Interest Inquiry Received!`
+                  : "Investor Inquiries & Interest Inbox"
+              }
+            >
+              <Bell className={`w-3.5 h-3.5 ${unreadNotificationCount > 0 ? "text-emerald-300 animate-bounce" : "text-slate-400"}`} />
+              <span className="hidden sm:inline">Interest</span>
+              {unreadNotificationCount > 0 && (
+                <span className="min-w-[18px] h-[18px] px-1 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-black text-[10px] rounded-full flex items-center justify-center shadow-md animate-pulse">
+                  {unreadNotificationCount}
+                </span>
+              )}
+            </button>
+          )}
+
           {/* Help & Support Button (Only for founders, hidden in admin portal) */}
           {onOpenHelp && currentUser?.role !== "admin" && (
             <button
@@ -204,10 +281,13 @@ export const Navigation: React.FC<NavigationProps> = ({
                 title={`Signed in as ${currentUser.username}`}
               >
                 <div
-                  className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[11px] ${currentUser.role === "admin"
+                  className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[11px] ${
+                    currentUser.role === "admin"
                       ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                      : currentUser.role === "investor"
+                      ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
                       : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                    }`}
+                  }`}
                 >
                   {currentUser.username.substring(0, 1).toUpperCase()}
                 </div>
@@ -216,10 +296,19 @@ export const Navigation: React.FC<NavigationProps> = ({
                     {currentUser.username}
                   </div>
                   <div
-                    className={`text-[9px] font-bold uppercase ${currentUser.role === "admin" ? "text-amber-400" : "text-emerald-400"
-                      }`}
+                    className={`text-[9px] font-bold uppercase ${
+                      currentUser.role === "admin"
+                        ? "text-amber-400"
+                        : currentUser.role === "investor"
+                        ? "text-cyan-400"
+                        : "text-emerald-400"
+                    }`}
                   >
-                    {currentUser.role === "admin" ? "Admin" : "Founder"}
+                    {currentUser.role === "admin"
+                      ? "Admin"
+                      : currentUser.role === "investor"
+                      ? "Investor"
+                      : "Founder"}
                   </div>
                 </div>
               </div>

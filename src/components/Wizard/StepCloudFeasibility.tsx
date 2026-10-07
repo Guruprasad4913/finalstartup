@@ -196,12 +196,25 @@ export const StepCloudFeasibility: React.FC<StepCloudFeasibilityProps> = ({
         {/* 5-Factor Quick Score Breakdown */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-2.5 w-full md:w-auto">
           {factors.map((f) => (
-            <div key={f.id} className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800/90 text-center hover:border-slate-700 transition">
-              <div className="text-[10px] text-slate-400 truncate font-medium">{f.name.split(" ")[0]}</div>
+            <div key={f.id} className="p-3 rounded-2xl bg-slate-950/90 border border-slate-800 text-center hover:border-slate-700 transition shadow-sm">
+              <div className="text-xs text-slate-300 truncate font-semibold">{f.name.split(" ")[0]}</div>
               <div className="text-base font-extrabold text-emerald-400 font-mono mt-0.5">{f.score}%</div>
-              <div className="text-[9px] text-slate-500 font-mono">Weight {f.weight}%</div>
+              <div className="text-[10px] text-slate-400 font-mono">Weight: {f.weight}%</div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Plain Language Explainer */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-indigo-950/30 border border-emerald-500/30 flex items-start gap-3 shadow-lg">
+        <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mt-0.5 flex-shrink-0">
+          <CheckCircle className="w-4 h-4 text-emerald-300" />
+        </div>
+        <div className="space-y-1 text-xs">
+          <span className="font-bold text-white block text-sm">Understanding Your Viability Score ({calculatedViabilityScore}/100)</span>
+          <p className="text-slate-300 leading-relaxed">
+            A score above 75 indicates high commercial viability. This evaluation combines 5 weighted factors: Market Demand, Execution Complexity, Defensibility (Moat), Unit Economics, and Operational Risk. Explore the tabs below for cloud hosting cost estimates, unit economics simulation, and risk mitigation.
+          </p>
         </div>
       </div>
 

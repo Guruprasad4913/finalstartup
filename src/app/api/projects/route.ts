@@ -13,8 +13,16 @@ export async function GET(req: NextRequest) {
     let query: any = {};
 
     if (role === "admin") {
-      // Admins have platform-wide visibility
+      // Admins have platform-wide audit visibility
       query = {};
+    } else if (role === "investor") {
+      // Investors only see ideas that founders have explicitly allowed for investor dealflow & are seeking launch funding
+      query = {
+        $or: [
+          { isPublishedForInvestors: true },
+          { "fundingAsk.seekingFunding": true },
+        ],
+      };
     } else if (username || userId) {
       // Regular users only see their own reports (case-insensitive username or exact userId)
       const orConditions: any[] = [];

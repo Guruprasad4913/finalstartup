@@ -27,6 +27,12 @@ import {
   ChevronDown,
   ChevronUp,
   Activity,
+  Coins,
+  Globe,
+  Lock,
+  ShieldCheck,
+  Bell,
+  Mail,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -38,8 +44,10 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import { User, StartupProject } from "@/types";
+import { User, StartupProject, FounderNotification } from "@/types";
 import { deleteProjectFromVault, exportProjectAsMarkdown } from "@/lib/storage";
+import { getNotificationsForFounder } from "@/lib/notifications";
+import { SeekFundingModal } from "./SeekFundingModal";
 
 interface UserReportsDashboardProps {
   currentUser: User;
@@ -48,6 +56,8 @@ interface UserReportsDashboardProps {
   onStartNewValidation: () => void;
   onOpenCompare?: () => void;
   onRefreshData?: () => void;
+  notifications?: FounderNotification[];
+  onOpenNotifications?: () => void;
 }
 
 export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
@@ -57,12 +67,48 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
   onStartNewValidation,
   onOpenCompare,
   onRefreshData,
+  notifications: initialNotifications,
+  onOpenNotifications,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDomainFilter, setSelectedDomainFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"newest" | "highestScore" | "highestTam">("newest");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showPortfolioChart, setShowPortfolioChart] = useState(true);
+  const [fundingModalProject, setFundingModalProject] = useState<StartupProject | null>(null);
+
+  // Notifications state
+  const [founderNotifications, setFounderNotifications] = useState<FounderNotification[]>(() => {
+    if (initialNotifications) return initialNotifications;
+    return getNotificationsForFounder(currentUser.username, currentUser.email);
+  });
+
+  // Sync notifications on mount and event triggers
+  React.useEffect(() => {
+    if (initialNotifications) {
+      setFounderNotifications(initialNotifications);
+    } else {
+      setFounderNotifications(getNotificationsForFounder(currentUser.username, currentUser.email));
+    }
+
+    const handleNewNotif = () => {
+      setFounderNotifications(getNotificationsForFounder(currentUser.username, currentUser.email));
+    };
+
+    window.addEventListener("startupgen_founder_notification", handleNewNotif);
+    window.addEventListener("startupgen_founder_notification_read", handleNewNotif);
+    return () => {
+      window.removeEventListener("startupgen_founder_notification", handleNewNotif);
+      window.removeEventListener("startupgen_founder_notification_read", handleNewNotif);
+    };
+  }, [currentUser, initialNotifications]);
+
+  // Latest unread or most recent investor interest
+  const latestInterest = useMemo(() => {
+    if (founderNotifications.length === 0) return null;
+    const unread = founderNotifications.find((n) => !n.read);
+    return unread || founderNotifications[0];
+  }, [founderNotifications]);
 
   // Portfolio comparison data for comparative bar chart
   const portfolioComparisonData = useMemo(() => {
@@ -101,11 +147,13 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
         highestScoreVerdict: "N/A",
         topDomain: "None",
         primaryProvider: "N/A",
+        publishedCount: 0,
       };
     }
 
     let maxScore = 0;
     let highestScoreVerdict = "";
+    let publishedCount = 0;
     const domainCounts: Record<string, number> = {};
 
     projects.forEach((p) => {
@@ -116,6 +164,10 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
       }
       const dom = p.selectedIdea?.domain || "General";
       domainCounts[dom] = (domainCounts[dom] || 0) + 1;
+
+      if (p.isPublishedForInvestors === true || p.fundingAsk?.seekingFunding === true) {
+        publishedCount++;
+      }
     });
 
     const topDomain = Object.entries(domainCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "General";
@@ -125,6 +177,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
       maxScore,
       highestScoreVerdict,
       topDomain,
+      publishedCount,
     };
   }, [projects]);
 
@@ -268,6 +321,66 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
         </div>
       </div>
 
+      {/* Active Investor Interest Alert Banner for Founder */}
+      {latestInterest && (
+        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-teal-950/70 border-2 border-emerald-500/60 shadow-2xl shadow-emerald-950/40 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5 animate-in fade-in slide-in-from-top-3">
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-300 flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
+              <Coins className="w-6 h-6 text-emerald-300 animate-pulse" />
+            </div>
+            <div className="space-y-1 text-left">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 font-extrabold text-xs border border-emerald-400/40 flex items-center gap-1.5 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+                  <span>NEW INVESTOR INTEREST RECEIVED</span>
+                </span>
+                {!latestInterest.read && (
+                  <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-bold border border-cyan-400/40">
+                    Unread Inquiry
+                  </span>
+                )}
+              </div>
+              <h3 className="text-base sm:text-lg font-extrabold text-white">
+                <span className="text-emerald-400">{latestInterest.investorName}</span>
+                {latestInterest.investorFirm && <span className="text-slate-300"> ({latestInterest.investorFirm})</span>}
+                {" "}expressed interest in <span className="text-cyan-300 font-bold underline decoration-cyan-500/50 underline-offset-4">{latestInterest.projectName}</span>!
+              </h3>
+              <p className="text-xs text-slate-300 flex items-center gap-2 flex-wrap">
+                <span>Proposed Check Size: <strong className="text-emerald-400 font-mono text-sm">{latestInterest.checkSize}</strong></span>
+                <span>·</span>
+                <span>Structure: <strong className="text-white">{latestInterest.instrument}</strong></span>
+                {latestInterest.notes && (
+                  <>
+                    <span>·</span>
+                    <span className="italic text-slate-400">&ldquo;{latestInterest.notes}&rdquo;</span>
+                  </>
+                )}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 flex-shrink-0 self-start md:self-center flex-wrap">
+            {onOpenNotifications && (
+              <button
+                type="button"
+                onClick={onOpenNotifications}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 border border-emerald-400/40 transition flex items-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
+              >
+                <Bell className="w-3.5 h-3.5" />
+                <span>Review Inquiries ({founderNotifications.length})</span>
+              </button>
+            )}
+            <a
+              href={`mailto:${latestInterest.investorEmail}?subject=Re:%20Investment%20Interest%20in%20${encodeURIComponent(latestInterest.projectName)}`}
+              className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-emerald-400 text-xs font-semibold transition flex items-center gap-1.5"
+            >
+              <Mail className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Contact Investor</span>
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* KPI Cards Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Total Saved Reports (Electric Blue / Indigo) */}
@@ -323,18 +436,21 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
           </div>
         </div>
 
-        {/* Card 4: Cloud Engine Topologies (Cyan / Teal) */}
-        <div className="p-5 rounded-2xl bg-gradient-to-b from-cyan-950/35 via-[#131b22] to-[#11141a] border border-cyan-500/30 backdrop-blur-md relative overflow-hidden group hover:border-cyan-400/60 transition-all shadow-xl shadow-cyan-950/20">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-teal-400 to-blue-500" />
+        {/* Card 4: Investor Launch Funding (Emerald / Teal) */}
+        <div className="p-5 rounded-2xl bg-gradient-to-b from-emerald-950/35 via-[#131b20] to-[#11161a] border border-emerald-500/30 backdrop-blur-md relative overflow-hidden group hover:border-emerald-400/60 transition-all shadow-xl shadow-emerald-950/20">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400" />
           <div className="flex items-center justify-between text-slate-400 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-cyan-300/90">Cloud Engine Topologies</span>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-md shadow-cyan-500/20 group-hover:scale-110 transition-transform">
-              <Layers className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-300/90">Investor Launch Deals</span>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+              <Coins className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-blue-300">AWS / GCP / Azure</div>
-          <div className="text-xs text-cyan-300/80 mt-1.5 font-medium">
-            Live Tavily Market API + Gemini 2.5
+          <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-teal-100 to-cyan-300">
+            {stats.publishedCount} of {stats.total} Listed
+          </div>
+          <div className="text-xs text-emerald-300/80 mt-1.5 font-medium flex items-center gap-1.5">
+            <Globe className="w-3.5 h-3.5 text-emerald-400" />
+            <span>{stats.publishedCount > 0 ? "Live for angel syndicate reviews" : "Allow ideas below to seek funding"}</span>
           </div>
         </div>
       </div>
@@ -644,6 +760,100 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                       </div>
                     </div>
                   </div>
+
+                  {/* Specific Project Investor Interest Strip */}
+                  {(() => {
+                    const pInterests = founderNotifications.filter(
+                      (n) => n.projectId === p.id || (p.selectedIdea?.name && n.projectName === p.selectedIdea.name)
+                    );
+                    if (pInterests.length === 0) return null;
+                    const latest = pInterests[0];
+                    return (
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onOpenNotifications) onOpenNotifications();
+                        }}
+                        className="p-3 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-950 to-teal-950/70 border-2 border-emerald-500/50 flex items-center justify-between text-xs cursor-pointer hover:border-emerald-400 transition shadow-md shadow-emerald-950/30"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center flex-shrink-0">
+                            <Coins className="w-4 h-4 text-emerald-300 animate-pulse" />
+                          </div>
+                          <div>
+                            <span className="text-white font-bold block">
+                              {pInterests.length} Investor{pInterests.length === 1 ? "" : "s"} Interested · Proposed{" "}
+                              <span className="text-emerald-300 font-mono">{latest.checkSize}</span>
+                            </span>
+                            <span className="text-[11px] text-slate-300">
+                              By {latest.investorName} ({latest.investorFirm || "Accredited Angel"})
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-cyan-300 hover:text-cyan-200 font-bold text-xs flex items-center gap-1 flex-shrink-0">
+                          <span>View Inquiry</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Investor Funding & Visibility Section */}
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className={`p-3 rounded-2xl border transition-all ${
+                      p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
+                        ? "bg-gradient-to-r from-emerald-950/40 to-teal-950/30 border-emerald-500/40 shadow-sm"
+                        : "bg-slate-950/70 border-slate-800/80"
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {p.isPublishedForInvestors || p.fundingAsk?.seekingFunding ? (
+                            <>
+                              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                              <span className="text-xs font-bold text-emerald-300">
+                                Listed on Investor Dealflow
+                              </span>
+                              <span className="text-[11px] font-mono text-emerald-400/90 font-bold bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/30">
+                                Seeking {p.fundingAsk?.targetFundingAmount || "$50k"}
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <Lock className="w-3.5 h-3.5 text-slate-500" />
+                              <span className="text-xs font-semibold text-slate-400">
+                                Private Idea (Confidential to You)
+                              </span>
+                            </>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-400">
+                          {p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
+                            ? `${p.fundingAsk?.equityOffered || "Equity"} · ${p.fundingAsk?.fundingStage || "Pre-Seed"} · Visible to active angel syndicate investors`
+                            : "Need funding to launch? Allow this idea to be showcased to investors."}
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setFundingModalProject(p)}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap self-start sm:self-center ${
+                          p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
+                            ? "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40"
+                            : "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-black shadow-md shadow-amber-500/20"
+                        }`}
+                      >
+                        <Coins className="w-3.5 h-3.5" />
+                        <span>
+                          {p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
+                            ? "Edit Funding Ask"
+                            : "⚡ Seek Launch Funding"}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Card Footer Actions */}
@@ -680,6 +890,22 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
             );
           })}
         </div>
+      )}
+
+      {/* Seek Funding Modal */}
+      {fundingModalProject && (
+        <SeekFundingModal
+          isOpen={!!fundingModalProject}
+          onClose={() => setFundingModalProject(null)}
+          project={fundingModalProject}
+          currentUser={currentUser}
+          onProjectUpdated={() => {
+            setFundingModalProject(null);
+            if (onRefreshData) {
+              onRefreshData();
+            }
+          }}
+        />
       )}
     </div>
   );

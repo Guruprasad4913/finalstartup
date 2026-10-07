@@ -5,7 +5,12 @@ import { FounderProfile } from "@/types";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { profile, apiKey } = body as { profile: FounderProfile; apiKey?: string };
+    const { profile, apiKey, existingIdeas, offset } = body as {
+      profile: FounderProfile;
+      apiKey?: string;
+      existingIdeas?: string[];
+      offset?: number;
+    };
 
     if (!profile || !profile.domains || profile.domains.length === 0) {
       return NextResponse.json(
@@ -14,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const ideas = await generateStartupIdeas(profile, { apiKey });
+    const ideas = await generateStartupIdeas(profile, { apiKey, existingIdeas, offset });
     return NextResponse.json({ success: true, ideas });
   } catch (error: any) {
     console.error("Error in generate-ideas route:", error);

@@ -42,6 +42,7 @@ export interface StartupIdea {
   innovationMoat: string;
   tags: string[];
   initialFeasibilityScore?: number;
+  isNew?: boolean;
 }
 
 export interface TargetUserAnalysis {
@@ -250,6 +251,17 @@ export interface FeasibilityReport {
   goNextSteps: string[];
 }
 
+export interface InvestmentFundingAsk {
+  seekingFunding: boolean;
+  targetFundingAmount: string;
+  equityOffered: string;
+  fundingStage: "Pre-Seed" | "Angel Seed" | "Early Venture" | "Growth";
+  useOfFunds: string;
+  pitchNotes?: string;
+  publishedAt?: string;
+  contactEmail?: string;
+}
+
 export interface StartupProject {
   id: string;
   createdAt: string;
@@ -261,6 +273,8 @@ export interface StartupProject {
   validation: MarketValidation;
   feasibility: FeasibilityReport;
   targetLocation?: MapLocation;
+  isPublishedForInvestors?: boolean;
+  fundingAsk?: InvestmentFundingAsk;
 }
 
 export interface User {
@@ -269,10 +283,37 @@ export interface User {
   username: string;
   email?: string;
   name?: string;
-  role: "admin" | "user";
+  role: "admin" | "user" | "investor";
   createdAt?: string;
   updatedAt?: string;
   isNewUser?: boolean;
+  investorProfile?: InvestorProfile;
+}
+
+export interface InvestorProfile {
+  firmOrSyndicate?: string;
+  investorType: "Angel Investor" | "Venture Capital (VC)" | "Family Office" | "Corporate Stakeholder" | "Syndicate Lead";
+  typicalCheckSize: string;
+  preferredSectors: string[];
+  totalInvestedCapital?: string;
+}
+
+export interface InvestmentCommitment {
+  id: string;
+  projectId: string;
+  projectName: string;
+  projectDomain: string;
+  founderName: string;
+  founderEmail?: string;
+  investorName: string;
+  investorEmail: string;
+  investorFirm?: string;
+  checkSize: string;
+  instrument: "SAFE Note" | "Convertible Note" | "Priced Preferred Round" | "Revenue Share / Debt";
+  valuationCap?: string;
+  stage: "Screening" | "Due Diligence" | "Partner Meeting" | "Term Sheet Issued" | "Committed / Signed";
+  notes?: string;
+  createdAt: string;
 }
 
 export interface AuthSession {
@@ -280,4 +321,24 @@ export interface AuthSession {
   token?: string;
   loggedInAt: string;
 }
+
+export interface FounderNotification {
+  id: string;
+  type: "investor_interest";
+  projectId: string;
+  projectName: string;
+  projectDomain?: string;
+  founderUsername?: string;
+  founderEmail?: string;
+  investorName: string;
+  investorEmail: string;
+  investorFirm?: string;
+  checkSize: string;
+  instrument: string;
+  valuationCap?: string;
+  notes?: string;
+  createdAt: string;
+  read: boolean;
+}
+
 

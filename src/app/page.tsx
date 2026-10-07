@@ -8,6 +8,7 @@ import { CompareProjectsModal } from "@/components/CompareProjectsModal";
 import { AdminPortalModal } from "@/components/Admin/AdminPortalModal";
 import { AdminDashboard } from "@/components/Admin/AdminDashboard";
 import { UserReportsDashboard } from "@/components/Dashboard/UserReportsDashboard";
+import { InvestorDashboard } from "@/components/Investor/InvestorDashboard";
 import { AuthPage } from "@/components/Auth/AuthPage";
 import { StepInput } from "@/components/Wizard/StepInput";
 import { StepIdeaSelection } from "@/components/Wizard/StepIdeaSelection";
@@ -23,8 +24,11 @@ import {
   FeasibilityReport,
   StartupProject,
   User,
+  FounderNotification,
 } from "@/types";
 import { getSavedProjects, syncVaultWithDatabase, saveProjectToVault } from "@/lib/storage";
+import { getNotificationsForFounder, syncNotificationsWithDatabase } from "@/lib/notifications";
+import { FounderNotificationsModal } from "@/components/Notifications/FounderNotificationsModal";
 import { getLocationByCity } from "@/lib/location-data";
 import {
   Sparkles,
@@ -41,6 +45,8 @@ import {
   Award,
   ShieldCheck,
   FolderHeart,
+  Coins,
+  ArrowLeft,
 } from "lucide-react";
 
 export default function Home() {
@@ -48,8 +54,9 @@ export default function Home() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthChecking, setIsAuthChecking] = useState<boolean>(true);
   const [isAdminPortalOpen, setIsAdminPortalOpen] = useState<boolean>(false);
-  const [adminView, setAdminView] = useState<"dashboard" | "wizard">("dashboard");
-  const [userView, setUserView] = useState<"reports" | "wizard">("reports");
+  const [adminView, setAdminView] = useState<"dashboard" | "wizard" | "investor">("dashboard");
+  const [userView, setUserView] = useState<"reports" | "wizard" | "investor">("reports");
+  const [cameFromInvestorHub, setCameFromInvestorHub] = useState<boolean>(false);
 
   // Wizard state
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
@@ -60,6 +67,8 @@ export default function Home() {
   const [isVaultOpen, setIsVaultOpen] = useState(false);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [founderNotifications, setFounderNotifications] = useState<FounderNotification[]>([]);
 
   // Core wizard data state
   const [profile, setProfile] = useState<FounderProfile | null>(null);
@@ -73,6 +82,11 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const [savedProjects, setSavedProjects] = useState<StartupProject[]>([]);
+
+  // Unread investor notification count
+  const unreadNotifCount = React.useMemo(() => {
+    return founderNotifications.filter((n) => !n.read).length;
+  }, [founderNotifications]);
 
   // Filter projects owned strictly by current user
   const userProjects = React.useMemo(() => {
@@ -106,6 +120,8 @@ export default function Home() {
             setCurrentUser(parsedUser);
             if (parsedUser.role === "admin") {
               setAdminView("dashboard");
+            } else if (parsedUser.role === "investor") {
+              setUserView("investor");
             } else {
               // For regular founders, load only their own saved projects
               const localProjects = getSavedProjects(parsedUser.username);
@@ -146,6 +162,8 @@ export default function Home() {
     }
     if (user.role === "admin") {
       setAdminView("dashboard");
+    } else if (user.role === "investor") {
+      setUserView("investor");
     } else {
       const localProjects = getSavedProjects(user.username);
       const hasProjects = localProjects.length > 0;
@@ -156,12 +174,40 @@ export default function Home() {
     syncVaultWithDatabase(user).then((projects) => {
       if (projects) {
         setSavedProjects(projects);
-        if (user.role !== "admin" && projects.length > 0) {
+        if (user.role !== "admin" && user.role !== "investor" && projects.length > 0) {
           setUserView("reports");
         }
       }
     });
+
+    // Hydrate and sync notifications for this founder
+    const localNotifs = getNotificationsForFounder(user.username, user.email);
+    setFounderNotifications(localNotifs);
+    syncNotificationsWithDatabase(user.username, user.email).then((notifs) => {
+      if (notifs) setFounderNotifications(notifs);
+    });
   };
+
+  // Listen for real-time notification events
+  useEffect(() => {
+    if (!currentUser) return;
+    const updateNotifs = () => {
+      const notifs = getNotificationsForFounder(currentUser.username, currentUser.email);
+      setFounderNotifications(notifs);
+    };
+
+    updateNotifs();
+    syncNotificationsWithDatabase(currentUser.username, currentUser.email).then((notifs) => {
+      if (notifs) setFounderNotifications(notifs);
+    });
+
+    window.addEventListener("startupgen_founder_notification", updateNotifs);
+    window.addEventListener("startupgen_founder_notification_read", updateNotifs);
+    return () => {
+      window.removeEventListener("startupgen_founder_notification", updateNotifs);
+      window.removeEventListener("startupgen_founder_notification_read", updateNotifs);
+    };
+  }, [currentUser]);
 
   const handleSignOut = () => {
     setCurrentUser(null);
@@ -314,6 +360,44 @@ export default function Home() {
     }
   };
 
+  // Step 2: Generate More Plans / Concepts
+  const [isGeneratingMore, setIsGeneratingMore] = useState(false);
+
+  const handleGenerateMoreIdeas = async () => {
+    if (!profile) return;
+    setIsGeneratingMore(true);
+
+    try {
+      const existingNames = ideas.map((i) => i.name);
+      const res = await fetch("/api/generate-ideas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profile,
+          apiKey,
+          existingIdeas: existingNames,
+          offset: ideas.length,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to generate more plans");
+
+      if (data.ideas && data.ideas.length > 0) {
+        const newIdeas: StartupIdea[] = data.ideas.map((idea: StartupIdea) => ({
+          ...idea,
+          isNew: true,
+        }));
+        setIdeas((prev) => [...prev, ...newIdeas]);
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(`Error generating more plans: ${err.message}`);
+    } finally {
+      setIsGeneratingMore(false);
+    }
+  };
+
   // Step 2 -> 3: Select Idea & Generate Market Validation
   const handleSelectIdeaAndValidate = async (idea: StartupIdea) => {
     if (!profile) return;
@@ -443,8 +527,15 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Load from Cloud Vault or User Reports Dashboard
-  const handleSelectVaultProject = (p: StartupProject) => {
+  // Keep investor users strictly in investor/reports views (never wizard mode)
+  useEffect(() => {
+    if (currentUser?.role === "investor" && userView === "wizard") {
+      setUserView("investor");
+    }
+  }, [currentUser?.role, userView]);
+
+  // Load from Cloud Vault, Investor Dealflow, or User Reports Dashboard
+  const handleSelectVaultProject = (p: StartupProject, fromInvestorHub = false) => {
     setProfile(p.founderProfile);
     setIdeas(p.allIdeas || [p.selectedIdea]);
     setSelectedIdea(p.selectedIdea);
@@ -452,9 +543,21 @@ export default function Home() {
     setFeasibility(p.feasibility);
     setCurrentProject(p);
     setCurrentStep(6);
-    setUserView("wizard");
+    if (fromInvestorHub || userView === "investor" || adminView === "investor" || currentUser?.role === "investor") {
+      setCameFromInvestorHub(true);
+      if (currentUser?.role === "investor") {
+        setUserView("investor");
+      }
+    } else if (userView === "reports") {
+      setCameFromInvestorHub(false);
+    } else {
+      setCameFromInvestorHub(false);
+      setUserView("wizard");
+    }
     if (currentUser?.role === "admin") {
-      setAdminView("wizard");
+      if (adminView !== "investor") {
+        setAdminView("wizard");
+      }
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -507,38 +610,123 @@ export default function Home() {
       <div className="fixed top-1/2 right-1/4 w-[450px] h-[450px] bg-cyan-500/[0.07] rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="fixed bottom-10 left-10 w-[400px] h-[400px] bg-amber-500/[0.05] rounded-full blur-[110px] pointer-events-none -z-10" />
 
-      {/* Top Navbar */}
-      <Navigation
-        onOpenSettings={() => setIsSettingsOpen(true)}
-        onOpenVault={() => setIsVaultOpen(true)}
-        onOpenCompare={() => setIsCompareOpen(true)}
-        vaultCount={currentUser?.role === "admin" ? savedProjects.length : userProjects.length}
-        onSelectPreset={handleSelectPreset}
-        currentUser={currentUser}
-        onSignOut={handleSignOut}
-        onOpenAdminPortal={() => {
-          if (currentUser?.role === "admin") {
-            setAdminView("dashboard");
-          } else {
-            setIsAdminPortalOpen(true);
-          }
-        }}
-        adminView={adminView}
-        onSetAdminView={setAdminView}
-        userView={userView}
-        onSetUserView={(v) => {
-          setUserView(v);
-          if (v === "wizard" && currentStep === 6 && !currentProject) {
-            setCurrentStep(1);
-          }
-        }}
-        userReportsCount={userProjects.length}
-        onOpenHelp={currentUser?.role !== "admin" ? () => setIsHelpOpen(true) : undefined}
-      />
+      {/* Top Navbar (Hidden when printing / exporting PDF) */}
+      <div className="no-print">
+        <Navigation
+          onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenVault={() => setIsVaultOpen(true)}
+          onOpenCompare={() => setIsCompareOpen(true)}
+          vaultCount={currentUser?.role === "admin" ? savedProjects.length : userProjects.length}
+          onSelectPreset={handleSelectPreset}
+          currentUser={currentUser}
+          onSignOut={handleSignOut}
+          onOpenAdminPortal={() => {
+            if (currentUser?.role === "admin") {
+              setAdminView("dashboard");
+            } else {
+              setIsAdminPortalOpen(true);
+            }
+          }}
+          adminView={adminView}
+          onSetAdminView={setAdminView}
+          userView={userView}
+          onSetUserView={(v) => {
+            if (currentUser?.role === "investor" && v === "wizard") {
+              setUserView("investor");
+              setCurrentProject(null);
+              setCameFromInvestorHub(false);
+              return;
+            }
+            setUserView(v);
+            setCurrentProject(null);
+            setCameFromInvestorHub(false);
+            if (v === "wizard" && currentStep === 6 && !currentProject) {
+              setCurrentStep(1);
+            }
+          }}
+          userReportsCount={userProjects.length}
+          onOpenHelp={currentUser?.role !== "admin" ? () => setIsHelpOpen(true) : undefined}
+          unreadNotificationCount={unreadNotifCount}
+          onOpenNotifications={() => setIsNotificationsOpen(true)}
+        />
+      </div>
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {currentUser?.role === "admin" && adminView === "dashboard" ? (
+        {(currentUser?.role === "admin" && adminView === "investor") ||
+        (currentUser?.role === "investor" && userView === "investor") ? (
+          currentProject ? (
+            /* INVESTOR VIEWING FOUNDER REPORT: ONLY FINAL REPORT IS VISIBLE */
+            <div className="space-y-6">
+              {/* Return to Dealflow Banner */}
+              <div className="no-print max-w-5xl mx-auto p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#11231f] via-[#101b22] to-[#11231f] border border-emerald-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs backdrop-blur-xl shadow-xl shadow-emerald-950/30">
+                <div className="flex items-center gap-3.5 text-emerald-200">
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shadow-sm font-bold flex-shrink-0">
+                    <Coins className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-white text-sm sm:text-base flex items-center gap-2 flex-wrap">
+                      <span>{currentProject.selectedIdea?.name || "Startup"} — Founder Final Report</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-500/30 font-bold">
+                        Institutional Due Diligence Memo
+                      </span>
+                    </div>
+                    <p className="text-slate-300 text-xs mt-0.5">
+                      Reviewing verified founder submission &amp; round terms. You are viewing the complete final report.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentProject(null);
+                    setCameFromInvestorHub(false);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-emerald-600/30 border border-emerald-400/30 cursor-pointer flex-shrink-0 transform hover:-translate-y-0.5"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Return to Dealflow Hub</span>
+                </button>
+              </div>
+
+              {/* Final Report (DossierExport) */}
+              <DossierExport
+                project={currentProject}
+                currentUser={currentUser}
+                onRestart={() => {
+                  setCurrentProject(null);
+                  setCameFromInvestorHub(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onProjectSaved={refreshVault}
+                onBack={() => {
+                  setCurrentProject(null);
+                  setCameFromInvestorHub(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onOpenCompare={() => setIsCompareOpen(true)}
+                cameFromInvestorHub={true}
+              />
+            </div>
+          ) : (
+            <InvestorDashboard
+              currentUser={currentUser}
+              savedProjects={savedProjects}
+              onSelectProject={(p) => handleSelectVaultProject(p, true)}
+              onSwitchToWizard={() => {
+                if (currentUser?.role === "admin") setAdminView("wizard");
+                else setUserView("investor");
+              }}
+              onSwitchToReports={() => {
+                setCurrentProject(null);
+                setUserView("reports");
+              }}
+              onSwitchToAdmin={() => setAdminView("dashboard")}
+              onRefreshData={refreshVault}
+            />
+          )
+        ) : currentUser?.role === "admin" && adminView === "dashboard" ? (
           <AdminDashboard
             currentUser={currentUser}
             savedProjects={savedProjects}
@@ -547,19 +735,101 @@ export default function Home() {
             onSignOut={handleSignOut}
             onRefreshData={refreshVault}
           />
-        ) : currentUser?.role !== "admin" && userView === "reports" && currentStep === 1 ? (
-          <UserReportsDashboard
-            currentUser={currentUser}
-            projects={userProjects}
-            onSelectProject={handleSelectVaultProject}
-            onStartNewValidation={handleStartNewValidation}
-            onOpenCompare={() => setIsCompareOpen(true)}
-            onRefreshData={refreshVault}
-          />
+        ) : currentUser?.role !== "admin" && userView === "reports" ? (
+          currentProject ? (
+            /* SAVED VAULT REPORT VIEW */
+            <div className="space-y-6">
+              <div className="no-print max-w-5xl mx-auto p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#121f28] via-[#101b22] to-[#121f28] border border-cyan-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs backdrop-blur-xl shadow-xl shadow-cyan-950/30">
+                <div className="flex items-center gap-3.5 text-cyan-200">
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-sm font-bold flex-shrink-0">
+                    <FolderHeart className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-white text-sm sm:text-base flex items-center gap-2 flex-wrap">
+                      <span>{currentProject.selectedIdea?.name || "Startup"} — Saved Final Report</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-mono border border-cyan-500/30 font-bold">
+                        Portfolio Report
+                      </span>
+                    </div>
+                    <p className="text-slate-300 text-xs mt-0.5">
+                      Viewing saved institutional report from your portfolio vault.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentProject(null);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="px-4 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-cyan-600/30 border border-cyan-400/30 cursor-pointer flex-shrink-0 transform hover:-translate-y-0.5"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Return to Saved Vault</span>
+                </button>
+              </div>
+
+              <DossierExport
+                project={currentProject}
+                currentUser={currentUser}
+                onRestart={() => {
+                  setCurrentProject(null);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onProjectSaved={refreshVault}
+                onBack={() => {
+                  setCurrentProject(null);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onOpenCompare={() => setIsCompareOpen(true)}
+                cameFromInvestorHub={currentUser?.role === "investor"}
+              />
+            </div>
+          ) : (
+            <UserReportsDashboard
+              currentUser={currentUser}
+              projects={userProjects}
+              onSelectProject={handleSelectVaultProject}
+              onStartNewValidation={handleStartNewValidation}
+              onOpenCompare={() => setIsCompareOpen(true)}
+              onRefreshData={refreshVault}
+              notifications={founderNotifications}
+              onOpenNotifications={() => setIsNotificationsOpen(true)}
+            />
+          )
         ) : (
           <>
+            {/* If user came from Investor Hub or is an investor and viewing a dossier or wizard, provide return to dealflow banner */}
+            {(cameFromInvestorHub || currentUser?.role === "investor") && (
+              <div className="no-print max-w-5xl mx-auto mb-6 p-4 rounded-3xl bg-gradient-to-r from-[#122320] via-[#101b22] to-[#122320] border border-emerald-500/40 flex items-center justify-between text-xs backdrop-blur-xl shadow-xl shadow-emerald-950/30">
+                <div className="flex items-center gap-3 text-emerald-200">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shadow-sm font-bold">
+                    <Coins className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <span>
+                    Viewing Institutional Validation Dossier. You can return to <strong className="text-emerald-300">Investor Dealflow</strong> at any time.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentUser?.role === "admin") setAdminView("investor");
+                    else setUserView("investor");
+                    setCurrentProject(null);
+                    setCurrentStep(1);
+                    setCameFromInvestorHub(false);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-emerald-600/30 border border-emerald-400/30 cursor-pointer"
+                >
+                  <Coins className="w-3.5 h-3.5" />
+                  <span>Return to Dealflow Hub →</span>
+                </button>
+              </div>
+            )}
+
             {/* If regular founder has saved reports and is on step 1 of wizard, show quick banner to return to My Reports */}
-            {currentUser?.role !== "admin" && userProjects.length > 0 && currentStep === 1 && (
+            {currentUser?.role !== "admin" && currentUser?.role !== "investor" && userProjects.length > 0 && currentStep === 1 && !cameFromInvestorHub && (
               <div className="no-print max-w-5xl mx-auto mb-6 p-4 rounded-3xl bg-gradient-to-r from-[#171a28] via-[#141d24] to-[#171a28] border border-cyan-500/30 flex items-center justify-between text-xs backdrop-blur-xl shadow-xl shadow-cyan-950/20">
                 <div className="flex items-center gap-3 text-cyan-200">
                   <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shadow-sm shadow-emerald-500/20 font-bold">
@@ -608,16 +878,16 @@ export default function Home() {
               </div>
             )}
 
-            {/* Step Progression Breadcrumb (Shown on steps 2-6) */}
-            {currentStep > 1 && (
+            {/* Step Progression Breadcrumb (Shown only for founders during wizard flow, NEVER for investors) */}
+            {currentStep >= 1 && currentUser?.role !== "investor" && !cameFromInvestorHub && (
               <div className="no-print max-w-5xl mx-auto mb-8 p-3 sm:p-4 rounded-3xl glass-panel border border-indigo-500/25 bg-gradient-to-r from-[#181a28] via-[#151c22] to-[#181a28] shadow-2xl shadow-indigo-950/20 flex items-center justify-between text-xs overflow-x-auto gap-2.5">
                 {[
-                  { num: 1, label: "Vision & Map", active: currentStep === 1, done: currentStep > 1 },
-                  { num: 2, label: "AI Concepts", active: currentStep === 2, done: currentStep > 2 },
-                  { num: 3, label: "Market & Users", active: currentStep === 3, done: currentStep > 3 },
-                  { num: 4, label: "Feasibility & Score", active: currentStep === 4, done: currentStep > 4 },
-                  { num: 5, label: "MVP & Roadmap", active: currentStep === 5, done: currentStep > 5 },
-                  { num: 6, label: "Final Report", active: currentStep === 6, done: currentStep === 6 },
+                  { num: 1, label: "1. Founder Vision", active: currentStep === 1, done: currentStep > 1 },
+                  { num: 2, label: "2. AI Concepts", active: currentStep === 2, done: currentStep > 2 },
+                  { num: 3, label: "3. Market Validation", active: currentStep === 3, done: currentStep > 3 },
+                  { num: 4, label: "4. Cloud & Viability", active: currentStep === 4, done: currentStep > 4 },
+                  { num: 5, label: "5. MVP & Roadmap", active: currentStep === 5, done: currentStep > 5 },
+                  { num: 6, label: "6. Venture Dossier", active: currentStep === 6, done: currentStep === 6 },
                 ].map((step, idx) => (
                   <div key={step.num} className="flex items-center gap-2 flex-shrink-0">
                     <button
@@ -629,34 +899,34 @@ export default function Home() {
                         }
                       }}
                       disabled={!step.done && !step.active}
-                      className={`flex items-center gap-2 transition px-3 py-1.5 rounded-xl ${
+                      className={`flex items-center gap-2 transition px-3.5 py-2 rounded-xl ${
                         step.active
-                          ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-lg shadow-indigo-600/30 border border-cyan-400/40"
+                          ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-lg shadow-indigo-600/30 border border-cyan-400/50"
                           : step.done
                           ? "cursor-pointer hover:bg-slate-900/80 text-emerald-300 font-semibold"
-                          : "cursor-default text-slate-500 opacity-60"
+                          : "cursor-default text-slate-400 opacity-60"
                       }`}
                     >
                       <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[11px] font-mono transition-all ${
+                        className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs font-mono transition-all ${
                           step.done
                             ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-sm shadow-emerald-500/30"
                             : step.active
                             ? "bg-white text-indigo-900 font-black shadow-md"
-                            : "bg-slate-800 text-slate-400"
+                            : "bg-slate-800 text-slate-300 border border-slate-700"
                         }`}
                       >
                         {step.done ? "✓" : step.num}
                       </div>
                       <span
-                        className={`font-semibold tracking-tight text-xs ${
-                          step.active ? "text-white" : step.done ? "text-emerald-200" : "text-slate-500"
+                        className={`font-bold tracking-tight text-xs ${
+                          step.active ? "text-white" : step.done ? "text-emerald-300" : "text-slate-400"
                         }`}
                       >
                         {step.label}
                       </span>
                     </button>
-                    {idx < 5 && <ChevronRight className="w-3.5 h-3.5 text-slate-600 ml-1 flex-shrink-0" />}
+                    {idx < 5 && <ChevronRight className="w-3.5 h-3.5 text-slate-500 ml-1 flex-shrink-0" />}
                   </div>
                 ))}
               </div>
@@ -677,7 +947,7 @@ export default function Home() {
             )}
 
             {/* Step Views */}
-            {currentStep === 1 && (
+            {currentUser?.role !== "investor" && !cameFromInvestorHub && currentStep === 1 && (
               <StepInput
                 onGenerate={handleGenerateIdeas}
                 onDirectValidateIdea={handleDirectValidateIdea}
@@ -688,16 +958,18 @@ export default function Home() {
               />
             )}
 
-            {currentStep === 2 && (
+            {currentUser?.role !== "investor" && !cameFromInvestorHub && currentStep === 2 && (
               <StepIdeaSelection
                 ideas={ideas}
                 onSelectIdea={handleSelectIdeaAndValidate}
                 onBack={() => setCurrentStep(1)}
                 isValidating={isLoading}
+                onGenerateMore={handleGenerateMoreIdeas}
+                isGeneratingMore={isGeneratingMore}
               />
             )}
 
-            {currentStep === 3 && selectedIdea && validation && (
+            {currentUser?.role !== "investor" && !cameFromInvestorHub && currentStep === 3 && selectedIdea && validation && (
               <StepMarketValidation
                 idea={selectedIdea}
                 validation={validation}
@@ -707,7 +979,7 @@ export default function Home() {
               />
             )}
 
-            {currentStep === 4 && selectedIdea && feasibility && (
+            {currentUser?.role !== "investor" && !cameFromInvestorHub && currentStep === 4 && selectedIdea && feasibility && (
               <StepCloudFeasibility
                 idea={selectedIdea}
                 feasibility={feasibility}
@@ -716,7 +988,7 @@ export default function Home() {
               />
             )}
 
-            {currentStep === 5 && selectedIdea && feasibility && (
+            {currentUser?.role !== "investor" && !cameFromInvestorHub && currentStep === 5 && selectedIdea && feasibility && (
               <StepMvpAndRoadmap
                 idea={selectedIdea}
                 feasibility={feasibility}
@@ -731,10 +1003,23 @@ export default function Home() {
               <DossierExport
                 project={currentProject}
                 currentUser={currentUser}
-                onRestart={handleRestart}
+                onRestart={cameFromInvestorHub || currentUser?.role === "investor" ? () => {
+                  if (currentUser?.role === "admin") setAdminView("investor");
+                  else setUserView("investor");
+                  setCurrentProject(null);
+                  setCameFromInvestorHub(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                } : handleRestart}
                 onProjectSaved={refreshVault}
-                onBack={() => setCurrentStep(5)}
+                onBack={cameFromInvestorHub || currentUser?.role === "investor" ? () => {
+                  if (currentUser?.role === "admin") setAdminView("investor");
+                  else setUserView("investor");
+                  setCurrentProject(null);
+                  setCameFromInvestorHub(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                } : () => setCurrentStep(5)}
                 onOpenCompare={() => setIsCompareOpen(true)}
+                cameFromInvestorHub={cameFromInvestorHub || currentUser?.role === "investor"}
               />
             )}
           </>
@@ -810,6 +1095,25 @@ export default function Home() {
       <HelpModal
         isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
+      />
+
+      {/* Founder Investor Interest Notifications Modal */}
+      <FounderNotificationsModal
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
+        notifications={founderNotifications}
+        onSelectProjectById={(projId) => {
+          const match = savedProjects.find((p) => p.id === projId);
+          if (match) {
+            handleSelectVaultProject(match);
+          }
+        }}
+        onRefreshNotifications={() => {
+          if (currentUser) {
+            const notifs = getNotificationsForFounder(currentUser.username, currentUser.email);
+            setFounderNotifications(notifs);
+          }
+        }}
       />
     </div>
   );

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   FileText,
   Download,
-  Copy,
   Check,
   FolderHeart,
   Printer,
@@ -33,6 +32,7 @@ import {
   Zap,
   Mail,
   BarChart3,
+  Coins,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -45,7 +45,9 @@ import {
   Cell,
 } from "recharts";
 import { StartupProject, User } from "@/types";
-import { exportProjectAsMarkdown, saveProjectToVault } from "@/lib/storage";
+import { saveProjectToVault } from "@/lib/storage";
+import { SeekFundingModal } from "../Dashboard/SeekFundingModal";
+import { InvestmentModal } from "../Investor/InvestmentModal";
 
 interface DossierExportProps {
   project: StartupProject;
@@ -54,6 +56,7 @@ interface DossierExportProps {
   onProjectSaved: () => void;
   onBack: () => void;
   onOpenCompare?: () => void;
+  cameFromInvestorHub?: boolean;
 }
 
 export const DossierExport: React.FC<DossierExportProps> = ({
@@ -63,25 +66,34 @@ export const DossierExport: React.FC<DossierExportProps> = ({
   onProjectSaved,
   onBack,
   onOpenCompare,
+  cameFromInvestorHub = false,
 }) => {
-  const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [isFundingModalOpen, setIsFundingModalOpen] = useState(false);
+  const [isInvestModalOpen, setIsInvestModalOpen] = useState(false);
+  const [currentActiveProject, setCurrentActiveProject] = useState<StartupProject>(project);
 
-  const { selectedIdea, validation, feasibility, founderProfile } = project;
-  const loc = project.targetLocation || founderProfile.targetLocation;
+  const isInvestorUser = currentUser?.role === "investor" || cameFromInvestorHub;
 
-  const handleCopyMarkdown = () => {
-    const md = exportProjectAsMarkdown(project);
-    navigator.clipboard.writeText(md);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const fundingAsk = currentActiveProject.fundingAsk?.seekingFunding
+    ? currentActiveProject.fundingAsk
+    : {
+        seekingFunding: true,
+        targetFundingAmount: currentActiveProject.validation?.tam?.value?.includes("B") ? "$500,000" : "$250,000",
+        equityOffered: "10% Equity",
+        fundingStage: "Pre-Seed (SAFE)",
+        useOfFunds: "MVP sprint engineering, initial 1,000 customer acquisition, and 18-month cloud runway",
+        pitchNotes: "Seeking institutional pre-seed backing to launch MVP sprint",
+      };
+
+  const { selectedIdea, validation, feasibility, founderProfile } = currentActiveProject;
+  const loc = currentActiveProject.targetLocation || founderProfile.targetLocation;
 
   const handleSaveToVault = () => {
-    const activeUsername = project.username || currentUser?.username;
-    const activeUserId = project.userId || currentUser?.id || currentUser?._id;
+    const activeUsername = currentActiveProject.username || currentUser?.username;
+    const activeUserId = currentActiveProject.userId || currentUser?.id || currentUser?._id;
     const enrichedProject: StartupProject = {
-      ...project,
+      ...currentActiveProject,
       username: activeUsername,
       userId: activeUserId,
     };
@@ -92,7 +104,13 @@ export const DossierExport: React.FC<DossierExportProps> = ({
   };
 
   const handlePrint = () => {
+    const originalTitle = document.title;
+    // Temporarily clear title so browser print header only shows date/time without the website name
+    document.title = " ";
     window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1000);
   };
 
   return (
@@ -117,13 +135,24 @@ export const DossierExport: React.FC<DossierExportProps> = ({
         </div>
 
         <div className="flex items-center gap-2.5 flex-wrap">
-          <button
-            onClick={onBack}
-            className="px-3.5 py-2.5 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition text-xs font-medium flex items-center gap-1.5"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back</span>
-          </button>
+          {isInvestorUser ? (
+            <button
+              onClick={onBack}
+              className="px-3.5 py-2.5 rounded-xl bg-slate-900 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-950/40 hover:text-white transition text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Return to Investor Dealflow"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>← Return to Dealflow</span>
+            </button>
+          ) : (
+            <button
+              onClick={onBack}
+              className="px-3.5 py-2.5 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition text-xs font-medium flex items-center gap-1.5 cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
+            </button>
+          )}
 
           {onOpenCompare && (
             <button
@@ -132,6 +161,30 @@ export const DossierExport: React.FC<DossierExportProps> = ({
             >
               <Scale className="w-3.5 h-3.5 text-indigo-400" />
               <span>Compare Ideas</span>
+            </button>
+          )}
+
+          {isInvestorUser ? (
+            <button
+              onClick={() => setIsInvestModalOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 border border-emerald-400/40 transition flex items-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
+              title="Express investment interest or submit a soft commitment to this founder"
+            >
+              <Coins className="w-3.5 h-3.5 text-emerald-200" />
+              <span>🤝 Express Interest / Invest</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setIsFundingModalOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 border border-emerald-400/40 transition flex items-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
+              title="Configure launch funding needs and toggle visibility on the Investor Dealflow Hub"
+            >
+              <Coins className="w-3.5 h-3.5 text-emerald-200" />
+              <span>
+                {currentActiveProject.isPublishedForInvestors || currentActiveProject.fundingAsk?.seekingFunding
+                  ? "⚡ Published for Investors"
+                  : "⚡ Seek Launch Funding"}
+              </span>
             </button>
           )}
 
@@ -146,15 +199,6 @@ export const DossierExport: React.FC<DossierExportProps> = ({
           >
             <FolderHeart className="w-3.5 h-3.5" />
             <span>{saved ? "✓ Saved to My Reports!" : "Save Report"}</span>
-          </button>
-
-          <button
-            onClick={handleCopyMarkdown}
-            className="px-3.5 py-2.5 rounded-xl bg-slate-900 text-slate-200 border border-slate-700 hover:border-indigo-400 hover:text-white transition text-xs font-medium flex items-center gap-1.5"
-            title="Copy formatted report to clipboard"
-          >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-indigo-400" />}
-            <span>{copied ? "Copied!" : "Copy Report"}</span>
           </button>
 
           <button
@@ -225,6 +269,126 @@ export const DossierExport: React.FC<DossierExportProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Executive Launch Funding & Investor Terms */}
+        {isInvestorUser ? (
+          <div className="p-6 rounded-3xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-teal-950/70 border border-emerald-500/50 shadow-2xl text-left space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/25 text-emerald-300 font-extrabold text-xs border border-emerald-400/40 flex items-center gap-1.5 shadow-sm">
+                    <Coins className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>FOUNDER CAPITAL REQUIREMENT &amp; ROUND TERMS</span>
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-mono">14-Stage Institutional Diligence</span>
+                </div>
+                <div className="text-2xl sm:text-3xl font-black text-white mt-2 flex items-center gap-3 flex-wrap">
+                  <span className="text-emerald-400 font-mono">{fundingAsk.targetFundingAmount}</span>
+                  <span className="text-sm font-semibold text-slate-300">
+                    seeking {fundingAsk.equityOffered} ({fundingAsk.fundingStage})
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                  <strong className="text-emerald-300 font-semibold">Planned Runway &amp; Allocation:</strong> {fundingAsk.useOfFunds}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5 flex-shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setIsInvestModalOpen(true)}
+                  className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-extrabold text-xs shadow-xl shadow-emerald-600/30 border border-emerald-400/40 transition flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
+                >
+                  <Coins className="w-4 h-4 text-emerald-200" />
+                  <span>🤝 Express Interest in this Startup</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Due Diligence KPI Strip for Investor */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-800">
+              <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 block font-semibold">TAM Market Size</span>
+                <span className="text-sm font-bold text-emerald-400">{validation.tam.value}</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 block font-semibold">Unit Economics (LTV:CAC)</span>
+                <span className="text-sm font-bold text-cyan-400">{feasibility.revenueModel?.keyUnitEconomics?.ltvCacRatio || "5.8x"}</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 block font-semibold">Gross Margin</span>
+                <span className="text-sm font-bold text-indigo-400">{feasibility.revenueModel?.keyUnitEconomics?.grossMargin || "80%"}</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 block font-semibold">MVP Cloud Burn</span>
+                <span className="text-sm font-bold text-amber-400">{feasibility.cloudArchitecture?.estimatedMonthlyCloudCost?.mvp || "$280/mo"}</span>
+              </div>
+            </div>
+
+            {/* Founder verification details */}
+            <div className="pt-2 flex items-center justify-between text-xs text-slate-300 flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <span>Founder: <strong className="text-white">{currentActiveProject.username || "Verified Founder"}</strong></span>
+                <span>·</span>
+                <span>Email: <strong className="text-emerald-300 font-mono">{founderProfile?.founderEmail || "founder@startupgen.ai"}</strong></span>
+                {loc && (
+                  <>
+                    <span>·</span>
+                    <span>Location: <strong className="text-white">{loc.city}, {loc.country}</strong></span>
+                  </>
+                )}
+              </div>
+              <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Viability Index: {feasibility.overallScore}/100 ({feasibility.verdict})</span>
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-teal-950/30 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs uppercase font-bold text-emerald-400 tracking-wider flex items-center gap-1.5">
+                  <Coins className="w-3.5 h-3.5" />
+                  Launch Capital Requirements &amp; Investor Terms
+                </span>
+                {currentActiveProject.isPublishedForInvestors || currentActiveProject.fundingAsk?.seekingFunding ? (
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Published to Investor Dealflow</span>
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-semibold border border-slate-700">
+                    Private / Confidential to Founder
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-slate-300">
+                {currentActiveProject.fundingAsk?.seekingFunding
+                  ? `Seeking ${currentActiveProject.fundingAsk.targetFundingAmount} · ${currentActiveProject.fundingAsk.equityOffered} (${currentActiveProject.fundingAsk.fundingStage})`
+                  : "Need funding to build this MVP and launch? Configure your target funding and allow angel investors to view this deal."}
+              </p>
+              {currentActiveProject.fundingAsk?.useOfFunds && (
+                <p className="text-[11px] text-slate-400 italic">
+                  Use of funds: &quot;{currentActiveProject.fundingAsk.useOfFunds}&quot;
+                </p>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsFundingModalOpen(true)}
+              className="no-print px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 flex-shrink-0 cursor-pointer self-start sm:self-center"
+            >
+              <Coins className="w-3.5 h-3.5" />
+              <span>
+                {currentActiveProject.isPublishedForInvestors || currentActiveProject.fundingAsk?.seekingFunding
+                  ? "Edit Investor Terms"
+                  : "⚡ Seek Launch Funding & Allow for Investors"}
+              </span>
+            </button>
+          </div>
+        )}
 
         {/* Section 1: Problem-Solution Fit */}
         <div className="space-y-4">
@@ -856,14 +1020,49 @@ export const DossierExport: React.FC<DossierExportProps> = ({
             <span>Compare with Other Ideas</span>
           </button>
         )}
-        <button
-          onClick={onRestart}
-          className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition text-sm font-semibold flex items-center gap-2"
-        >
-          <Sparkles className="w-4 h-4 text-indigo-400" />
-          <span>Validate Another Startup Idea</span>
-        </button>
+        {isInvestorUser ? (
+          <button
+            onClick={onBack}
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-600/30 transition flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
+          >
+            <ArrowLeft className="w-4 h-4 text-emerald-200" />
+            <span>← Return to Investor Dealflow</span>
+          </button>
+        ) : (
+          <button
+            onClick={onRestart}
+            className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition text-sm font-semibold flex items-center gap-2 cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-indigo-400" />
+            <span>Validate Another Startup Idea</span>
+          </button>
+        )}
       </div>
+
+      {/* Seek Funding Modal (Founder only) */}
+      {isFundingModalOpen && (
+        <SeekFundingModal
+          isOpen={isFundingModalOpen}
+          onClose={() => setIsFundingModalOpen(false)}
+          project={currentActiveProject}
+          currentUser={currentUser}
+          onProjectUpdated={(updatedProject) => {
+            setCurrentActiveProject(updatedProject);
+            setIsFundingModalOpen(false);
+            onProjectSaved();
+          }}
+        />
+      )}
+
+      {/* Investment Interest Modal (Investor only) */}
+      {isInvestModalOpen && (
+        <InvestmentModal
+          isOpen={isInvestModalOpen}
+          onClose={() => setIsInvestModalOpen(false)}
+          project={currentActiveProject}
+          currentUser={currentUser}
+        />
+      )}
     </div>
   );
 };

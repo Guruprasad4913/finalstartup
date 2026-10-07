@@ -161,7 +161,7 @@ const FAQS = [
   },
   {
     q: "Can I save, export, and compare my validation reports?",
-    a: "Absolutely. In Step 6 (Institutional Venture Memo), you can save your report directly to your Cloud Vault / MongoDB portfolio, export a print-ready PDF, copy markdown to clipboard, or compare multiple ideas side-by-side.",
+    a: "Absolutely. In Step 6 (Institutional Venture Memo), you can save your report directly to your Cloud Vault / MongoDB portfolio, export or print a PDF, or compare multiple ideas side-by-side.",
   },
   {
     q: "What if I enter my founder Gmail?",

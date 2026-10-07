@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, ArrowLeft, ArrowRight, Check, Zap, Target, Shield, Clock, TrendingUp, PenTool, X, Plus } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Sparkles, ArrowLeft, ArrowRight, Check, Zap, Target, Shield, Clock, TrendingUp, PenTool, X, Plus, RefreshCw, Lightbulb } from "lucide-react";
 import { StartupIdea } from "@/types";
 
 interface StepIdeaSelectionProps {
@@ -9,6 +9,8 @@ interface StepIdeaSelectionProps {
   onSelectIdea: (idea: StartupIdea) => void;
   onBack: () => void;
   isValidating: boolean;
+  onGenerateMore?: () => Promise<void>;
+  isGeneratingMore?: boolean;
 }
 
 export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
@@ -16,18 +18,36 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
   onSelectIdea,
   onBack,
   isValidating,
+  onGenerateMore,
+  isGeneratingMore = false,
 }) => {
   const [ideas, setIdeas] = useState<StartupIdea[]>(initialIdeas);
   const [selectedId, setSelectedId] = useState<string>(initialIdeas[0]?.id || "");
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
+  const [notification, setNotification] = useState<string | null>(null);
+
+  // Sync state whenever parent updates initialIdeas (e.g. after generating more plans)
+  useEffect(() => {
+    if (initialIdeas && initialIdeas.length > 0) {
+      setIdeas(initialIdeas);
+      // If newly added plans exist, select the first fresh plan and show feedback banner
+      const newlyAdded = initialIdeas.find((i) => i.isNew);
+      if (newlyAdded && newlyAdded.id !== selectedId) {
+        setSelectedId(newlyAdded.id);
+        setNotification(`✨ Generated 3 new startup plans! Now showing ${initialIdeas.length} plans.`);
+        const timer = setTimeout(() => setNotification(null), 6000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [initialIdeas]);
 
   // Custom concept form state
   const [customName, setCustomName] = useState("");
   const [customTagline, setCustomTagline] = useState("");
-  const [customDomain, setCustomDomain] = useState("AI Agents");
+  const [customDomain, setCustomDomain] = useState(initialIdeas[0]?.domain || "Commercial Venture");
   const [customProblem, setCustomProblem] = useState("");
   const [customSolution, setCustomSolution] = useState("");
-  const [customPersona, setCustomPersona] = useState("Operations Director");
+  const [customPersona, setCustomPersona] = useState("Target Customer & Buyer");
 
   const currentSelectedIdea = ideas.find((i) => i.id === selectedId) || ideas[0];
 
@@ -35,21 +55,23 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
     e.preventDefault();
     if (!customName.trim() || !customProblem.trim()) return;
 
+    const domain = customDomain.trim() || initialIdeas[0]?.domain || "Commercial Venture";
+
     const newIdea: StartupIdea = {
       id: `custom-${Date.now()}`,
       name: customName.trim(),
-      tagline: customTagline.trim() || `Next-Gen AI + Cloud Platform for ${customDomain}`,
-      domain: customDomain.trim(),
+      tagline: customTagline.trim() || `Specialized Operational Venture for ${domain}`,
+      domain: domain,
       problemStatement: customProblem.trim(),
-      solution: customSolution.trim() || `An automated AI-native cloud workflow application solving ${customProblem.substring(0, 70)}...`,
+      solution: customSolution.trim() || `A focused operational solution delivering turnkey value and solving: ${customProblem.substring(0, 75)}...`,
       targetPersona: {
-        title: customPersona.trim() || "Operations & Product Lead",
-        painPoints: ["High manual overhead", "Lack of real-time insights"],
-        willingnessToPay: "$199 - $900/month",
+        title: customPersona.trim() || "Target Buyers & Operational Decision Makers",
+        painPoints: ["High operational overhead", "Lack of transparent alternatives", "Inconsistent supplier quality"],
+        willingnessToPay: "₹5,000 - ₹35,000 / month or per order",
       },
-      whyNow: "Rapid proliferation of generative AI APIs and automated cloud serverless infrastructure",
-      innovationMoat: "Proprietary workflow graph heuristics and domain integration",
-      tags: [customDomain, "Custom", "AI", "Cloud"],
+      whyNow: "Changing industry dynamics and rising customer preference for direct, verified, and specialized service delivery.",
+      innovationMoat: "Agile localized execution and specialized domain expertise.",
+      tags: [domain, "Custom Plan", "High Impact"],
       initialFeasibilityScore: 92,
     };
 
@@ -68,19 +90,32 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
       {/* Step Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold mb-2 shadow-sm shadow-cyan-500/10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold mb-2 shadow-sm shadow-cyan-500/10">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
             Step 2 of 6: AI Concept Selection
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
             Select Your Startup Concept to Validate
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1">
             Our AI engine generated {ideas.length} tailored opportunities. Choose one to perform deep real-time API market scans &amp; cloud blueprinting.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-center">
+        <div className="flex flex-wrap items-center gap-2 self-start sm:self-center">
+          {onGenerateMore && (
+            <button
+              id="btn-generate-more-plans-header"
+              type="button"
+              onClick={() => onGenerateMore()}
+              disabled={isGeneratingMore || isValidating}
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white transition text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/25 border border-emerald-400/40 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isGeneratingMore ? "animate-spin text-cyan-200" : "group-hover:rotate-180 transition-transform duration-500 text-emerald-300"}`} />
+              <span>{isGeneratingMore ? "Generating More Plans..." : "Generate More Plans"}</span>
+            </button>
+          )}
+
           <button
             onClick={() => setIsCustomModalOpen(true)}
             className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white transition text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-indigo-600/25 border border-cyan-400/30 cursor-pointer"
@@ -99,6 +134,35 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Explainer / How It Works Banner */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900 to-cyan-950/30 border border-indigo-500/30 flex items-start gap-3 shadow-lg">
+        <div className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 mt-0.5 flex-shrink-0">
+          <Lightbulb className="w-4 h-4 text-amber-300" />
+        </div>
+        <div className="space-y-1 text-xs">
+          <span className="font-bold text-white block text-sm">How to Choose Your Concept</span>
+          <p className="text-slate-300 leading-relaxed">
+            Click any idea card below to review its problem statement, proposed solution, and initial viability score. The selected idea will be deep-validated across live market APIs, competitor battlecards, and cloud infrastructure.
+          </p>
+        </div>
+      </div>
+
+      {/* Toast Notification for new ideas */}
+      {notification && (
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border border-emerald-400/40 text-emerald-200 text-xs font-semibold flex items-center justify-between shadow-lg shadow-emerald-500/10 animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <span>{notification}</span>
+          </div>
+          <button
+            onClick={() => setNotification(null)}
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Idea Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -130,6 +194,12 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
                     {idea.businessType && (
                       <span className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
                         {idea.businessType}
+                      </span>
+                    )}
+                    {idea.isNew && (
+                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-sm shadow-emerald-500/10 flex items-center gap-1 animate-pulse">
+                        <Sparkles className="w-2.5 h-2.5 text-emerald-300" />
+                        Fresh Plan
                       </span>
                     )}
                   </div>
@@ -184,6 +254,47 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
           );
         })}
       </div>
+
+      {/* "Need Different Plans?" CTA Banner */}
+      {onGenerateMore && (
+        <div className="relative overflow-hidden rounded-3xl p-6 sm:p-7 border border-emerald-500/30 bg-gradient-to-r from-[#102422]/90 via-[#131d2e]/90 to-[#181a28]/90 backdrop-blur-xl shadow-xl shadow-emerald-950/20 flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div className="absolute -left-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center flex-shrink-0 text-emerald-400 shadow-md shadow-emerald-500/10 mt-0.5">
+              <Lightbulb className="w-6 h-6 animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                  Alternative Angles &amp; Niches
+                </span>
+                <span className="text-xs text-slate-400">
+                  {ideas.length} plans available
+                </span>
+              </div>
+              <h4 className="text-base sm:text-lg font-bold text-white">
+                Need a different plan than the {ideas.length <= 3 ? "3" : ideas.length} mentioned?
+              </h4>
+              <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
+                Looking for another angle, different target audience, or alternative business model? Click below to generate 3 more diverse plans tailored to your profile.
+              </p>
+            </div>
+          </div>
+
+          <button
+            id="btn-generate-more-plans-cta"
+            type="button"
+            onClick={() => onGenerateMore()}
+            disabled={isGeneratingMore || isValidating}
+            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 border border-emerald-300/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            <RefreshCw className={`w-4 h-4 ${isGeneratingMore ? "animate-spin text-slate-900" : ""}`} />
+            <span>{isGeneratingMore ? "Generating 3 More Plans..." : "Generate 3 More Plans"}</span>
+          </button>
+        </div>
+      )}
 
       {/* Selected Idea Detailed Preview Drawer */}
       {currentSelectedIdea && (

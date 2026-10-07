@@ -15,6 +15,8 @@ interface GeminiOptions {
   model?: string;
   tavilyApiKey?: string;
   tavilyContext?: string;
+  existingIdeas?: string[];
+  offset?: number;
 }
 
 // Fallback high-fidelity smart generator covering multiple domains
@@ -26,7 +28,7 @@ export async function generateStartupIdeas(
 
   if (apiKey) {
     try {
-      const ideas = await callGeminiForIdeas(profile, apiKey);
+      const ideas = await callGeminiForIdeas(profile, apiKey, options?.existingIdeas, options?.offset);
       if (ideas && ideas.length > 0) {
         return ideas;
       }
@@ -35,8 +37,8 @@ export async function generateStartupIdeas(
     }
   }
 
-  // Built-in intelligent idea generator
-  return generateIntelligentIdeas(profile);
+  // Built-in intelligent idea generator with diversity and alternative options support
+  return generateIntelligentIdeas(profile, options?.offset || 0, options?.existingIdeas || []);
 }
 
 export async function validateMarketIdea(
@@ -133,9 +135,69 @@ export function formatToRupees(val: string): string {
   return trimmed;
 }
 
+// Robust multi-model list with auto-fallback to handle demand spikes and model updates
+const GEMINI_MODELS = [
+  "gemini-3.5-flash",
+  "gemini-3.8-flash",
+  "gemini-flash-latest",
+];
+
+// Helper to execute Gemini generation across available models with fallback
+async function callGeminiApi(
+  prompt: string,
+  apiKey: string,
+  responseMimeType: string = "application/json",
+  temperature: number = 0.7
+): Promise<string> {
+  let lastError: any = null;
+
+  for (const model of GEMINI_MODELS) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseMimeType,
+              temperature,
+            },
+          }),
+        }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) {
+          return text;
+        }
+      } else {
+        const errText = await res.text();
+        console.warn(`Gemini model ${model} status ${res.status}:`, errText);
+        lastError = new Error(`Gemini ${model} error (${res.status}): ${errText}`);
+      }
+    } catch (err: any) {
+      console.warn(`Gemini model ${model} request error:`, err?.message || err);
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error("All Gemini models failed to respond");
+}
+
 // Gemini API Integration helper
-async function callGeminiForIdeas(profile: FounderProfile, apiKey: string): Promise<StartupIdea[]> {
+async function callGeminiForIdeas(
+  profile: FounderProfile,
+  apiKey: string,
+  existingIdeas?: string[],
+  offset?: number
+): Promise<StartupIdea[]> {
   const businessType = profile.businessType || "All";
+  const userProblem = profile.customContext?.trim() || "";
+
   const prompt = `You are a Global Startup Accelerator Director and Venture Partner with expertise across diverse commercial domains: Food & Beverage, D2C Consumer Brands, Manufacturing & Hardware, Agriculture & Farming, Healthcare & Wellness, Physical Services, Logistics, Offline Education, Retail & Brick-and-Mortar, CleanTech, and Tech/Software.
 
 Given founder input:
@@ -146,12 +208,39 @@ Given founder input:
 - Target Customer Segment: ${profile.targetAudience}
 - Budget & Capital: ${profile.budget}
 - Timeframe: ${profile.timeframe}
-- Custom Context & Problem Notes: ${profile.customContext || "None"}
+- Custom Context & Problem Notes: ${userProblem || "None"}
+
+${userProblem ? `
+CRITICAL MANDATORY INSTRUCTION - MATCH USER'S INPUT EXACTLY:
+The user has explicitly entered the following startup idea or problem statement:
+"${userProblem}"
+
+1. Concept #1 MUST BE AN EXACT IMPLEMENTATION of this exact idea / problem statement: "${userProblem}".
+   - Name: Create a punchy, realistic brand name fitting this exact idea (or use the founder's preferred name if provided).
+   - Tagline: A sharp 6-10 word value proposition describing this exact solution.
+   - problemStatement: Directly address the founder's exact problem statement: "${userProblem}".
+   - solution: Explain the concrete, operationally grounded business model directly solving this exact problem.
+   - targetPersona: Align with the target customer for this solution (e.g. if the problem mentions mandis/farmers, target mandi traders and farmers).
+   - domain: Set the domain to the authentic industry of the problem statement (e.g. if problem is solar cold storage rooms for agricultural mandis, domain must be "Manufacturing / Agriculture", even if input field was mismatched).
+   - businessType: Authentic business model type for this solution.
+
+2. DOMAIN HARMONIZATION: If the user's Startup Idea / Problem Statement describes a specific commercial industry (e.g. rural agricultural cold storage, bamboo products, coffee roasting) that conflicts with the input domain (e.g. "Offline Education"), the PROBLEM STATEMENT TAKES COMPLETE PRECEDENCE. DO NOT force an awkward Frankenstein blend (e.g. do NOT create "solar cold storage schools for kids"). Build authentic, high-potential businesses solving the specified problem.
+
+3. Concepts #2 and #3 MUST ALSO directly relate to this exact domain and problem space (e.g. alternative operational angles, complementary services, or related sub-vertical business models solving the SAME industry problem). DO NOT jump to completely random, unrelated industries.
+` : ""}
+
+${existingIdeas && existingIdeas.length > 0 ? `
+CRITICAL INSTRUCTION - USER REQUESTED DIFFERENT / ALTERNATIVE PLANS:
+The user has ALREADY reviewed these existing startup plans/concepts:
+${existingIdeas.map((e) => `- "${e}"`).join("\n")}
+The user wants DIFFERENT PLANS. DO NOT repeat, rephrase, or duplicate these concepts.
+You MUST generate 3 brand new, distinct, creative, and viable startup plans exploring completely different business models, market angles, or sub-verticals for this founder profile.
+` : ""}
 
 CRITICAL INSTRUCTIONS ON STARTUP TYPES:
 1. DO NOT force ideas to be websites, apps, software SaaS, or AI wrappers unless the founder explicitly asked for tech/software.
 2. If the founder specified or implied a physical, offline, or product business (e.g. Food & Beverage, Cafe, Restaurant, D2C Physical Brand, Sustainable Packaging, Hardware, Manufacturing, Farming, Agriculture, Physical Clinic, Fitness Gym, Salon, Event Production, Offline Academy, Retail Store, Solar Installation, Recycling):
-   - Generate realistic, high-potential, real-world business models (e.g. specialty coffee roastery chain, functional nutrition QSR, eco-friendly consumer goods brand, solar cold storage units, high-yield indoor hydroponics, boutique contrast therapy studio, zero-waste refill retail store, etc.).
+   - Generate realistic, high-potential, real-world business models.
    - Modern efficiency: The business can use technology for operations (smart inventory, WhatsApp commerce, local logistics), but the primary business model MUST be authentic to that industry, NOT just a software dashboard!
 3. If the founder explicitly asked for Tech, Software, or AI, generate high-potential software or AI agent platforms.
 4. Generate exactly 3 to 4 diverse, viable, and commercially grounded startup concepts.
@@ -159,11 +248,11 @@ CRITICAL INSTRUCTIONS ON STARTUP TYPES:
 Return ONLY a valid JSON array matching this exact schema:
 [
   {
-    "id": "idea-1",
+    "id": "idea-${Date.now()}-1",
     "name": "Startup Name",
     "tagline": "Punchy 6-10 word value proposition",
     "domain": "${profile.domains[0] || "Industry"}",
-    "businessType": "Physical Product / Food & Beverage / Services / Retail / Hardware / Tech",
+    "businessType": "${businessType}",
     "problemStatement": "Clear acute customer or market pain point being solved (2-3 sentences)",
     "solution": "The business solution, product/service delivery model, and operational approach (2-3 sentences)",
     "targetPersona": {
@@ -178,26 +267,7 @@ Return ONLY a valid JSON array matching this exact schema:
   }
 ]`;
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.7,
-      },
-    }),
-  });
-
-  if (!res.ok) {
-    throw new Error(`Gemini API error: ${res.statusText}`);
-  }
-
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("Empty response from Gemini");
-
+  const text = await callGeminiApi(prompt, apiKey, "application/json", 0.7);
   return parseGeminiJson<StartupIdea[]>(text);
 }
 
@@ -300,26 +370,10 @@ Return ONLY valid JSON matching this schema:
       "sizeShare": "35%",
       "urgency": "Critical",
       "salesCycle": "1-2 months"
-    }
   ]
 }`;
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.7,
-      },
-    }),
-  });
-
-  if (!res.ok) throw new Error(`Gemini API error: ${res.statusText}`);
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("Empty response from Gemini");
+  const text = await callGeminiApi(prompt, apiKey, "application/json", 0.7);
   const validation = parseGeminiJson<MarketValidation>(text);
   if (validation?.tam?.value) validation.tam.value = formatToRupees(validation.tam.value);
   if (validation?.sam?.value) validation.sam.value = formatToRupees(validation.sam.value);
@@ -417,27 +471,945 @@ Return ONLY valid JSON matching this schema:
   ]
 }`;
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.7,
-      },
-    }),
-  });
-
-  if (!res.ok) throw new Error(`Gemini API error: ${res.statusText}`);
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("Empty response from Gemini");
+  const text = await callGeminiApi(prompt, apiKey, "application/json", 0.7);
   return parseGeminiJson<FeasibilityReport>(text);
 }
 
+// Helper to synthesize a high-fidelity Concept #1 that matches the user's exact problem and profile inputs
+function buildExactMatchIdeaFromProfile(
+  profile: FounderProfile,
+  baseIdeas: StartupIdea[] = []
+): StartupIdea {
+  const context = (profile.customContext || "").trim();
+  const cLower = context.toLowerCase();
+  const primaryDomain = profile.domains?.[0] || "Commercial Venture";
+  const businessType = profile.businessType || "Commercial Operations";
+  const audience = profile.targetAudience || "Target Buyers & Operators";
+  const skills = profile.skills?.length > 0 ? profile.skills.join(", ") : "Operational Execution";
+
+  // Check if any idea in baseIdeas has high keyword overlap with context
+  let bestPreset: StartupIdea | null = null;
+  for (const idea of baseIdeas) {
+    const iWords = (idea.name + " " + idea.tagline + " " + idea.problemStatement).toLowerCase();
+    if (
+      (cLower.includes("cold storage") && iWords.includes("cold storage")) ||
+      (cLower.includes("robotics") && iWords.includes("robotics")) ||
+      (cLower.includes("bamboo") && iWords.includes("bamboo")) ||
+      (cLower.includes("coffee") && iWords.includes("coffee")) ||
+      (cLower.includes("hydroponic") && iWords.includes("hydroponic")) ||
+      (cLower.includes("millet") && iWords.includes("millet")) ||
+      (cLower.includes("water") && iWords.includes("water")) ||
+      (cLower.includes("plastic") && iWords.includes("plastic")) ||
+      (cLower.includes("detailing") && iWords.includes("detailing")) ||
+      (cLower.includes("refill") && iWords.includes("refill")) ||
+      (cLower.includes("e-waste") && iWords.includes("waste"))
+    ) {
+      bestPreset = idea;
+      break;
+    }
+  }
+
+  if (bestPreset) {
+    return {
+      ...bestPreset,
+      id: `exact-${Date.now()}-1`,
+      problemStatement: context, // Use user's exact problem statement
+      domain: primaryDomain !== "Commercial Venture" ? primaryDomain : bestPreset.domain,
+      businessType: businessType !== "Commercial Operations" ? businessType : bestPreset.businessType,
+      targetPersona: {
+        ...bestPreset.targetPersona,
+        title: audience !== "Target Buyers & Operators" ? audience : bestPreset.targetPersona.title,
+      },
+      initialFeasibilityScore: 92,
+      isNew: false,
+    };
+  }
+
+  // Domain & audience harmonization if problem statement strongly implies another domain
+  let effectiveDomain = primaryDomain;
+  let effectiveBusinessType = businessType;
+  let effectiveAudience = audience;
+  let name = "NextGen Venture";
+  let tagline = `Specialized Solution for ${primaryDomain}`;
+
+  if (cLower.includes("solar") && cLower.includes("cold storage")) {
+    name = "SolarKool MicroChambers";
+    tagline = "Decentralized Solar Cold Storage Rooms for Rural Mandis & Post-Harvest Protection";
+    effectiveDomain = "Manufacturing & Agriculture";
+    effectiveBusinessType = "Manufacturing & Clean Hardware";
+    if (audience.toLowerCase().includes("parents") || audience.toLowerCase().includes("students")) {
+      effectiveAudience = "Mandi Traders, Farmer Producer Organizations (FPOs) & Rural Co-ops";
+    }
+  } else if (cLower.includes("robotics") || cLower.includes("maker lab")) {
+    name = "RoboCraft Studios";
+    tagline = "Hands-On K-12 Robotics, 3D Prototyping & STEM Maker Academy";
+    effectiveDomain = "Offline Education";
+    effectiveBusinessType = "Offline Education & Sports";
+  } else if (cLower.includes("bamboo") || cLower.includes("biodegradable")) {
+    name = "BambouLiving";
+    tagline = "100% Biodegradable Compressed Plant Fiber Essentials & Tableware";
+    effectiveDomain = "D2C Brands";
+    effectiveBusinessType = "Physical Products / D2C";
+  } else if (cLower.includes("precast") || cLower.includes("fit-out")) {
+    name = "ModuBuild Infra";
+    tagline = "Factory-Precast Modular Panels & Turnkey Commercial Interior Contracting";
+  } else if (cLower.includes("waterless") || cLower.includes("detailing")) {
+    name = "EcoGlide Fleet";
+    tagline = "Doorstep Waterless Commercial Fleet Detailing & Rapid Maintenance Vans";
+  } else if (cLower.includes("refill") || cLower.includes("zero-waste")) {
+    name = "TerraFill Dispensary";
+    tagline = "Zero-Waste Packaging-Free Grocery & Natural Detergent Refill Stores";
+  } else if (cLower.includes("e-waste") || cLower.includes("hydrometallurgical")) {
+    name = "CircuMetals Micro-Refineries";
+    tagline = "Decentralized Micro-Hubs Recovering Pure Copper & Gold From E-Waste";
+  } else {
+    // Dynamic brand name synthesis from key words
+    const words = context
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .split(/\s+/)
+      .filter((w) => !["a", "an", "the", "for", "to", "in", "of", "and", "with", "or", "on", "by", "from"].includes(w.toLowerCase()));
+    const w1 = words[0] ? words[0].charAt(0).toUpperCase() + words[0].slice(1) : primaryDomain.split(" ")[0];
+    const w2 = words[1] ? words[1].charAt(0).toUpperCase() + words[1].slice(1) : "Hub";
+    name = `${w1}${w2}`;
+    tagline = context.length > 70 ? context.substring(0, 67) + "..." : context;
+  }
+
+  return {
+    id: `exact-${Date.now()}-1`,
+    name,
+    tagline,
+    domain: effectiveDomain,
+    businessType: effectiveBusinessType,
+    problemStatement: context,
+    solution: `An operational, high-impact business model delivering turnkey delivery and specialized infrastructure addressing "${context.toLowerCase()}". Leverages founder execution strengths in ${skills}.`,
+    targetPersona: {
+      title: effectiveAudience,
+      painPoints: [
+        "Severe operational losses and inefficiency in legacy options",
+        "Lack of modern, transparent, and direct service models",
+        "High distributor markups and fragmented quality standards",
+      ],
+      willingnessToPay: profile.budget?.includes("₹") ? "₹2,50,000 - ₹5,00,000 / unit or ₹35,000/mo" : "$500 - $2,500 / month",
+    },
+    whyNow: "Shifting industry regulations, consumer demand for direct transparency, and localized supply chain modernization.",
+    innovationMoat: `Proprietary operational agility, direct stakeholder relationships, and founder mastery in ${skills}.`,
+    tags: [effectiveDomain, effectiveBusinessType, "Direct Solution", "High Feasibility"],
+    initialFeasibilityScore: 92,
+    isNew: false,
+  };
+}
+
+// Helper to select diverse ideas and generate fresh alternative options when more are requested
+function selectDiverseIdeas(
+  baseIdeas: StartupIdea[],
+  domainKey: string,
+  profile: FounderProfile,
+  existingIdeas: string[] = []
+): StartupIdea[] {
+  // If user provided a specific custom idea or problem statement in Step 1, Concept #1 MUST be an exact match!
+  if (profile.customContext && profile.customContext.trim().length > 5 && existingIdeas.length === 0) {
+    const exactIdea = buildExactMatchIdeaFromProfile(profile, baseIdeas);
+    const otherBase = baseIdeas.filter(
+      (idea) => idea.name.toLowerCase().trim() !== exactIdea.name.toLowerCase().trim()
+    );
+    return [exactIdea, ...otherBase.slice(0, 2)];
+  }
+
+  const existingSet = new Set(existingIdeas.map((s) => s.toLowerCase().trim()));
+  const unselectedBase = baseIdeas.filter((idea) => !existingSet.has(idea.name.toLowerCase().trim()));
+
+  if (unselectedBase.length >= 3) {
+    return unselectedBase.slice(0, 3).map((i) => ({ ...i, isNew: existingIdeas.length > 0 }));
+  }
+
+  // Get alternative curated ideas for this domain
+  const altIdeas = getAlternativeDomainIdeas(domainKey, profile);
+  const fullPool = [...baseIdeas, ...altIdeas];
+  const available = fullPool.filter((idea) => !existingSet.has(idea.name.toLowerCase().trim()));
+
+  if (available.length >= 3) {
+    return available.slice(0, 3).map((i) => ({ ...i, isNew: true }));
+  }
+
+  // If even alternative pool is reviewed, dynamically synthesize fresh tailored concepts
+  const results: StartupIdea[] = available.map((i) => ({ ...i, isNew: true }));
+  const primaryDomain = profile.domains[0] || "Commercial";
+  const userSkills = profile.skills.length > 0 ? profile.skills.join(" and ") : "Operational Leadership";
+  let variantIndex = existingIdeas.length + results.length + 1;
+
+  while (results.length < 3) {
+    const dynIdea: StartupIdea = {
+      id: `dyn-gen-${Date.now()}-${variantIndex}`,
+      name: `${primaryDomain} NextWave #${variantIndex}`,
+      tagline: `Alternative Specialized Solution for ${primaryDomain} & ${profile.targetAudience}`,
+      domain: primaryDomain,
+      businessType: profile.businessType || "Specialized Commercial Venture",
+      problemStatement: `Operators and buyers in ${primaryDomain} face acute delivery bottlenecks, unreliable vendor quality, and lack of specialized regional service options.`,
+      solution: `A focused operational solution providing certified quality delivery, direct-to-customer turnaround, and specialized execution leveraging founder's expertise in ${userSkills}.`,
+      targetPersona: {
+        title: `${profile.targetAudience || "Industry"} Decision Makers & Buyers`,
+        painPoints: ["High operational overhead", "Fragmented vendor choices", "Slow resolution times"],
+        willingnessToPay: "₹5,000 - ₹35,000 / month or per order",
+      },
+      whyNow: "Shifting industry regulations and surging customer demand for reliable, verified, transparent alternatives.",
+      innovationMoat: `Proprietary vendor network and operational agility built around ${userSkills}.`,
+      tags: [primaryDomain, "Alternative Plan", "Scalable", "High-Margin"],
+      initialFeasibilityScore: 88,
+      isNew: true,
+    };
+    results.push(dynIdea);
+    variantIndex++;
+  }
+
+  return results;
+}
+
+// Curated alternative pool of 3 distinct startup plans per industry
+function getAlternativeDomainIdeas(domainKey: string, profile: FounderProfile): StartupIdea[] {
+  const primaryDomain = profile.domains[0] || "Business";
+  const userSkills = profile.skills.length > 0 ? profile.skills.join(" and ") : "Operational Execution";
+
+  switch (domainKey) {
+    case "food":
+      return [
+        {
+          id: "food-4",
+          name: "ColdHarvest Gelato & Dairy Lab",
+          tagline: "A2 Micro-Dairy Gelato & Prebiotic Frozen Treats with Zero Refined Sugar",
+          domain: "Food & Beverage",
+          businessType: "Food & Beverage / QSR & Retail",
+          problemStatement: "Health-conscious dessert lovers and diabetic consumers find zero ultra-clean frozen desserts without artificial emulsifiers and chemical sweeteners.",
+          solution: "Small-batch churned artisanal gelato made with pure single-source A2 cow milk, indigenous fruits, monk fruit extract, and prebiotic chicory root.",
+          targetPersona: {
+            title: "Gourmet food lovers, health-focused parents, and dietary-restricted diners",
+            painPoints: ["Artificial chemicals in commercial ice creams", "High glycemic sugar spikes", "Digestive bloat from conventional dairy"],
+            willingnessToPay: "₹180 - ₹280 per scoop / ₹450 per pint"
+          },
+          whyNow: "Rapid growth of gut-health awareness and premium functional indulgence categories across Tier-1 metros.",
+          innovationMoat: "Direct single-farm A2 dairy sourcing contracts and proprietary zero-sugar stabilizing matrix.",
+          tags: ["Food & Beverage", "Artisan Gelato", "A2 Dairy", "Clean Label"],
+          initialFeasibilityScore: 91,
+          isNew: true
+        },
+        {
+          id: "food-5",
+          name: "SpiceRoute Gourmet Curry Pastes",
+          tagline: "Clean-Label Stone-Ground Regional Spice Marinades & Meal Starters",
+          domain: "Food & Beverage",
+          businessType: "Packaged Food & Retail",
+          problemStatement: "Busy home cooks and diaspora food lovers spend 45+ minutes peeling and grinding authentic curry bases, or settle for chemical-laden supermarket jars.",
+          solution: "Ready-to-simmer slow-roasted regional masala pastes using cold-pressed oils, fresh whole aromatics, and nitrogen-sealed pouch freshness with zero preservatives.",
+          targetPersona: {
+            title: "Working urban millennials, dual-income households, and culinary enthusiasts",
+            painPoints: ["Time-consuming Indian cooking prep", "Fake chemical flavorings in store pastes", "Inconsistent restaurant takeaway quality"],
+            willingnessToPay: "₹160 - ₹240 per pouch (serves 4)"
+          },
+          whyNow: "Boom in authentic regional home cooking combined with extreme customer demand for clean-label, preservative-free convenience.",
+          innovationMoat: "Heritage cold-ground stone milling preserving volatile essential oils and atmospheric retort packaging.",
+          tags: ["Food & Beverage", "Curry Pastes", "Clean Label", "Packaged Food"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        },
+        {
+          id: "food-6",
+          name: "HydraPure Botanical Adaptogen Waters",
+          tagline: "Sparkling Herbal Nootropic Waters with Ayurvedic Ashwagandha & Tulsi",
+          domain: "Food & Beverage",
+          businessType: "Beverage / Bottled Goods",
+          problemStatement: "Stressed corporate professionals rely on sugary sodas or jittery energy drinks that cause afternoon crashes and sleep disruption.",
+          solution: "Lightly carbonated botanical spring waters brewed with organic adaptogens (ashwagandha, holy basil, brahmi) providing calm mental focus with zero calories and zero sugar.",
+          targetPersona: {
+            title: "Knowledge workers, creative professionals, and mindful sober-curious consumers",
+            painPoints: ["Caffeine jitters and heart palpitations", "High sugar content in sodas", "Chronic workplace brain fog"],
+            willingnessToPay: "₹95 - ₹160 per can"
+          },
+          whyNow: "Rapid decline in sugary carbonated beverage consumption and surging demand for functional mental-clarity drinks.",
+          innovationMoat: "Sub-critical botanical extraction preserving bio-active withanolides without bitter aftertaste.",
+          tags: ["Food & Beverage", "Adaptogen Water", "Nootropics", "Functional Beverage"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        }
+      ];
+
+    case "d2c":
+      return [
+        {
+          id: "d2c-4",
+          name: "AeroLoom Hemp Activewear",
+          tagline: "High-Durability Anti-Microbial Hemp & Organic Cotton Performance Wear",
+          domain: "D2C Brands",
+          businessType: "D2C / Sustainable Apparel",
+          problemStatement: "Athletes and fitness enthusiasts wear synthetic polyester sportswear that traps bacterial odors, leaches microplastics in washing, and feels stifling in humid weather.",
+          solution: "A technical athletic brand crafting seamless activewear from organic hemp fiber blended with organic cotton, offering natural 99% odor resistance and thermal regulation.",
+          targetPersona: {
+            title: "Fitness runners, yoga practitioners, and eco-conscious athletes",
+            painPoints: ["Stinky synthetic gym clothes", "Skin chafing and sweat rashes", "Microplastic water pollution"],
+            willingnessToPay: "₹1,200 - ₹2,800 per activewear piece"
+          },
+          whyNow: "Surging consumer rejection of petrochemical fast-fashion in favor of natural high-performance textiles.",
+          innovationMoat: "Proprietary bio-softening enzyme wash overcoming hemp coarseness into butter-soft athletic knits.",
+          tags: ["D2C Brands", "Hemp Apparel", "Sustainable Activewear", "Anti-Microbial"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "d2c-5",
+          name: "PureGlow Waterless Essentials",
+          tagline: "Concentrated Waterless Shampoo, Conditioner & Body Wash Cubes",
+          domain: "D2C Brands",
+          businessType: "D2C / Personal Care",
+          problemStatement: "Bottled shampoos and liquid soaps are 85% water, shipping heavy plastic bottles globally and creating landfill waste.",
+          solution: "Solid, ultra-concentrated botanical personal care bars that activate instantly with shower water, packaged in infinitely recyclable embossed aluminum tins.",
+          targetPersona: {
+            title: "Travelers, eco-conscious consumers, and zero-waste bathroom advocates",
+            painPoints: ["Leaking shampoo in travel bags", "Cluttered plastic shower bottles", "Stripping harsh sulfates"],
+            willingnessToPay: "₹450 - ₹850 per 60-wash cube"
+          },
+          whyNow: "Stricter consumer and regulatory pressures on single-use bathroom plastic packaging.",
+          innovationMoat: "Cold-pressed syndet formula with neutral pH 5.5 preventing hair damage common in traditional lye soaps.",
+          tags: ["D2C Brands", "Waterless Beauty", "Solid Personal Care", "Zero-Waste"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        },
+        {
+          id: "d2c-6",
+          name: "LuminaSleep Orthopedic Rest",
+          tagline: "Zoned Ergonomic Organic Latex Mattresses & Cooling Cervical Pillows",
+          domain: "D2C Brands",
+          businessType: "D2C / Home & Sleep",
+          problemStatement: "Consumers suffer from morning neck stiffness and backaches caused by heat-trapping synthetic memory foam beds.",
+          solution: "Direct-to-consumer 100% natural pin-core botanical latex mattresses with 5-zone spinal alignment support and organic cooling bamboo covers.",
+          targetPersona: {
+            title: "Urban professionals aged 28-55 suffering from sedentary back stiffness",
+            painPoints: ["Overheating during sleep", "Premature mattress sagging", "Toxic off-gassing chemical smells"],
+            willingnessToPay: "₹22,000 - ₹55,000 per mattress"
+          },
+          whyNow: "Massive consumer awakening to sleep optimization and restorative recovery as pillars of preventive longevity.",
+          innovationMoat: "Direct cooperative rubber plantation procurement cutting retail middleman markups by 50%.",
+          tags: ["D2C Brands", "Sleep Tech", "Natural Latex", "Ergonomics"],
+          initialFeasibilityScore: 87,
+          isNew: true
+        }
+      ];
+
+    case "construction":
+      return [
+        {
+          id: "build-4",
+          name: "SunRoof BIPV Architectural Facades",
+          tagline: "Solar-Generating Exterior Glass Cladding & Integrated Roof Shingles",
+          domain: "Construction & Infrastructure",
+          businessType: "Manufacturing & Green Materials",
+          problemStatement: "High-rise commercial buildings lack sufficient roof area for solar panels while facade curtain walls remain passive heat-absorbing surfaces.",
+          solution: "Building-Integrated Photovoltaic (BIPV) tinted architectural glass panels that replace standard facade glazing while generating 120W per square meter of clean electricity.",
+          targetPersona: {
+            title: "Commercial architects, corporate builders, and LEED green building consultants",
+            painPoints: ["High HVAC cooling loads", "Strict net-zero commercial building mandates", "Limited rooftop solar space"],
+            willingnessToPay: "₹450 - ₹950 per sq ft of architectural facade glazing"
+          },
+          whyNow: "Government green building bylaws mandating renewable energy integration in all new commercial constructions over 50,000 sq ft.",
+          innovationMoat: "Patented semi-transparent cadmium-free thin-film PV cell integration certified for Class-A fire safety and wind shear.",
+          tags: ["Construction", "BIPV", "Solar Glass", "Green Architecture"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "build-5",
+          name: "AquaShield Crystalline Waterproofing",
+          tagline: "Molecular Self-Healing Crystalline Concrete Admixture & Injection Grout",
+          domain: "Construction & Infrastructure",
+          businessType: "Specialized Construction Chemicals",
+          problemStatement: "Basement retaining walls, water tanks, and bridge foundations suffer chronic seepage and rebar corrosion within 5 years due to micro-cracking.",
+          solution: "A proprietary crystalline chemical admixture that reacts with moisture and unhydrated cement particles to continuously seal micro-cracks up to 0.5mm automatically.",
+          targetPersona: {
+            title: "Structural engineers, ready-mix concrete suppliers, and waterproofing contractors",
+            painPoints: ["Costly post-construction dampness lawsuits", "Labor-intensive membrane laying", "Structural rebar corrosion"],
+            willingnessToPay: "₹180 - ₹350 per cubic meter of concrete treated"
+          },
+          whyNow: "Accelerated urban infrastructure construction requiring 50+ year maintenance-free subterranean concrete lifespans.",
+          innovationMoat: "Hydrophilic catalytic crystalline formulation penetrating deep into concrete capillary tracts for permanent waterproofing.",
+          tags: ["Construction", "Waterproofing", "Concrete Chemicals", "Infrastructure"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        },
+        {
+          id: "build-6",
+          name: "TimberTech Mass Timber Structures",
+          tagline: "Engineered Cross-Laminated Timber (CLT) Panels for Fast-Track Carbon-Negative Buildings",
+          domain: "Construction & Infrastructure",
+          businessType: "Manufacturing & Modular Building",
+          problemStatement: "Steel and concrete structural frames emit immense carbon emissions and require months of wet curing on congested urban job sites.",
+          solution: "Precision CNC-machined Cross-Laminated Timber (CLT) floor slabs and load-bearing timber columns that assemble like modular furniture in half the normal construction time.",
+          targetPersona: {
+            title: "Commercial property developers, boutique hotel builders, and sustainable design studios",
+            painPoints: ["Lengthy on-site building timelines", "Heavy carbon penalties", "Noisy disruptive construction"],
+            willingnessToPay: "₹2,200 - ₹3,600 per sq ft for complete superstructure"
+          },
+          whyNow: "Global carbon credit markets and architectural shift toward warm biophilic timber designs in urban workspaces.",
+          innovationMoat: "Certified sustainable agro-forestry plantation timber sourcing and precision European standard jointing.",
+          tags: ["Construction", "Mass Timber", "CLT Panels", "Sustainable Building"],
+          initialFeasibilityScore: 87,
+          isNew: true
+        }
+      ];
+
+    case "mfg":
+      return [
+        {
+          id: "mfg-4",
+          name: "RoboWeld Autonomous Cells",
+          tagline: "Plug-and-Play Robotic Welding Workstations for Tier-2 Small Fabricators",
+          domain: "Manufacturing",
+          businessType: "Hardware / Robotics",
+          problemStatement: "Small metal fabrication shops struggle with a severe 40% shortage of skilled welders and cannot afford ₹50 Lakh industrial robotic systems.",
+          solution: "A compact, collaborative robotic welding cell programmed via simple hand-guided teach-pendant that any worker can operate in 30 minutes.",
+          targetPersona: {
+            title: "Job shop owners, automotive parts suppliers, and agricultural equipment manufacturers",
+            painPoints: ["High welder turnover and wage spikes", "Inconsistent weld seam quality", "Dangerous fume exposure risks"],
+            willingnessToPay: "₹8,50,000 capex or ₹45,000/month operational lease"
+          },
+          whyNow: "Affordable collaborative robot arms (cobots) and intuitive vision systems allow safe operation alongside human workers without safety cages.",
+          innovationMoat: "Pre-calibrated parameter libraries for stainless steel, aluminum, and mild steel ensuring zero-programming operation.",
+          tags: ["Manufacturing", "Robotics", "Industrial Automation", "Cobots"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "mfg-5",
+          name: "AgriSort Optical AI Sorter",
+          tagline: "High-Speed Vision & Pneumatic Crop Grading Sorters for Mandis & Packhouses",
+          domain: "Manufacturing",
+          businessType: "Hardware / Agri-Machinery",
+          problemStatement: "Manual fruit and grain sorting in packhouses is slow, rejects good produce by mistake, and causes 20% value loss due to mixed-grade batches.",
+          solution: "A compact optical sorting conveyor using dual high-resolution cameras and air-jet ejectors to grade 2 tons of tomatoes, apples, or onions per hour by size, color, and blemish.",
+          targetPersona: {
+            title: "Packhouse operators, farmer producer organizations, and wholesale mandi merchants",
+            painPoints: ["Labor shortage during harvest peaks", "Inconsistent export grading penalties", "Slow manual sorting bottlenecks"],
+            willingnessToPay: "₹4,50,000 - ₹9,00,000 per machine unit"
+          },
+          whyNow: "Boom in organized grocery retail and fruit export standards demanding precision grade classification.",
+          innovationMoat: "Edge TPU neural vision model trained on over 500,000 regional crop defect images operating without internet.",
+          tags: ["Manufacturing", "Optical Sorting", "Agri-Machinery", "Edge AI"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        },
+        {
+          id: "mfg-6",
+          name: "BioPack Seaweed Blown Resins",
+          tagline: "Marine-Seaweed Bio-Resin Pellets for Standard Commercial Film Extruders",
+          domain: "Manufacturing",
+          businessType: "Manufacturing / Green Materials",
+          problemStatement: "Plastic bag manufacturers face complete business shutdowns due to government bans on single-use LDPE polymers but cannot afford expensive machine retrofits.",
+          solution: "Drop-in biodegradable resin pellets synthesized from cultivated brown seaweed that run on existing standard blown-film extrusion machinery with zero hardware modifications.",
+          targetPersona: {
+            title: "Packaging film manufacturers, e-commerce poly-bag converters, and retail brand procurement",
+            painPoints: ["Government factory closure notices", "Exorbitant machinery conversion costs", "Weak tensile strength of PLA plastics"],
+            willingnessToPay: "₹180 - ₹260 per kg of resin pellets"
+          },
+          whyNow: "Aggressive regulatory enforcement of single-use plastic bans combined with coast-line seaweed farming subsidies.",
+          innovationMoat: "Proprietary ionic polysaccharide cross-linking achieving 28 MPa tensile strength equivalent to virgin polyethylene.",
+          tags: ["Manufacturing", "Bio-Resin", "Seaweed Packaging", "Circular Materials"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+
+    case "agri":
+      return [
+        {
+          id: "agri-4",
+          name: "BioNectar Managed Apiaries",
+          tagline: "Migratory Bee Box Pollination Services & Traceable Wild Honey Reserves",
+          domain: "Agriculture",
+          businessType: "Agriculture / Biological Services",
+          problemStatement: "Horticulture farmers (apples, mustard, litchi) suffer 30% yield loss due to wild pollinator collapse, while consumers are sold sugar-adulterated honey.",
+          solution: "A managed commercial beekeeping network providing truck-mounted pollination boxes during peak blossom weeks, harvesting pure single-origin raw honey with lab purity QR codes.",
+          targetPersona: {
+            title: "Commercial orchardists, seed crop growers, and premium organic honey consumers",
+            painPoints: ["Poor fruit set and low crop yields", "Pesticide toxicity killing bees", "Adulterated commercial honey in supermarkets"],
+            willingnessToPay: "₹1,200 per hive pollination placement + ₹600 per 500g artisanal honey jar"
+          },
+          whyNow: "Scientific recognition of pollination as an essential agricultural yield driver, paired with surging demand for raw monofloral honey.",
+          innovationMoat: "GPS-tagged hive health telemetry and established multi-state seasonal migration corridors.",
+          tags: ["Agriculture", "Beekeeping", "Pollination", "Raw Honey"],
+          initialFeasibilityScore: 91,
+          isNew: true
+        },
+        {
+          id: "agri-5",
+          name: "AquaFarm Recirculating Systems (RAS)",
+          tagline: "Zero-Discharge High-Density Indoor Shrimp & Tilapia Biofloc Hatcheries",
+          domain: "Agriculture",
+          businessType: "Agriculture / Aquaculture",
+          problemStatement: "Traditional outdoor coastal aquaculture suffers catastrophic virus outbreaks, groundwater salinity pollution, and seasonal weather devastation.",
+          solution: "Modular indoor recirculating aquaculture tanks utilizing bacterial biofloc filtration to produce 15x higher seafood yield per cubic meter with 98% recycled water.",
+          targetPersona: {
+            title: "Fisheries entrepreneurs, inland farmers with limited land, and urban seafood wholesalers",
+            painPoints: ["Severe White Spot shrimp virus wipeouts", "High fish feed conversion costs", "Antibiotic contamination bans on exports"],
+            willingnessToPay: "₹4,00,000 - ₹12,00,000 per modular indoor tank unit"
+          },
+          whyNow: "Surging inland fresh seafood consumption and strict coastal zone environmental protection rules.",
+          innovationMoat: "Proprietary multi-stage biological nitrification matrix and automated dissolved oxygen monitoring.",
+          tags: ["Agriculture", "Aquaculture", "Biofloc RAS", "Sustainable Seafood"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        },
+        {
+          id: "agri-6",
+          name: "BioChar Soil Carbon Sink",
+          tagline: "Decentralized Village Pyrolysis Kilns Transforming Crop Stubble into Biochar",
+          domain: "Agriculture",
+          businessType: "Agriculture / Clean Tech",
+          problemStatement: "Farmers burn 35 million tons of crop stubble annually causing air pollution, while soil organic carbon drops to critical levels below 0.4%.",
+          solution: "Mobile low-cost pyrolysis units converting stubble into enriched biochar fertilizer that locks moisture and nutrients in topsoil for 100+ years while generating verified carbon removal credits.",
+          targetPersona: {
+            title: "Progressive farmers, sugar mills, and corporate carbon credit buyers",
+            painPoints: ["Government stubble burning fines", "High fertilizer leaching costs", "Depleted arid agricultural topsoil"],
+            willingnessToPay: "₹8 - ₹15 per kg enriched biochar + $80 per ton of carbon credit"
+          },
+          whyNow: "Severe urban smog crises triggering government subsidies for crop residue management, backed by global carbon offset buyers.",
+          innovationMoat: "Proprietary microbial inoculation activating inert biochar into high-yield organic bio-fertilizer.",
+          tags: ["Agriculture", "Biochar", "Stubble Management", "Carbon Credits"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+
+    case "health":
+      return [
+        {
+          id: "health-4",
+          name: "PurePosture Alignment Studios",
+          tagline: "Non-Surgical Computerized Spinal Decompression & Chiropractic Clinics",
+          domain: "Healthcare & Wellness",
+          businessType: "Physical Clinics & Rehabilitation",
+          problemStatement: "Over 40% of tech workers suffer from herniated discs and severe neck humps, facing either invasive spinal surgery or ineffective painkillers.",
+          solution: "Modern walk-in posture rehabilitation studios offering computerized motorized spinal decompression tables, targeted myofascial release, and posture retraining.",
+          targetPersona: {
+            title: "Desk workers, remote software engineers, and chronic back pain sufferers",
+            painPoints: ["Crippling sciatica pain", "Fear of spine surgery risks", "Temporary relief from generic painkillers"],
+            willingnessToPay: "₹1,800 per decompression session / ₹18,000 for 12-session rehab protocol"
+          },
+          whyNow: "Sedentary lifestyle posture degradation has reached epidemic proportions among 25-45 year old knowledge workers.",
+          innovationMoat: "Sensorized 3D posture scanning kiosks delivering objective numerical improvement metrics to patients.",
+          tags: ["Healthcare & Wellness", "Spine Health", "Chiropractic", "Physical Rehab"],
+          initialFeasibilityScore: 91,
+          isNew: true
+        },
+        {
+          id: "health-5",
+          name: "Zenith CryoSpa & Recovery Hub",
+          tagline: "Whole-Body Liquid Nitrogen Cryotherapy & Mild Hyperbaric Oxygen Chambers",
+          domain: "Healthcare & Wellness",
+          businessType: "Wellness / Longevity Studio",
+          problemStatement: "Recreational runners, fitness enthusiasts, and executives dealing with systemic fatigue lack medical-grade recovery therapies outside elite athletic clubs.",
+          solution: "A boutique wellness lounge offering 3-minute whole-body cryotherapy (-110°C), 1.3 ATA mild hyperbaric oxygen chambers (mHBOT), and lymphatic drainage compression.",
+          targetPersona: {
+            title: "Marathoners, CrossFit athletes, executives, and autoimmune inflammation sufferers",
+            painPoints: ["Slow physical injury recovery", "Chronic systemic inflammation", "Insomnia and burnout"],
+            willingnessToPay: "₹2,500 per session / ₹9,500 monthly membership"
+          },
+          whyNow: "Explosion of biohacking science and athletic recovery modalities into mainstream executive wellness routines.",
+          innovationMoat: "Direct industrial nitrogen bulk delivery partnership and standardized clinical safety protocols.",
+          tags: ["Healthcare & Wellness", "Cryotherapy", "Hyperbaric Oxygen", "Longevity"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        },
+        {
+          id: "health-6",
+          name: "MindSpring Pediatric Therapy Hub",
+          tagline: "Integrated Child Developmental Milestones & Speech Therapy Centers",
+          domain: "Healthcare & Wellness",
+          businessType: "Specialized Physical Clinics",
+          problemStatement: "Parents of toddlers with speech delays or ADHD symptoms face disjointed therapy appointments with psychologists, speech therapists, and OT practitioners in separate clinics.",
+          solution: "A unified, child-friendly developmental clinic offering collaborative multidisciplinary assessments, pediatric speech therapy, and sensory integration under one roof.",
+          targetPersona: {
+            title: "Parents of children aged 18 months to 10 years, pediatricians, and play schools",
+            painPoints: ["Running between disconnected doctors", "Lack of clear milestone progress trackers", "High emotional stress for parents"],
+            willingnessToPay: "₹1,400 - ₹2,200 per guided therapy session"
+          },
+          whyNow: "Early intervention awareness has surged among millennial parents seeking structured support before formal schooling.",
+          innovationMoat: "Integrated developmental milestone dashboard and parent home-coaching play kits.",
+          tags: ["Healthcare & Wellness", "Pediatric Care", "Speech Therapy", "Child Development"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+
+    case "service":
+      return [
+        {
+          id: "serv-4",
+          name: "ColdCargo Temperature Fleet",
+          tagline: "Hyperlocal Active-Refrigerated Electric Bikes for Pharma & Ice Cream Delivery",
+          domain: "Physical Services",
+          businessType: "Logistics & Fleet Operations",
+          problemStatement: "Quick-commerce delivery platforms use passive ice packs in standard backpacks, resulting in melted artisanal ice cream and ruined biological insulin.",
+          solution: "A specialized fleet of purpose-built cargo electric two-wheelers fitted with active Stirling-engine mini-chillers maintaining stable -18°C or +4°C temperatures.",
+          targetPersona: {
+            title: "Gourmet cloud bakeries, diagnostic lab chains, and clinical pharmacy apps",
+            painPoints: ["Melted dessert customer refund losses", "Spoiled temperature-sensitive vaccines", "Lack of verified temperature log proof"],
+            willingnessToPay: "₹65 - ₹120 per cold delivery trip (30% premium over normal bike)"
+          },
+          whyNow: "Explosion of instant grocery delivery for perishable gourmet foods and home diagnostic sample collection.",
+          innovationMoat: "Patented low-power DC thermoelectric cooling pod powered directly by the EV bike's primary battery pack.",
+          tags: ["Physical Services", "Cold Chain Fleet", "Pharma Logistics", "EV Cargo"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "serv-5",
+          name: "CleanSky Facade Cleaning Drones",
+          tagline: "Autonomous High-Rise Glass Facade & Solar Panel Washing Drone Fleet",
+          domain: "Physical Services",
+          businessType: "Robotics & Field Services",
+          problemStatement: "Washing exterior glass on 30-story commercial towers requires dangerous human cradle rigs, costing lives and taking weeks per building.",
+          solution: "Tethered industrial multi-rotor drones equipped with pure deionized water sprayers and soft oscillating rollers that clean building facades 5x faster with zero human fall hazard.",
+          targetPersona: {
+            title: "Commercial property managers, airport authorities, and industrial solar farm operators",
+            painPoints: ["Severe human liability insurance costs", "Weeks of building access disruption", "Dust-induced 25% solar efficiency losses"],
+            willingnessToPay: "₹4.50 - ₹9.00 per square meter of glass facade cleaned"
+          },
+          whyNow: "Strict labor safety regulations discouraging hazardous manual scaffold work combined with mature drone altitude-hold avionics.",
+          innovationMoat: "Tethered continuous power supply cable and high-pressure hose enabling unlimited continuous flight time.",
+          tags: ["Physical Services", "Drone Services", "Facade Cleaning", "Commercial Maintenance"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        },
+        {
+          id: "serv-6",
+          name: "WildRoots Experiential Bushcraft Camps",
+          tagline: "Low-Impact Luxury Geodesic Dome Glamping & Wilderness Survival Lodges",
+          domain: "Hospitality & Tourism",
+          businessType: "Hospitality / Physical Camps",
+          problemStatement: "Urban millennials seek adventurous nature getaways but find standard camping uncomfortable and conventional resorts sterile.",
+          solution: "Off-grid luxury geodesic dome sanctuaries in forest reserves offering solar hot tubs, guided foraging hikes, open-fire chef dinners, and basic bushcraft workshops.",
+          targetPersona: {
+            title: "Urban couples, nature photographers, and creative corporate team retreats",
+            painPoints: ["Crowded commercial tourist spots", "Unhygienic rustic campsites", "Boring generic hotel weekends"],
+            willingnessToPay: "₹7,500 - ₹15,000 per dome per night"
+          },
+          whyNow: "Rapid growth of experiential glamping travel where urban travelers pay premium rates for immersive outdoor escapes.",
+          innovationMoat: "Lightweight zero-foundation modular dome structures approved for eco-sensitive forest buffer zones.",
+          tags: ["Hospitality & Tourism", "Glamping", "Experiential Travel", "Eco-Tourism"],
+          initialFeasibilityScore: 87,
+          isNew: true
+        }
+      ];
+
+    case "clean":
+      return [
+        {
+          id: "clean-4",
+          name: "LithiumLoop Second-Life Storage",
+          tagline: "Repurposing Decommissioned EV Lithium Batteries into Stationary Solar Storage Banks",
+          domain: "CleanTech & Energy",
+          businessType: "Manufacturing / Energy Storage",
+          problemStatement: "Electric vehicle batteries are retired when capacity drops to 75-80%, creating millions of tons of hazardous battery waste despite having 10+ years of stationary life.",
+          solution: "Testing, balancing, and repackaging retired automotive lithium modules into commercial stationary energy storage systems (BESS) at 50% lower cost than new batteries.",
+          targetPersona: {
+            title: "Commercial buildings, telecom tower operators, and rural micro-grid installations",
+            painPoints: ["Exorbitant new lithium battery costs", "Frequent power cuts and high diesel costs", "Unsafe DIY scrap battery packs"],
+            willingnessToPay: "₹9,500 - ₹14,000 per kWh of certified second-life storage"
+          },
+          whyNow: "First wave of EV battery retirements hitting scale while commercial demand for affordable backup energy storage is at an all-time high.",
+          innovationMoat: "Proprietary algorithmic ultrasonic battery cell grading and active thermal-management BMS.",
+          tags: ["CleanTech & Energy", "Battery Storage", "Second-Life EV", "Circular Economy"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "clean-5",
+          name: "PureAir Industrial VOC Scrubbers",
+          tagline: "Compact Wet Electrostatic Scrubbers for Micro-Manufacturing Air Emissions",
+          domain: "CleanTech & Waste",
+          businessType: "Manufacturing & Environmental Hardware",
+          problemStatement: "Small chemical, paint, and CNC manufacturing units face closure orders from state pollution control boards due to toxic VOC solvent emissions.",
+          solution: "A modular, skid-mounted wet electrostatic scrubber that removes 99% of odors, acidic mists, and volatile organic compounds with zero high-pressure drop.",
+          targetPersona: {
+            title: "Industrial estate factory owners, textile dyeing units, and automotive paint shops",
+            painPoints: ["Impending pollution board closure notices", "Heavy legal penalties and fines", "Massive bulky traditional scrubbers"],
+            willingnessToPay: "₹2,50,000 - ₹6,00,000 per turnkey unit"
+          },
+          whyNow: "Aggressive installation of real-time continuous ambient air quality monitoring sensors by environmental protection agencies.",
+          innovationMoat: "High-efficiency non-corrosive carbon-fiber ionizing electrodes operating with minimal water consumption.",
+          tags: ["CleanTech & Waste", "Air Pollution", "Industrial Scrubbers", "Environmental Compliance"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        },
+        {
+          id: "clean-6",
+          name: "EcoDrain Greywater Recycling Units",
+          tagline: "Automated On-Site Biological Greywater Recycling for Commercial Complexes",
+          domain: "CleanTech & Waste",
+          businessType: "Water Tech & Services",
+          problemStatement: "Commercial office towers and hotels buy expensive tanker water daily while dumping millions of liters of reusable shower and laundry greywater into sewers.",
+          solution: "A compact basement biological multi-stage ultrafiltration system that recycles 90% of bathroom and laundry water for toilet flushing and cooling tower make-up.",
+          targetPersona: {
+            title: "Facility directors, hospital administrators, and commercial mall developers",
+            painPoints: ["High municipal water and tanker fees", "Acute water quota shortages in summer", "Complex smelly legacy sewage treatment plants"],
+            willingnessToPay: "₹4,50,000 - ₹12,00,000 per plant or ₹0.08 per liter recycled"
+          },
+          whyNow: "Severe urban water crises and mandatory commercial building zero-liquid-discharge (ZLD) norms.",
+          innovationMoat: "Low-footprint submerged membrane bioreactor (MBR) requiring zero hazardous chemical coagulation.",
+          tags: ["CleanTech & Waste", "Water Recycling", "Greywater", "Resource Conservation"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+
+    case "edu":
+      return [
+        {
+          id: "edu-4",
+          name: "LittleChefs Culinary Academy for Kids",
+          tagline: "Hands-on Real-Food Cooking, Kitchen Science & Nutrition Studios for Children",
+          domain: "Offline Education",
+          businessType: "Physical Academy / Enrichment",
+          problemStatement: "Kids grow up addicted to processed junk food and screens, lacking essential life skills like knife safety, grocery budgeting, and fresh ingredient cooking.",
+          solution: "Fun, brightly colored neighborhood teaching kitchens where children aged 6-15 prepare international recipes, learn kitchen chemistry, and foster healthy food relationships.",
+          targetPersona: {
+            title: "Urban parents, homeschool cooperatives, and private K-12 schools",
+            painPoints: ["Picky eating and junk food addiction", "Excessive sedentary screen time", "Lack of practical independence life skills"],
+            willingnessToPay: "₹3,500 - ₹5,500 per month (weekly sessions) / ₹1,200 weekend workshop"
+          },
+          whyNow: "Surging parental desire for tactile, screen-free enrichment programs that cultivate life-long healthy habits.",
+          innovationMoat: "Safety-certified kid-friendly nylon induction cooktops and age-graded culinary curriculum.",
+          tags: ["Offline Education", "Kids Cooking", "Life Skills", "Nutrition Education"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "edu-5",
+          name: "Aquafit Hydrotherapy & Swim Academy",
+          tagline: "Indoor Heated Ozone-Purified Pools for Infant Water Safety & Stroke Technique",
+          domain: "Sports & Fitness",
+          businessType: "Physical Facility / Sports",
+          problemStatement: "Parents want their toddlers to learn essential drowning prevention swimming skills but find only crowded, cold, chemical-chlorinated outdoor municipal pools.",
+          solution: "A boutique indoor heated aquatic center featuring 33°C ozone-purified water, low student-to-coach ratios, and progressive infant survival swimming certification.",
+          targetPersona: {
+            title: "Parents of babies and young children (6 months to 10 years), and adult fitness swimmers",
+            painPoints: ["Severe risk of child drowning", "Eye irritation and asthma from chlorine pools", "Weather-dependent outdoor swimming classes"],
+            willingnessToPay: "₹4,500 - ₹7,500 per month (8 classes)"
+          },
+          whyNow: "Growing awareness that water safety and survival swimming should begin in early infancy.",
+          innovationMoat: "Proprietary chlorine-free dual ozone-UV water purification and specialized infant-safety coach training.",
+          tags: ["Sports & Fitness", "Swim Academy", "Infant Water Safety", "Heated Pool"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        },
+        {
+          id: "edu-6",
+          name: "AeroFlight Drone Academy",
+          tagline: "DGCA-Certified Commercial Drone Pilot Training & GIS Mapping Ground School",
+          domain: "Vocational Training",
+          businessType: "Education / Technical Vocational",
+          problemStatement: "Industries like mining, construction, and agriculture need certified drone pilots but find zero qualified candidates with formal flight logging.",
+          solution: "A comprehensive 10-day certified flight ground school combining high-fidelity VR flight simulators, field drone flight hours, and photogrammetry GIS data processing.",
+          targetPersona: {
+            title: "Engineering graduates, surveying technicians, and young job seekers",
+            painPoints: ["Unemployment after technical diplomas", "Exorbitant pilot licensing fees", "Lack of hands-on commercial field hours"],
+            willingnessToPay: "₹25,000 - ₹55,000 per certification course"
+          },
+          whyNow: "Mandatory pilot certification laws for commercial drone operations creating tens of thousands of high-paying technical jobs.",
+          innovationMoat: "Authorized DGCA training RPTO license and direct placement pipelines with infrastructure firms.",
+          tags: ["Vocational Training", "Drone Academy", "Pilot Certification", "Technical Skills"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+
+    case "retail":
+      return [
+        {
+          id: "ret-4",
+          name: "The Herbalist Custom Apothecary",
+          tagline: "Interactive Botanical Tisane Blending Bar & Certified Organic Tinctures",
+          domain: "Retail & Wellness",
+          businessType: "Experiential Brick-and-Mortar Retail",
+          problemStatement: "Health-conscious customers find mass-produced teabags stale and devoid of active herbal medicinal benefits, with zero custom herbal blending guidance.",
+          solution: "An experiential sensory apothecary where certified herbalists blend personalized loose-leaf medicinal teas, adaptogenic honey tonics, and single-origin botanical extracts.",
+          targetPersona: {
+            title: "Wellness enthusiasts, tea connoisseurs, and holistic lifestyle seekers",
+            painPoints: ["Stale paper-packaged commercial teas", "Synthetic sleep aids and stress pills", "Lack of personalized herbal guidance"],
+            willingnessToPay: "₹450 - ₹1,200 per 100g custom botanical blend"
+          },
+          whyNow: "Surging consumer preference for loose-leaf artisanal tisanes and functional non-caffeinated herbal rituals.",
+          innovationMoat: "Direct cooperative herbal grower sourcing contracts and proprietary computerized herbal pairing dispensary.",
+          tags: ["Retail", "Apothecary", "Herbal Tea", "Experiential Retail"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "ret-5",
+          name: "BarkBoutique Fresh Dog Bakery",
+          tagline: "Fresh Daily Canine Birthday Cakes, Grain-Free Biscuits & Dog Ice Creams",
+          domain: "Retail & Pet Care",
+          businessType: "Brick-and-Mortar / Pet Gourmet",
+          problemStatement: "Pet parents celebrating puppy milestones cannot feed dogs human cakes due to lethal chocolate and sugar ingredients, finding zero fresh bakery options.",
+          solution: "An adorable neighborhood pet patisserie baking fresh customized canine birthday cakes made with oat flour, chicken liver, peanut butter, and Greek yogurt frosting.",
+          targetPersona: {
+            title: "Urban pet owners treating dogs as their first children",
+            painPoints: ["Digestive sickness from human foods", "Ugly commercial processed dog treats", "Lack of celebratory pet milestone products"],
+            willingnessToPay: "₹850 - ₹1,800 per customized pet birthday cake"
+          },
+          whyNow: "Massive cultural rise in pet birthday parties, pet adoption, and human-grade dog food spending.",
+          innovationMoat: "Veterinarian-approved dog-safe natural food colorings and localized express delivery packaging.",
+          tags: ["Retail", "Dog Bakery", "Pet Gourmet", "Humanized Pet Care"],
+          initialFeasibilityScore: 91,
+          isNew: true
+        },
+        {
+          id: "ret-6",
+          name: "VoltCommute Urban E-Bike Studio",
+          tagline: "Curated Commuter E-Bike Showroom, Battery Swap Subscriptions & Express Depot",
+          domain: "Retail & Urban Mobility",
+          businessType: "Brick-and-Mortar / Mobility",
+          problemStatement: "Urban commuters spend 90+ minutes daily stuck in traffic but hesitate to buy electric bikes due to confusing online specs, no test rides, and poor battery service.",
+          solution: "A trendy high-street electric mobility studio offering multi-brand commuter e-bike test rides, monthly battery replenishment subscriptions, and 30-minute rapid tune-up bays.",
+          targetPersona: {
+            title: "Urban office commuters, cycling enthusiasts, and eco-conscious city residents",
+            painPoints: ["Maddening traffic congestion and parking fees", "Fear of battery degradation costs", "Unreliable neighborhood bicycle repair shops"],
+            willingnessToPay: "₹38,000 - ₹85,000 per e-bike or ₹999/mo battery care plan"
+          },
+          whyNow: "Urban cycling infrastructure expansion and soaring fuel costs driving commuters to lightweight electric bicycles.",
+          innovationMoat: "Direct manufacturer dealership margins and standardized battery warranty underwriting.",
+          tags: ["Retail", "E-Bike Studio", "Urban Mobility", "Micro-Mobility"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+
+    case "tech":
+      return [
+        {
+          id: "tech-4",
+          name: `Omni${primaryDomain.replace(/\s+/g, '')} Autonomous Agent Mesh`,
+          tagline: `Multi-Agent Operational Orchestrator for Real-Time ${primaryDomain} Operations`,
+          domain: primaryDomain,
+          businessType: "Software & AI SaaS",
+          problemStatement: `Teams in ${primaryDomain} waste thousands of human hours manually reviewing documents, reconciling vendor invoices, and triaging customer requests.`,
+          solution: `A secure autonomous AI agent network that coordinates cross-system workflows, verifies documents with domain-specific rules, and executes operational actions autonomously.`,
+          targetPersona: {
+            title: `Operations Directors & CTOs in ${primaryDomain}`,
+            painPoints: ["High operational headcounts", "Repetitive data entry errors", "Slow weekend response times"],
+            willingnessToPay: "₹18,000 - ₹95,000 / month based on autonomous actions"
+          },
+          whyNow: "LLM agentic tool-calling reliability and enterprise demand for real-world automated task execution.",
+          innovationMoat: `Proprietary industry workflow heuristics combined with founder's expertise in ${userSkills}.`,
+          tags: [primaryDomain, "Autonomous Agents", "Enterprise AI", "Automation"],
+          initialFeasibilityScore: 92,
+          isNew: true
+        },
+        {
+          id: "tech-5",
+          name: `Sensor${primaryDomain.replace(/\s+/g, '')} Telemetry Hub`,
+          tagline: `Hardware-Agnostic Edge Telemetry & Predictive Failure Engine for ${primaryDomain}`,
+          domain: primaryDomain,
+          businessType: "Software Platform & IoT",
+          problemStatement: `Operators in ${primaryDomain} experience unexpected equipment breakdowns and lost inventory due to lack of centralized sensor telemetry.`,
+          solution: `A low-latency cloud telemetry ingestion engine connecting any legacy sensor or modern IoT gateway to deliver real-time threshold alerts and predictive maintenance graphs.`,
+          targetPersona: {
+            title: `Facility Engineers & Maintenance Supervisors in ${primaryDomain}`,
+            painPoints: ["Catastrophic machine downtime", "Blind monitoring of environmental variables", "Fragmented proprietary software"],
+            willingnessToPay: "₹12,000 - ₹65,000 / month"
+          },
+          whyNow: "Affordable edge sensor connectivity and stringent uptime requirements across commercial infrastructure.",
+          innovationMoat: "Sub-second time-series compression algorithms reducing cloud ingestion bandwidth by 80%.",
+          tags: [primaryDomain, "IoT Telemetry", "Predictive Maintenance", "Cloud Platform"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        },
+        {
+          id: "tech-6",
+          name: `Trust${primaryDomain.replace(/\s+/g, '')} Audit Ledger`,
+          tagline: `Tamper-Proof Supply Chain Traceability & Regulatory Verification Standard`,
+          domain: primaryDomain,
+          businessType: "Compliance & Security",
+          problemStatement: `Counterfeit goods, falsified test certifications, and opaque supplier claims create massive liability and audit friction in ${primaryDomain}.`,
+          solution: `A lightweight cryptographic verification ledger providing scannable QR origin proofs, lab test verification, and automated audit reporting for enterprise buyers.`,
+          targetPersona: {
+            title: `Compliance Officers, Quality Assurance Directors, and Brand Protection Leads`,
+            painPoints: ["Counterfeit supplier substitution", "Costly manual regulatory audits", "Loss of consumer brand trust"],
+            willingnessToPay: "₹25,000 - ₹1,20,000 / month"
+          },
+          whyNow: "Heightened global regulatory scrutiny and corporate demand for transparent ESG compliance trails.",
+          innovationMoat: "Cryptographic hash verification with zero-knowledge privacy protecting sensitive supplier commercial terms.",
+          tags: [primaryDomain, "Traceability", "Compliance", "Security"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        }
+      ];
+
+    default:
+      return [
+        {
+          id: "dyn-4",
+          name: `NextGen ${primaryDomain.replace(/\s+/g, '')} Testing & Quality Lab`,
+          tagline: `Independent Batch Quality Verification & Certification Facility for ${primaryDomain}`,
+          domain: primaryDomain,
+          businessType: "Testing, Inspection & Certification",
+          problemStatement: `Operators and buyers in ${primaryDomain} struggle with inconsistent third-party quality testing, slow turnaround times, and fraudulent vendor certifications.`,
+          solution: `An accredited modern testing laboratory offering 24-hour turnaround analytical testing, digital tamper-proof certificates, and regulatory compliance advisory.`,
+          targetPersona: {
+            title: `Quality Heads, Importers, and Production Managers in ${primaryDomain}`,
+            painPoints: ["Weeks of testing wait times", "High product recall risks", "Unreliable lab accuracy"],
+            willingnessToPay: "₹3,500 - ₹18,000 per sample test batch"
+          },
+          whyNow: "Increasing statutory product safety regulations and consumer scrutiny over certified standards.",
+          innovationMoat: `Automated testing instrumentation combined with founder's skill in ${userSkills}.`,
+          tags: [primaryDomain, "Quality Testing", "Certification", "Accredited Lab"],
+          initialFeasibilityScore: 90,
+          isNew: true
+        },
+        {
+          id: "dyn-5",
+          name: `Alliance ${primaryDomain.replace(/\s+/g, '')} Specialized Hub`,
+          tagline: `Shared Production Bays, Heavy Tools & Commercial Logistics Center for ${primaryDomain}`,
+          domain: primaryDomain,
+          businessType: "Co-Working / Shared Infrastructure",
+          problemStatement: `Independent practitioners and growing businesses in ${primaryDomain} cannot afford full warehouse leases and specialized capital equipment individually.`,
+          solution: `A professional shared production hub featuring bookable industrial workstations, shared loading bays, material storage, and collective logistics discounts.`,
+          targetPersona: {
+            title: `Emerging entrepreneurs, small trade operators, and specialists in ${primaryDomain}`,
+            painPoints: ["Exorbitant commercial warehouse deposits", "Expensive machinery sitting idle", "Isolated business operations"],
+            willingnessToPay: "₹12,000 - ₹35,000 / month membership"
+          },
+          whyNow: "Growing fragmentation of micro-enterprises seeking shared, flexible operational infrastructure.",
+          innovationMoat: "High-density member ecosystem with pre-negotiated collective wholesale procurement discounts.",
+          tags: [primaryDomain, "Shared Hub", "Infrastructure", "Co-Working"],
+          initialFeasibilityScore: 88,
+          isNew: true
+        },
+        {
+          id: "dyn-6",
+          name: `Express ${primaryDomain.replace(/\s+/g, '')} Mobile Fleet Services`,
+          tagline: `On-Demand Mobile Maintenance, Diagnostic & Emergency Response Vans for ${primaryDomain}`,
+          domain: primaryDomain,
+          businessType: "Field Services & Rapid Response",
+          problemStatement: `Operational downtime in ${primaryDomain} costs businesses thousands per hour while waiting for traditional service center technicians to arrive.`,
+          solution: `A fleet of fully equipped mobile service vans with certified technicians dispatched via GPS within 45 minutes to diagnose and resolve urgent operational bottlenecks on-site.`,
+          targetPersona: {
+            title: `Business owners, facility managers, and commercial operators in ${primaryDomain}`,
+            painPoints: ["Painful operational downtime", "Delayed technician response times", "Uncertain emergency repair pricing"],
+            willingnessToPay: "₹2,500 call-out fee + ₹4,000 - ₹15,000 per repair"
+          },
+          whyNow: "Extreme commercial cost of downtime and customer expectation of on-demand rapid doorstep resolution.",
+          innovationMoat: `Algorithmic inventory stocking in mobile vans ensuring 92% first-visit fix rate.`,
+          tags: [primaryDomain, "Mobile Services", "Emergency Response", "Rapid Field Ops"],
+          initialFeasibilityScore: 89,
+          isNew: true
+        }
+      ];
+  }
+}
+
 // Built-in intelligent generator for 100% offline & instant generation across diverse sectors
-function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
+function generateIntelligentIdeas(
+  profile: FounderProfile,
+  offset = 0,
+  existingIdeas: string[] = []
+): StartupIdea[] {
   const primaryDomain = profile.domains[0] || "Food & Beverage";
   const norm = (primaryDomain + " " + (profile.businessType || "") + " " + (profile.customContext || "")).toLowerCase();
   const userSkills = profile.skills.length > 0 ? profile.skills.join(" and ") : "Operational Execution & Leadership";
@@ -453,7 +1425,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("kitchen") ||
     norm.includes("bakery")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "food-1",
         name: "BeanCraft Roasters & Cold Brew Labs",
@@ -508,7 +1480,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Food & Beverage", "Clinical Nutrition", "Meal Subscription", "Healthcare Food"],
         initialFeasibilityScore: 87
       }
-    ];
+    ], "food", profile, existingIdeas);
   }
 
   // 2. D2C Brands & Consumer Products
@@ -523,7 +1495,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("lifestyle") ||
     norm.includes("goods")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "d2c-1",
         name: "BambouLiving",
@@ -578,7 +1550,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["D2C Brands", "Ergonomics", "Furniture", "Workplace Wellness"],
         initialFeasibilityScore: 86
       }
-    ];
+    ], "d2c", profile, existingIdeas);
   }
 
   // 3. Construction, Infrastructure, Real Estate & Building
@@ -598,7 +1570,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("plumb") ||
     norm.includes("architect")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "build-1",
         name: "EcoCast Modular Precast & Pavers",
@@ -653,7 +1625,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Construction", "Equipment Rental", "Heavy Machinery", "Fleet Operations"],
         initialFeasibilityScore: 88
       }
-    ];
+    ], "construction", profile, existingIdeas);
   }
 
   // 4. Manufacturing & Hardware / IoT
@@ -665,7 +1637,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("iot") ||
     norm.includes("machinery")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "mfg-1",
         name: "SolarKool MicroChambers",
@@ -720,7 +1692,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Manufacturing", "Water Tech", "IoT Hardware", "Clean Drinking Water"],
         initialFeasibilityScore: 85
       }
-    ];
+    ], "mfg", profile, existingIdeas);
   }
 
   // 4. Agriculture & Farming
@@ -733,7 +1705,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("dairy") ||
     norm.includes("crop")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "agri-1",
         name: "VerdantVault Hydroponics",
@@ -788,7 +1760,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Agriculture", "Drone Tech", "Precision Farming", "Rural Services"],
         initialFeasibilityScore: 86
       }
-    ];
+    ], "agri", profile, existingIdeas);
   }
 
   // 5. Healthcare Clinics, Wellness & Fitness
@@ -802,7 +1774,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("mental") ||
     norm.includes("yoga")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "health-1",
         name: "ReviveZone Recovery Studios",
@@ -850,14 +1822,14 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         targetPersona: {
           title: "Parents of children aged 2-12, pediatricians, and inclusive schools",
           painPoints: ["Clinical intimidating therapy rooms", "Long hospital waiting lists", "Exorbitant private consultation fees"],
-          willingnessToPay: "₹1,500 per guided session or ₹9,000/mo package"
+          willingnessToPay: "₹1,500 per guided session or ₹9,00,00/mo package"
         },
         whyNow: "Growing pediatric neurodevelopment awareness and parent demand for constructive, play-based therapeutic environments.",
         innovationMoat: "Proprietary therapist training curriculum and insurance-reimbursable developmental progress metrics.",
         tags: ["Healthcare & Wellness", "Pediatric Care", "Sensory Gym", "Occupational Therapy"],
         initialFeasibilityScore: 87
       }
-    ];
+    ], "health", profile, existingIdeas);
   }
 
   // 6. Physical Services, Logistics & Tourism
@@ -871,7 +1843,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("fleet") ||
     norm.includes("transport")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "serv-1",
         name: "VoltShine Doorstep Fleet Care",
@@ -926,7 +1898,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Services & Events", "Experiential Marketing", "Retail Pop-Up", "Fabrication"],
         initialFeasibilityScore: 86
       }
-    ];
+    ], "service", profile, existingIdeas);
   }
 
   // 7. CleanTech, Solar & Waste Management
@@ -938,7 +1910,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("recycling") ||
     norm.includes("battery")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "clean-1",
         name: "UrbanOre E-Waste Recovery",
@@ -993,7 +1965,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["CleanTech & Energy", "Solar EPC", "Commercial Rooftop", "Renewable Energy"],
         initialFeasibilityScore: 85
       }
-    ];
+    ], "clean", profile, existingIdeas);
   }
 
   // 8. Offline Education, Sports & Academies
@@ -1006,7 +1978,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("training") ||
     norm.includes("school")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "edu-1",
         name: "MakerForge STEM Academies",
@@ -1061,7 +2033,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Vocational Training", "Culinary Academy", "Bakery Diploma", "Skill Center"],
         initialFeasibilityScore: 86
       }
-    ];
+    ], "edu", profile, existingIdeas);
   }
 
   // 9. Retail & Brick-and-Mortar
@@ -1073,7 +2045,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("pet") ||
     norm.includes("brick")
   ) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "ret-1",
         name: "The EcoRefill Co.",
@@ -1128,7 +2100,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: ["Retail & Cafe", "Board Game Cafe", "Experiential Retail", "Community Hub"],
         initialFeasibilityScore: 88
       }
-    ];
+    ], "retail", profile, existingIdeas);
   }
 
   // 11. Smart Adaptive Generator for Any Other Domain
@@ -1143,7 +2115,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
     norm.includes("cloud developer");
 
   if (isExplicitTech) {
-    return [
+    return selectDiverseIdeas([
       {
         id: "tech-1",
         name: `${primaryDomain.replace(/\s+/g, '')}Flow`,
@@ -1198,11 +2170,11 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
         tags: [primaryDomain, "Quality Assurance", "Compliance", "Trust"],
         initialFeasibilityScore: 89
       }
-    ];
+    ], "tech", profile, existingIdeas);
   }
 
   // DEFAULT FOR ANY REAL-WORLD DOMAIN: Diverse non-software, real-world physical and operational businesses
-  return [
+  return selectDiverseIdeas([
     {
       id: "dyn-1",
       name: `The ${primaryDomain.replace(/\s+/g, '')} Craft & Materials Co.`,
@@ -1257,7 +2229,7 @@ function generateIntelligentIdeas(profile: FounderProfile): StartupIdea[] {
       tags: [primaryDomain, "Equipment Rental", "Supply Logistics", "Asset-Light Hub"],
       initialFeasibilityScore: 87
     }
-  ];
+  ], "default", profile, existingIdeas);
 }
 
 function generateIntelligentValidation(

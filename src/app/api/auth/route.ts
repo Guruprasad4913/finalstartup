@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUsersCollection, getProjectsCollection, connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/types";
 
+// In-memory fallback map for offline local demo
+const localFallbackUsers: Map<string, any> = new Map();
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -53,21 +56,32 @@ export async function POST(req: NextRequest) {
           );
         }
 
+        const assignedRole = cleanUsername.toLowerCase() === "admin" ? "admin" : (role === "investor" ? "investor" : "user");
         const newUser: User = {
           id: `usr-${Date.now()}`,
           username: cleanUsername,
           email: cleanEmail || `${cleanUsername.toLowerCase()}@startupgen.ai`,
           name: cleanName,
-          role: cleanUsername.toLowerCase() === "admin" ? "admin" : "user",
+          role: assignedRole,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           isNewUser: true,
+          investorProfile: assignedRole === "investor" ? {
+            investorType: "Angel Investor",
+            typicalCheckSize: "$25,000 - $100,000",
+            preferredSectors: ["AI Agents", "FinTech", "HealthTech", "CleanTech"],
+            totalInvestedCapital: "$450,000",
+          } : undefined,
         };
 
         await usersCol.insertOne({
           ...newUser,
           password: cleanPassword, // In development/demo, plain or hash
         });
+
+        // Also cache locally
+        localFallbackUsers.set(cleanUsername.toLowerCase(), { ...newUser, password: cleanPassword });
+        if (cleanEmail) localFallbackUsers.set(cleanEmail, { ...newUser, password: cleanPassword });
 
         return NextResponse.json({
           success: true,
@@ -77,15 +91,25 @@ export async function POST(req: NextRequest) {
         });
       } catch (dbErr: any) {
         // Fallback in-memory/local simulation if DB is unreachable
+        const assignedRole = cleanUsername.toLowerCase() === "admin" ? "admin" : (role === "investor" ? "investor" : "user");
         const fallbackUser: User = {
           id: `usr-${Date.now()}`,
           username: cleanUsername,
           email: cleanEmail || `${cleanUsername.toLowerCase()}@startupgen.ai`,
           name: cleanName,
-          role: cleanUsername.toLowerCase() === "admin" ? "admin" : "user",
+          role: assignedRole,
           createdAt: new Date().toISOString(),
           isNewUser: true,
+          investorProfile: assignedRole === "investor" ? {
+            investorType: "Angel Investor",
+            typicalCheckSize: "$25,000 - $100,000",
+            preferredSectors: ["AI Agents", "FinTech", "HealthTech", "CleanTech"],
+            totalInvestedCapital: "$450,000",
+          } : undefined,
         };
+
+        localFallbackUsers.set(cleanUsername.toLowerCase(), { ...fallbackUser, password: cleanPassword });
+        if (cleanEmail) localFallbackUsers.set(cleanEmail, { ...fallbackUser, password: cleanPassword });
 
         return NextResponse.json({
           success: true,
@@ -106,6 +130,35 @@ export async function POST(req: NextRequest) {
           { success: false, error: "Username and password are required." },
           { status: 400 }
         );
+      }
+
+      // Quick investor demo credentials
+      if (
+        (identifier.toLowerCase() === "investor" || identifier.toLowerCase() === "angel" || identifier.toLowerCase() === "vc") &&
+        (cleanPassword === "investor" || cleanPassword === "admin" || cleanPassword === "password" || cleanPassword === "Guru@4913")
+      ) {
+        const investorUser: User = {
+          id: "usr-investor-demo",
+          username: "AngelInvestor",
+          name: "Devon Vance (Angel Syndicate)",
+          email: "devon.vance@angelventures.io",
+          role: "investor",
+          createdAt: new Date().toISOString(),
+          isNewUser: false,
+          investorProfile: {
+            firmOrSyndicate: "Vance Angel Syndicate / Tier-1 Syndicate",
+            investorType: "Angel Investor",
+            typicalCheckSize: "$50,000 - $250,000",
+            preferredSectors: ["AI Agents & SaaS", "HealthTech", "FinTech", "CleanOps"],
+            totalInvestedCapital: "$1,850,000",
+          },
+        };
+        return NextResponse.json({
+          success: true,
+          message: "Investor Access Granted",
+          user: investorUser,
+          isNewUser: false,
+        });
       }
 
       if (
@@ -138,6 +191,17 @@ export async function POST(req: NextRequest) {
         });
 
         if (!userDoc) {
+          // Check local fallback
+          const memUser = localFallbackUsers.get(identifier.toLowerCase());
+          if (memUser && memUser.password === cleanPassword) {
+            const { password: _, ...safeUser } = memUser;
+            return NextResponse.json({
+              success: true,
+              message: "Login successful (Local fallback)",
+              user: safeUser,
+              isNewUser: false,
+            });
+          }
           return NextResponse.json(
             { success: false, error: "Invalid username/email or password." },
             { status: 401 }
@@ -152,6 +216,7 @@ export async function POST(req: NextRequest) {
           role: userDoc.role || "user",
           createdAt: userDoc.createdAt,
           isNewUser: false,
+          investorProfile: userDoc.investorProfile,
         };
 
         return NextResponse.json({
@@ -161,6 +226,17 @@ export async function POST(req: NextRequest) {
           isNewUser: false,
         });
       } catch (dbErr: any) {
+        // DB offline fallback check
+        const memUser = localFallbackUsers.get(identifier.toLowerCase());
+        if (memUser && memUser.password === cleanPassword) {
+          const { password: _, ...safeUser } = memUser;
+          return NextResponse.json({
+            success: true,
+            message: "Login successful (Local fallback)",
+            user: safeUser,
+            isNewUser: false,
+          });
+        }
         return NextResponse.json(
           { success: false, error: "Database offline. Please use demo credentials." },
           { status: 500 }
