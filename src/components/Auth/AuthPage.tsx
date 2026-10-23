@@ -210,31 +210,31 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
   };
 
   return (
-    <div className="min-h-screen bg-[#121316] text-slate-100 flex flex-col justify-between selection:bg-indigo-500 selection:text-white relative overflow-hidden">
-      {/* Background Subtle Charcoal Ambient Glows */}
-      <div className="absolute top-[-10%] left-[-5%] w-[650px] h-[650px] bg-indigo-500/[0.04] rounded-full blur-[160px] pointer-events-none" />
+    <div className="min-h-screen bg-[#f4f6fa] text-slate-800 flex flex-col justify-between selection:bg-blue-600 selection:text-white relative overflow-hidden">
+      {/* Background Subtle Ambient Glows */}
+      <div className="absolute top-[-10%] left-[-5%] w-[650px] h-[650px] bg-blue-500/[0.04] rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-5%] w-[700px] h-[700px] bg-emerald-500/[0.03] rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-[35%] right-[25%] w-[500px] h-[500px] bg-indigo-500/[0.02] rounded-full blur-[140px] pointer-events-none" />
 
       {/* Top Brand Header */}
-      <header className="border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md relative z-20">
+      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-md relative z-20 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500 via-blue-500 to-emerald-400 p-[1px] shadow-lg shadow-indigo-500/20">
-              <div className="h-full w-full bg-slate-950 rounded-[11px] flex items-center justify-center">
-                <Zap className="h-5 w-5 text-indigo-400" />
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 p-[1.5px] shadow-sm shadow-blue-500/20">
+              <div className="h-full w-full bg-white rounded-[10px] flex items-center justify-center">
+                <Zap className="h-5 w-5 text-blue-600" />
               </div>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-lg tracking-tight text-white">
-                  Startup<span className="text-indigo-400">Gen</span>
+                <span className="font-bold text-lg tracking-tight text-slate-900">
+                  Startup<span className="text-blue-600 font-extrabold">Gen</span>
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
                   AI + API + Cloud
                 </span>
               </div>
-              <p className="text-xs text-slate-400 hidden sm:block">
+              <p className="text-xs text-slate-500 hidden sm:block">
                 14-Stage Institutional Startup Validation Platform
               </p>
             </div>
@@ -247,12 +247,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
               onClick={() => selectRoleAndTab("founder", "signin")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ${
                 selectedRole === "founder"
-                  ? "bg-indigo-600 text-white shadow-indigo-600/30 border border-indigo-400/50"
-                  : "bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/50"
+                  ? "bg-blue-600 text-white shadow-blue-600/30"
+                  : "bg-white border border-slate-200 text-slate-700 hover:text-blue-600 hover:border-blue-300"
               }`}
               title="Open Founder Portal"
             >
-              <Rocket className="w-3.5 h-3.5 text-indigo-400" />
+              <Rocket className="w-3.5 h-3.5" />
               <span>Founder</span>
             </button>
 
@@ -261,12 +261,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
               onClick={() => selectRoleAndTab("investor", "signin")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ${
                 selectedRole === "investor"
-                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-emerald-600/30 border border-emerald-400/50"
-                  : "bg-slate-900 border border-slate-800 text-emerald-300 hover:text-white hover:border-emerald-500/50"
+                  ? "bg-emerald-600 text-white shadow-emerald-600/30"
+                  : "bg-white border border-slate-200 text-slate-700 hover:text-emerald-600 hover:border-emerald-300"
               }`}
               title="Open Investor Portal"
             >
-              <Coins className="w-3.5 h-3.5 text-emerald-400" />
+              <Coins className="w-3.5 h-3.5" />
               <span>Investor</span>
             </button>
 
@@ -275,12 +275,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
               onClick={() => selectRoleAndTab("admin", "signin")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ${
                 selectedRole === "admin"
-                  ? "bg-slate-800 text-amber-300 border border-amber-500/50 shadow-md shadow-amber-500/10"
-                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-300 hover:border-amber-500/50"
+                  ? "bg-amber-500 text-white shadow-sm"
+                  : "bg-white border border-slate-200 text-slate-700 hover:text-amber-600 hover:border-amber-300"
               }`}
               title="Open Administrator Portal"
             >
-              <Shield className="w-3.5 h-3.5 text-amber-400" />
+              <Shield className="w-3.5 h-3.5" />
               <span>Admin</span>
             </button>
 
@@ -288,10 +288,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
               <button
                 type="button"
                 onClick={onOpenHelp}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 text-xs font-semibold transition shadow-sm"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-blue-600 text-xs font-semibold transition shadow-sm"
                 title="14-Stage Platform Guide & Founder Support"
               >
-                <HelpCircle className="w-3.5 h-3.5 text-indigo-400" />
+                <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
                 <span>Help</span>
               </button>
             )}
@@ -304,19 +304,19 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full max-w-6xl">
           {/* Left Column: Platform Showcase */}
           <div className="lg:col-span-6 space-y-6 text-left">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-blue-600 animate-pulse" />
               <span>Full-Stack Venture Intelligence Engine</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
               Validate Venture Ideas with <br />
-              <span className="bg-gradient-to-r from-indigo-400 via-blue-300 to-emerald-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-700 via-indigo-600 to-teal-600 bg-clip-text text-transparent">
                 Institutional AI Precision
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
               Step through our end-to-end 14-stage engine: from geographic ecosystem signals and
               competitor battlecards to the 82/100 AI Viability Score, MoSCoW MVP sprints, and cloud
               architecture blueprints.
@@ -324,49 +324,49 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
             {/* Feature Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-              <div className="p-4 rounded-2xl glass-panel border border-slate-800 backdrop-blur-md flex items-start gap-3 hover:border-indigo-500/40 transition group">
-                <div className="p-2.5 rounded-xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 group-hover:scale-105 transition">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-3 hover:border-blue-400 hover:shadow-md transition group">
+                <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 group-hover:scale-105 transition">
                   <TrendingUp className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">TAM / SAM / SOM Funnel</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">
+                  <div className="text-xs font-bold text-slate-900">TAM / SAM / SOM Funnel</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
                     Live CAGR &amp; market sizing hierarchy
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl glass-panel border border-slate-800 backdrop-blur-md flex items-start gap-3 hover:border-emerald-500/40 transition group">
-                <div className="p-2.5 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 group-hover:scale-105 transition">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-3 hover:border-emerald-400 hover:shadow-md transition group">
+                <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 group-hover:scale-105 transition">
                   <BarChart3 className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">82/100 Viability Engine</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">
+                  <div className="text-xs font-bold text-slate-900">82/100 Viability Engine</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
                     5-factor algorithmic scoring &amp; verdict
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl glass-panel border border-slate-800 backdrop-blur-md flex items-start gap-3 hover:border-cyan-500/40 transition group">
-                <div className="p-2.5 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 group-hover:scale-105 transition">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-3 hover:border-cyan-400 hover:shadow-md transition group">
+                <div className="p-2.5 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-200 group-hover:scale-105 transition">
                   <Layers className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">MoSCoW MVP &amp; Sprints</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">
+                  <div className="text-xs font-bold text-slate-900">MoSCoW MVP &amp; Sprints</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
                     28-day launch plan &amp; 12-mo milestones
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl glass-panel border border-slate-800 backdrop-blur-md flex items-start gap-3 hover:border-amber-500/40 transition group">
-                <div className="p-2.5 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/25 group-hover:scale-105 transition">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-start gap-3 hover:border-amber-400 hover:shadow-md transition group">
+                <div className="p-2.5 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 group-hover:scale-105 transition">
                   <Globe className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">Global Ecosystem Hubs</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">
+                  <div className="text-xs font-bold text-slate-900">Global Ecosystem Hubs</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
                     14 regional startup talent indices
                   </div>
                 </div>
@@ -374,38 +374,38 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
             </div>
 
             {/* Quick Demo Login Credentials helper */}
-            <div className="pt-3 border-t border-slate-800/80">
-              <div className="text-xs font-semibold text-slate-400 mb-2 flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
+            <div className="pt-3 border-t border-slate-200">
+              <div className="text-xs font-semibold text-slate-500 mb-2 flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-amber-500" />
                 <span>Instant 1-Click Demo Accounts:</span>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   onClick={() => handleQuickFill("guru")}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-indigo-500/40 text-slate-200 text-xs font-semibold hover:border-indigo-400 hover:text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:border-blue-400 hover:text-blue-600 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Sign in as Founder Guruprasad"
                 >
-                  <UserCheck className="w-3.5 h-3.5 text-indigo-400" />
+                  <UserCheck className="w-3.5 h-3.5 text-blue-600" />
                   <span>Founder Demo (Guruprasad)</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleQuickFill("investor")}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-emerald-500/40 text-emerald-300 text-xs font-semibold hover:border-emerald-400 hover:text-white hover:bg-emerald-950/40 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:border-emerald-400 hover:text-emerald-700 hover:bg-emerald-50 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Sign in as Investor Devon Vance"
                 >
-                  <Coins className="w-3.5 h-3.5 text-emerald-400" />
+                  <Coins className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Investor Demo (Devon Vance)</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleQuickFill("admin")}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-800 hover:border-slate-500 hover:text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:border-amber-400 hover:text-amber-700 hover:bg-amber-50 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
                   <span>Admin Demo (admin)</span>
                 </button>
               </div>
@@ -414,28 +414,28 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
           {/* Right Column: Interactive Role Selector + Sign In / Sign Up Card */}
           <div className="lg:col-span-6 w-full max-w-md mx-auto">
-            <div className="relative glass-panel rounded-3xl p-6 sm:p-8 border border-slate-700/80 bg-slate-900/90 shadow-2xl backdrop-blur-xl">
+            <div className="relative rounded-3xl p-6 sm:p-8 border border-slate-200 bg-white shadow-xl">
               {/* Header Gradient Stripe */}
               <div
-                className={`absolute top-0 left-8 right-8 h-[2px] transition-all duration-300 ${
+                className={`absolute top-0 left-8 right-8 h-[3px] transition-all duration-300 rounded-full ${
                   selectedRole === "investor"
                     ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400"
                     : selectedRole === "admin"
                     ? "bg-gradient-to-r from-amber-500 via-orange-400 to-yellow-400"
-                    : "bg-gradient-to-r from-indigo-500 via-blue-500 to-emerald-400"
+                    : "bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500"
                 }`}
               />
 
               <div className="animate-in fade-in duration-300 text-left">
                 {/* UPPER SECTION: ROLE SELECTOR TABS (Founder, Investor, Admin) */}
-                <div className="grid grid-cols-3 gap-1 p-1 bg-slate-950 rounded-2xl border border-slate-800 mb-5 shadow-inner">
+                <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200 mb-5 shadow-inner">
                   <button
                     type="button"
                     onClick={() => selectRoleAndTab("founder", authTab)}
                     className={`py-2 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                       selectedRole === "founder"
-                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
+                        ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
                     }`}
                   >
                     <Rocket className="w-3.5 h-3.5" />
@@ -447,8 +447,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                     onClick={() => selectRoleAndTab("investor", authTab)}
                     className={`py-2 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                       selectedRole === "investor"
-                        ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30"
-                        : "text-slate-400 hover:text-emerald-300 hover:bg-emerald-950/20"
+                        ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                        : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
                     }`}
                   >
                     <Coins className="w-3.5 h-3.5" />
@@ -460,11 +460,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                     onClick={() => selectRoleAndTab("admin", "signin")}
                     className={`py-2 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                       selectedRole === "admin"
-                        ? "bg-slate-800 text-amber-300 border border-amber-500/40 shadow-md shadow-amber-500/10"
-                        : "text-slate-400 hover:text-amber-300 hover:bg-amber-950/20"
+                        ? "bg-amber-500 text-white shadow-sm"
+                        : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
                     }`}
                   >
-                    <Shield className="w-3.5 h-3.5 text-amber-400" />
+                    <Shield className="w-3.5 h-3.5" />
                     <span>Admin</span>
                   </button>
                 </div>
@@ -473,19 +473,19 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                 {selectedRole === "admin" ? (
                   <div className="mb-5">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-xl font-bold text-white">Administrator Portal</h2>
-                      <span className="text-[10px] uppercase font-bold bg-amber-500/15 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30">
+                      <h2 className="text-xl font-bold text-slate-900">Administrator Portal</h2>
+                      <span className="text-[10px] uppercase font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full border border-amber-300">
                         Elevated Access
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 mt-1">
                       System dashboard, user management, and MongoDB collection oversight.
                     </p>
                   </div>
                 ) : (
                   <>
                     {/* THE TWO OPTIONS: SIGN IN AND SIGN UP (AVAILABLE FOR FOUNDER & INVESTOR) */}
-                    <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-950 rounded-2xl border border-slate-800 mb-5 shadow-inner">
+                    <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 mb-5 shadow-inner">
                       <button
                         type="button"
                         onClick={() => {
@@ -502,9 +502,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                         className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                           authTab === "signin"
                             ? selectedRole === "investor"
-                              ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30"
-                              : "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                            : "text-slate-400 hover:text-slate-200"
+                              ? "bg-emerald-600 text-white shadow-sm"
+                              : "bg-blue-600 text-white shadow-sm"
+                            : "text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         <Lock className="w-3.5 h-3.5" />
@@ -524,9 +524,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                         className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                           authTab === "signup"
                             ? selectedRole === "investor"
-                              ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30"
-                              : "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                            : "text-slate-400 hover:text-slate-200"
+                              ? "bg-emerald-600 text-white shadow-sm"
+                              : "bg-blue-600 text-white shadow-sm"
+                            : "text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         <Sparkles className="w-3.5 h-3.5" />
@@ -538,13 +538,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                     <div className="mb-4 text-left">
                       {selectedRole === "founder" && authTab === "signin" && (
                         <div>
-                          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                             <span>Founder Sign In</span>
-                            <span className="text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">
+                            <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
                               Founder Hub
                             </span>
                           </h2>
-                          <p className="text-xs text-slate-400 mt-1">
+                          <p className="text-xs text-slate-500 mt-1">
                             Access your validated startup vault, 14-stage blueprints, and market reports.
                           </p>
                         </div>
@@ -552,13 +552,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
                       {selectedRole === "founder" && authTab === "signup" && (
                         <div>
-                          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                             <span>Create Founder Account</span>
-                            <span className="text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">
+                            <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
                               Free Registration
                             </span>
                           </h2>
-                          <p className="text-xs text-slate-400 mt-1">
+                          <p className="text-xs text-slate-500 mt-1">
                             Register as a startup founder to validate ideas and generate investment dossiers.
                           </p>
                         </div>
@@ -567,14 +567,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       {selectedRole === "investor" && authTab === "signin" && (
                         <div>
                           <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                               <span>Investor Sign In</span>
                             </h2>
-                            <span className="text-[10px] uppercase font-bold bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                            <span className="text-[10px] uppercase font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
                               Dealflow &amp; Capital
                             </span>
                           </div>
-                          <p className="text-xs text-slate-300 mt-1">
+                          <p className="text-xs text-slate-600 mt-1">
                             Access verified startup deal pipeline, valuation modeling, and syndicate term sheets.
                           </p>
                         </div>
@@ -583,14 +583,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       {selectedRole === "investor" && authTab === "signup" && (
                         <div>
                           <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                               <span>Create Investor Account</span>
                             </h2>
-                            <span className="text-[10px] uppercase font-bold bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                            <span className="text-[10px] uppercase font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
                               Accredited Access
                             </span>
                           </div>
-                          <p className="text-xs text-slate-300 mt-1">
+                          <p className="text-xs text-slate-600 mt-1">
                             Register as an angel investor or syndicate partner to receive vetted dealflow alerts.
                           </p>
                         </div>
@@ -601,15 +601,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
                 {/* Status Notifications */}
                 {errorMsg && (
-                  <div className="mb-4 p-3 rounded-xl bg-red-950/50 border border-red-500/50 text-red-300 text-xs flex items-center gap-2 animate-in fade-in">
-                    <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-300 text-red-700 text-xs flex items-center gap-2 animate-in fade-in">
+                    <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
                     <span>{errorMsg}</span>
                   </div>
                 )}
 
                 {successMsg && (
-                  <div className="mb-4 p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/50 text-emerald-300 text-xs flex items-center gap-2 animate-in fade-in">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs flex items-center gap-2 animate-in fade-in">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                     <span>{successMsg}</span>
                   </div>
                 )}
@@ -619,11 +619,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                   {/* Full Name for Sign Up */}
                   {authTab === "signup" && selectedRole !== "admin" && (
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Full Name
                       </label>
                       <div className="relative">
-                        <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                        <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                         <input
                           type="text"
                           required
@@ -632,7 +632,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                           placeholder={
                             selectedRole === "investor" ? "e.g. Devon Vance" : "e.g. Elena Rostova"
                           }
-                          className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition"
+                          className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-500 transition"
                         />
                       </div>
                     </div>
@@ -640,7 +640,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
                   {/* Username or Email */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                       {selectedRole === "admin"
                         ? "Admin Identifier / Username"
                         : selectedRole === "investor"
@@ -653,11 +653,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                     </label>
                     <div className="relative">
                       {selectedRole === "admin" ? (
-                        <KeyRound className="w-4 h-4 text-amber-400 absolute left-3.5 top-3" />
+                        <KeyRound className="w-4 h-4 text-amber-500 absolute left-3.5 top-3" />
                       ) : selectedRole === "investor" ? (
-                        <Coins className="w-4 h-4 text-emerald-400 absolute left-3.5 top-3" />
+                        <Coins className="w-4 h-4 text-emerald-600 absolute left-3.5 top-3" />
                       ) : (
-                        <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                        <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                       )}
                       <input
                         type="text"
@@ -673,12 +673,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                             ? "founder_elena"
                             : "Guruprasad or email"
                         }
-                        className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-950 border text-sm text-slate-200 placeholder-slate-500 focus:outline-none transition ${
+                        className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white transition ${
                           selectedRole === "admin"
-                            ? "border-slate-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30"
+                            ? "border-slate-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30"
                             : selectedRole === "investor"
-                            ? "border-emerald-500/50 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-500/30"
-                            : "border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30"
+                            ? "border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
+                            : "border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30"
                         }`}
                       />
                     </div>
@@ -687,11 +687,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                   {/* Email for Sign Up */}
                   {authTab === "signup" && selectedRole !== "admin" && (
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         {selectedRole === "investor" ? "Firm or Business Email" : "Email Address"}
                       </label>
                       <div className="relative">
-                        <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                        <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                         <input
                           type="email"
                           required
@@ -702,7 +702,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                               ? "devon@angelventures.io"
                               : "elena@venturelab.io"
                           }
-                          className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition"
+                          className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-500 transition"
                         />
                       </div>
                     </div>
@@ -711,12 +711,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                   {/* Password */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-semibold text-slate-300">
+                      <label className="block text-xs font-semibold text-slate-700">
                         {authTab === "signup" ? "Set Password" : "Password"}
                       </label>
                       {authTab === "signin" && selectedRole === "founder" && (
                         <span
-                          className="text-[10px] text-indigo-400 hover:underline cursor-pointer"
+                          className="text-[10px] text-blue-600 hover:underline cursor-pointer"
                           onClick={() => {
                             setUsername("Guruprasad");
                             setPassword("Guru@4913");
@@ -727,7 +727,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       )}
                       {authTab === "signin" && selectedRole === "investor" && (
                         <span
-                          className="text-[10px] text-emerald-400 hover:underline cursor-pointer"
+                          className="text-[10px] text-emerald-600 hover:underline cursor-pointer"
                           onClick={() => {
                             setUsername("investor");
                             setPassword("investor");
@@ -738,7 +738,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       )}
                       {selectedRole === "admin" && (
                         <span
-                          className="text-[10px] text-amber-400 hover:underline cursor-pointer"
+                          className="text-[10px] text-amber-600 hover:underline cursor-pointer"
                           onClick={() => {
                             setUsername("admin");
                             setPassword("admin");
@@ -752,29 +752,29 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       )}
                     </div>
                     <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                      <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                       <input
                         type={showPassword ? "text" : "password"}
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
-                        className={`w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border text-sm text-slate-200 placeholder-slate-500 focus:outline-none transition ${
+                        className={`w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-50 border text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white transition ${
                           selectedRole === "admin"
-                            ? "border-slate-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30"
+                            ? "border-slate-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30"
                             : authTab === "signup" && password.length > 0
                             ? isPasswordStrong
-                              ? "border-emerald-500/80 focus:border-emerald-400"
-                              : "border-amber-500/60 focus:border-amber-400"
+                              ? "border-emerald-500 focus:border-emerald-500"
+                              : "border-amber-500 focus:border-amber-500"
                             : selectedRole === "investor"
-                            ? "border-emerald-500/50 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-500/30"
-                            : "border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30"
+                            ? "border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
+                            : "border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30"
                         }`}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 top-3 text-slate-500 hover:text-slate-300 cursor-pointer"
+                        className="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 cursor-pointer"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -783,15 +783,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
                   {/* Password Strength Indicator & Requirements (Signup Mode) */}
                   {authTab === "signup" && selectedRole !== "admin" && (
-                    <div className="space-y-2.5 pt-1 p-3 rounded-2xl bg-slate-950/70 border border-slate-800 animate-in fade-in">
+                    <div className="space-y-2.5 pt-1 p-3 rounded-2xl bg-slate-50 border border-slate-200 animate-in fade-in">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-400 font-medium">Password Strength:</span>
+                        <span className="text-slate-500 font-medium">Password Strength:</span>
                         <div className="flex items-center gap-1.5">
                           <span className={`font-bold text-xs ${getStrengthInfo().text}`}>
                             {getStrengthInfo().label}
                           </span>
                           {isPasswordStrong && (
-                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                           )}
                         </div>
                       </div>
@@ -800,15 +800,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       <div className="grid grid-cols-4 gap-1.5 h-1.5 w-full">
                         {[1, 2, 3, 4].map((step) => {
                           const active = criteriaMetCount >= step && password.length > 0;
-                          let barColor = "bg-slate-800";
+                          let barColor = "bg-slate-200";
                           if (active) {
                             if (criteriaMetCount <= 1)
-                              barColor = "bg-red-500 shadow-sm shadow-red-500/50";
+                              barColor = "bg-red-500";
                             else if (criteriaMetCount === 2)
-                              barColor = "bg-amber-500 shadow-sm shadow-amber-500/50";
+                              barColor = "bg-amber-500";
                             else if (criteriaMetCount === 3)
-                              barColor = "bg-cyan-500 shadow-sm shadow-cyan-500/50";
-                            else barColor = "bg-emerald-500 shadow-sm shadow-emerald-500/50";
+                              barColor = "bg-cyan-500";
+                            else barColor = "bg-emerald-500";
                           }
                           return (
                             <div
@@ -824,15 +824,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                         <div
                           className={`flex items-center gap-1.5 transition-colors ${
                             passwordCriteria.hasMinLength
-                              ? "text-emerald-400 font-medium"
-                              : "text-slate-500"
+                              ? "text-emerald-700 font-medium"
+                              : "text-slate-400"
                           }`}
                         >
                           {passwordCriteria.hasMinLength ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
                           ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border border-slate-700 flex items-center justify-center flex-shrink-0">
-                              <span className="w-1 h-1 rounded-full bg-slate-600" />
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center flex-shrink-0">
+                              <span className="w-1 h-1 rounded-full bg-slate-400" />
                             </div>
                           )}
                           <span>Min 8 characters</span>
@@ -841,15 +841,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                         <div
                           className={`flex items-center gap-1.5 transition-colors ${
                             passwordCriteria.hasUpper
-                              ? "text-emerald-400 font-medium"
-                              : "text-slate-500"
+                              ? "text-emerald-700 font-medium"
+                              : "text-slate-400"
                           }`}
                         >
                           {passwordCriteria.hasUpper ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
                           ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border border-slate-700 flex items-center justify-center flex-shrink-0">
-                              <span className="w-1 h-1 rounded-full bg-slate-600" />
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center flex-shrink-0">
+                              <span className="w-1 h-1 rounded-full bg-slate-400" />
                             </div>
                           )}
                           <span>1 uppercase letter</span>
@@ -858,15 +858,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                         <div
                           className={`flex items-center gap-1.5 transition-colors ${
                             passwordCriteria.hasNumber
-                              ? "text-emerald-400 font-medium"
-                              : "text-slate-500"
+                              ? "text-emerald-700 font-medium"
+                              : "text-slate-400"
                           }`}
                         >
                           {passwordCriteria.hasNumber ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
                           ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border border-slate-700 flex items-center justify-center flex-shrink-0">
-                              <span className="w-1 h-1 rounded-full bg-slate-600" />
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center flex-shrink-0">
+                              <span className="w-1 h-1 rounded-full bg-slate-400" />
                             </div>
                           )}
                           <span>1 number (0-9)</span>
@@ -875,15 +875,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                         <div
                           className={`flex items-center gap-1.5 transition-colors ${
                             passwordCriteria.hasSpecial
-                              ? "text-emerald-400 font-medium"
-                              : "text-slate-500"
+                              ? "text-emerald-700 font-medium"
+                              : "text-slate-400"
                           }`}
                         >
                           {passwordCriteria.hasSpecial ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
                           ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border border-slate-700 flex items-center justify-center flex-shrink-0">
-                              <span className="w-1 h-1 rounded-full bg-slate-600" />
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center flex-shrink-0">
+                              <span className="w-1 h-1 rounded-full bg-slate-400" />
                             </div>
                           )}
                           <span>1 special char (!@#$)</span>
@@ -896,12 +896,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full py-3 px-4 rounded-xl text-white font-bold text-sm shadow-lg transition flex items-center justify-center gap-2 mt-2 disabled:opacity-50 cursor-pointer ${
+                    className={`w-full py-3 px-4 rounded-xl text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2 mt-2 disabled:opacity-50 cursor-pointer ${
                       selectedRole === "admin"
-                        ? "bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 shadow-xl shadow-black/40 hover:border-slate-500"
+                        ? "bg-amber-600 hover:bg-amber-500 text-white shadow-amber-600/30"
                         : selectedRole === "investor"
-                        ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 shadow-emerald-600/30 border border-emerald-400/40"
-                        : "bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-500 hover:to-blue-500 shadow-indigo-600/25 border border-indigo-400/30"
+                        ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 shadow-emerald-600/30"
+                        : "bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 shadow-blue-600/25"
                     }`}
                   >
                     {loading ? (
@@ -911,9 +911,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                       </>
                     ) : (
                       <>
-                        {selectedRole === "investor" && <Coins className="w-4 h-4 text-emerald-300" />}
-                        {selectedRole === "founder" && <Rocket className="w-4 h-4 text-indigo-300" />}
-                        {selectedRole === "admin" && <Shield className="w-4 h-4 text-amber-400" />}
+                        {selectedRole === "investor" && <Coins className="w-4 h-4" />}
+                        {selectedRole === "founder" && <Rocket className="w-4 h-4" />}
+                        {selectedRole === "admin" && <Shield className="w-4 h-4" />}
                         <span>
                           {selectedRole === "admin"
                             ? "Unlock Administrator Portal"
@@ -933,7 +933,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
 
                 {/* Switch between Sign In and Sign Up footer helper */}
                 {selectedRole !== "admin" && (
-                  <div className="mt-4 pt-3 border-t border-slate-800/80 text-center text-xs text-slate-400">
+                  <div className="mt-4 pt-3 border-t border-slate-200 text-center text-xs text-slate-500">
                     {authTab === "signin" ? (
                       <span>
                         Don&apos;t have an account?{" "}
@@ -943,8 +943,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                             setAuthTab("signup");
                             resetForm();
                           }}
-                          className={`font-semibold underline cursor-pointer hover:text-white ${
-                            selectedRole === "investor" ? "text-emerald-400" : "text-indigo-400"
+                          className={`font-semibold underline cursor-pointer hover:text-slate-900 ${
+                            selectedRole === "investor" ? "text-emerald-700" : "text-blue-600"
                           }`}
                         >
                           Sign Up as {selectedRole === "investor" ? "an Investor" : "a Founder"}
@@ -959,8 +959,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                             setAuthTab("signin");
                             resetForm();
                           }}
-                          className={`font-semibold underline cursor-pointer hover:text-white ${
-                            selectedRole === "investor" ? "text-emerald-400" : "text-indigo-400"
+                          className={`font-semibold underline cursor-pointer hover:text-slate-900 ${
+                            selectedRole === "investor" ? "text-emerald-700" : "text-blue-600"
                           }`}
                         >
                           Sign In to your account
@@ -971,9 +971,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
                 )}
 
                 {/* Security Footer Notice */}
-                <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
                   <span className="flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                     <span>256-Bit Encrypted Session</span>
                   </span>
                   <span>MongoDB v7.6 Synced</span>
@@ -985,7 +985,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onOpenHelp }
       </main>
 
       {/* Footer info */}
-      <footer className="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500 relative z-20 bg-slate-950/40 backdrop-blur-sm">
+      <footer className="border-t border-slate-200 py-4 text-center text-xs text-slate-500 relative z-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div>StartupGen · AI + API + Cloud Multi-Sector Startup Validator Engine</div>
           <div className="flex items-center gap-4 text-slate-400 text-[11px] flex-wrap justify-center">

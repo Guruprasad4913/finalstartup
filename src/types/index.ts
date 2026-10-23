@@ -6,9 +6,9 @@ export interface MapLocation {
   lng: number;
   ecosystemScore: number; // 0 - 100
   talentIndex: string; // e.g., "9.4/10 Tier-1"
-  vcFundingClimate: string; // e.g., "Hyperactive ($14.2B Early-Stage)"
+  vcFundingClimate: string; // e.g., "Hyperactive (₹1,20,000 Cr Early-Stage)"
   regulatoryFriendliness: string; // e.g., "Favorable Sandbox (Fast-Track)"
-  avgCustomerAcquisitionCost: string; // e.g., "$140 - $280"
+  avgCustomerAcquisitionCost: string; // e.g., "₹8,000 - ₹18,000"
   keyHubs: string[];
 }
 

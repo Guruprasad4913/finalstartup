@@ -12,7 +12,7 @@ import {
   Cpu,
   Sparkles,
   Award,
-  DollarSign,
+  IndianRupee,
   TrendingUp,
   Clock,
   Code2,
@@ -262,7 +262,7 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           "Launch public waitlist with 500+ signups",
         ],
         keyMetrics: "15 LOIs (Letters of Intent) · 40% waitlist conversion · < 800ms API (Application Programming Interface) latency",
-        fundingGoal: "Bootstrapped / $25k Angel Pre-Seed",
+        fundingGoal: "Bootstrapped / ₹20 Lakhs Angel Pre-Seed",
         status: "Active",
       },
       {
@@ -272,11 +272,11 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
         milestones: [
           "Onboard 50 active beta companies",
           "Achieve weekly retention rate above 60%",
-          "Launch self-serve Stripe billing integration",
-          "Reach first $5,000 in Monthly Recurring Revenue (MRR)",
+          "Launch self-serve UPI / Razorpay billing integration",
+          "Reach first ₹3,50,000 in Monthly Recurring Revenue (MRR)",
         ],
-        keyMetrics: "$5k MRR (Monthly Recurring Revenue) · 60% WAU/MAU (Weekly/Monthly Active Users) · NPS (Net Promoter Score) 65+",
-        fundingGoal: "$150k - $250k Accelerator / Pre-Seed",
+        keyMetrics: "₹3.5L MRR (Monthly Recurring Revenue) · 60% WAU/MAU · NPS 65+",
+        fundingGoal: "₹50 Lakhs - ₹1.5 Crore Accelerator / Pre-Seed",
         status: "Upcoming",
       },
       {
@@ -286,11 +286,11 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
         milestones: [
           "Scale to 250 paying SMBs (Small & Midsize Businesses) & Mid-Market customers",
           "Launch developer API (Application Programming Interface) marketplace & webhooks",
-          "Achieve $25,000+ MRR with negative net revenue churn",
+          "Achieve ₹20,00,000+ MRR with negative net revenue churn",
           "Hire first 2 senior full-stack & AI (Artificial Intelligence) engineers",
         ],
-        keyMetrics: "$25k MRR ($300k ARR - Annual Recurring Revenue) · < 2% Monthly Churn · 11x LTV : CAC (Lifetime Value to Acquisition Cost Ratio)",
-        fundingGoal: "$750k - $1.5M Seed Round",
+        keyMetrics: "₹20L MRR (₹2.4 Cr ARR - Annual Recurring Revenue) · < 2% Monthly Churn · 11x LTV : CAC (Lifetime Value to Acquisition Cost Ratio)",
+        fundingGoal: "₹5 Crore - ₹12 Crore Seed Round",
         status: "Planned",
       },
       {
@@ -300,11 +300,11 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
         milestones: [
           "Introduce Enterprise Tier with SOC2 (Security Compliance) & dedicated VPC (Virtual Private Cloud)",
           "Expand sales channels into European & Asian-Pacific corridors",
-          "Cross $75,000+ MRR ($900k ARR)",
+          "Cross ₹60,00,000+ MRR (₹7.2 Cr ARR)",
           "Prepare Series A institutional venture financing",
         ],
-        keyMetrics: "$75k MRR (Monthly Recurring Revenue) · 5 Enterprise Annual Contracts · 85% Gross Margin",
-        fundingGoal: "$3.0M - $5.0M Series A",
+        keyMetrics: "₹60L MRR (Monthly Recurring Revenue) · 5 Enterprise Annual Contracts · 85% Gross Margin",
+        fundingGoal: "₹25 Crore - ₹50 Crore Series A",
         status: "Planned",
       },
     ],
@@ -315,15 +315,15 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
       {/* Top Header & Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#243d78] text-xs font-semibold mb-2">
             <Rocket className="w-3.5 h-3.5" />
-            Step 5 of 6: MVP (Minimum Viable Product) Recommendation &amp; 12-Month Business Roadmap
+            Step 5 of 6: MVP Recommendation &amp; 12-Month Business Roadmap
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white">
-            Execution &amp; Launch Roadmap for <span className="text-indigo-400">{idea.name}</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+            Execution &amp; Launch Roadmap for <span className="text-[#243d78]">{idea.name}</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-2xl mt-1">
-            An actionable {timelineDaysText} MVP (Minimum Viable Product) development plan, clear feature boundaries via MoSCoW (Must, Should, Could, Won&apos;t have), and a phased funding roadmap.
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mt-1">
+            An actionable {timelineDaysText} MVP development plan, clear feature boundaries via MoSCoW, and a phased funding roadmap.
           </p>
         </div>
 
@@ -331,14 +331,14 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           <button
             type="button"
             onClick={() => setShowJargonGuide(!showJargonGuide)}
-            className={`px-3 py-2 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-2 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
               showJargonGuide
-                ? "bg-indigo-600/20 text-indigo-300 border-indigo-500/50"
-                : "bg-slate-900 text-slate-300 border-slate-800 hover:border-indigo-500/40 hover:text-white"
+                ? "bg-blue-50 text-[#243d78] border-blue-200"
+                : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
             }`}
             title="Toggle plain English explanations for MVP and roadmap terms"
           >
-            <HelpCircle className="w-3.5 h-3.5 text-indigo-400" />
+            <HelpCircle className="w-3.5 h-3.5 text-[#243d78]" />
             <span>{showJargonGuide ? "Hide Execution Guide" : "Plain English Guide"}</span>
           </button>
 
@@ -346,10 +346,10 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
             <button
               type="button"
               onClick={onStartNewValidation}
-              className="px-3.5 py-2 rounded-xl bg-indigo-950/70 text-indigo-200 border border-indigo-500/40 hover:bg-indigo-900/60 hover:text-white hover:border-indigo-400 transition text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-indigo-950/40 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-blue-50 text-[#243d78] border border-blue-200 hover:bg-blue-100 transition text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer"
               title="Start a new startup validation from Step 1"
             >
-              <PlusCircle className="w-3.5 h-3.5 text-indigo-400" />
+              <PlusCircle className="w-3.5 h-3.5 text-[#243d78]" />
               <span>New Validation</span>
             </button>
           )}
@@ -357,7 +357,7 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           <button
             type="button"
             onClick={onBack}
-            className="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition text-xs font-medium flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-xl bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition text-xs font-medium flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back</span>
@@ -366,7 +366,7 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           <button
             type="button"
             onClick={onNext}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/30 transition flex items-center gap-2"
+            className="px-5 py-2.5 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white text-xs sm:text-sm font-bold shadow-sm border border-[#12224d] transition flex items-center gap-2 cursor-pointer"
           >
             <span>View Full Startup Report &amp; Vault</span>
             <ArrowRight className="w-4 h-4" />
@@ -376,66 +376,66 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
 
       {/* Beginner-Friendly Jargon Buster / Plain English Execution Guide (Collapsible) */}
       {showJargonGuide && (
-        <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/70 border border-indigo-500/40 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-4 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-indigo-300 font-bold text-sm">
-              <Sparkles className="w-4 h-4 text-amber-400" />
+            <div className="flex items-center gap-2 text-[#243d78] font-bold text-sm">
+              <Sparkles className="w-4 h-4 text-amber-500" />
               <span>Product &amp; Execution Terminology: In Plain English</span>
             </div>
-            <span className="text-[11px] text-slate-400">Essential rules to avoid building the wrong thing</span>
+            <span className="text-[11px] text-slate-500">Essential rules to avoid building the wrong thing</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-              <span className="font-bold text-white flex items-center gap-1.5">
-                <Rocket className="w-3.5 h-3.5 text-indigo-400" /> MVP (Minimum Viable Product)
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                <Rocket className="w-3.5 h-3.5 text-[#243d78]" /> MVP (Minimum Viable Product)
               </span>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-slate-600 text-[11px] leading-relaxed">
                 The simplest version of your product that solves 1 core pain point and proves customers will pay. Built in weeks, not months.
               </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-              <span className="font-bold text-emerald-300 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-emerald-400" /> MoSCoW (Must, Should, Could, Won&apos;t Have) Prioritization
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span className="font-bold text-emerald-900 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-emerald-600" /> MoSCoW Prioritization
               </span>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-slate-600 text-[11px] leading-relaxed">
                 Must-Have (cannot launch without it) · Should-Have (adds value in sprint 2) · Could-Have (nice-to-have later). Keeps costs low.
               </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-              <span className="font-bold text-cyan-300 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-cyan-400" /> 1-Week Sprints
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span className="font-bold text-blue-900 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-600" /> 1-Week Sprints
               </span>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-slate-600 text-[11px] leading-relaxed">
                 Focused 7-day development sprints where your team ships a concrete working deliverable at the end of every week.
               </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-              <span className="font-bold text-amber-300 flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-amber-400" /> LOI (Letter of Intent)
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span className="font-bold text-amber-900 flex items-center gap-1.5">
+                <Briefcase className="w-3.5 h-3.5 text-amber-600" /> LOI (Letter of Intent)
               </span>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-slate-600 text-[11px] leading-relaxed">
                 A signed document from a client stating: &quot;If you build this solution with these specs, we intend to purchase it for ₹X.&quot;
               </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-              <span className="font-bold text-rose-300 flex items-center gap-1.5">
-                <DollarSign className="w-3.5 h-3.5 text-rose-400" /> MRR (Monthly Recurring) &amp; ARR (Annual Recurring Revenue)
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span className="font-bold text-rose-900 flex items-center gap-1.5">
+                <IndianRupee className="w-3.5 h-3.5 text-rose-600" /> MRR &amp; ARR
               </span>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-slate-600 text-[11px] leading-relaxed">
                 <strong>MRR</strong> = Monthly Recurring Revenue from subscriptions. <strong>ARR</strong> = Annual Recurring Revenue (MRR × 12).
               </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-              <span className="font-bold text-indigo-300 flex items-center gap-1.5">
-                <TrendingUp className="w-3.5 h-3.5 text-indigo-400" /> Pre-Seed vs. Seed Round
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span className="font-bold text-indigo-900 flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-indigo-600" /> Pre-Seed vs. Seed Round
               </span>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-slate-600 text-[11px] leading-relaxed">
                 <strong>Pre-Seed</strong>: Early funds to build the MVP. <strong>Seed</strong>: Growth capital raised once you have paying users.
               </p>
             </div>
@@ -446,17 +446,17 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
       {/* Executive 60-Second Launch Briefing (High-level glance for busy founders) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Time to First Customer */}
-        <div className="p-4 rounded-2xl glass-panel border border-indigo-500/30 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/20 space-y-2">
-          <div className="flex items-center justify-between text-xs text-indigo-400 font-semibold">
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" /> Time to Production
+        <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
+            <span className="flex items-center gap-1.5 text-slate-800">
+              <Clock className="w-4 h-4 text-[#243d78]" /> Time to Production
             </span>
-            <span className="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-mono">
+            <span className="text-[10px] bg-blue-50 text-[#243d78] border border-blue-200 px-1.5 py-0.5 rounded font-mono font-medium">
               {mvp.timelineWeeks} Weeks
             </span>
           </div>
-          <div className="text-2xl font-black text-white">{timelineDaysText}</div>
-          <p className="text-[11px] text-slate-300 leading-snug">
+          <div className="text-2xl font-black text-slate-900">{timelineDaysText}</div>
+          <p className="text-[11px] text-slate-600 leading-snug">
             {is2Week
               ? "Ultra-rapid sprint velocity designed to validate core demand and capture first users in 2 weeks."
               : is30Day
@@ -468,66 +468,66 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
         </div>
 
         {/* Card 2: Core Job of MVP */}
-        <div className="p-4 rounded-2xl glass-panel border border-emerald-500/30 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/20 space-y-2">
-          <div className="flex items-center justify-between text-xs text-emerald-400 font-semibold">
-            <span className="flex items-center gap-1.5">
-              <Target className="w-4 h-4" /> Single Core MVP (Minimum Viable Product) Job
+        <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
+            <span className="flex items-center gap-1.5 text-slate-800">
+              <Target className="w-4 h-4 text-emerald-600" /> Core MVP Job
             </span>
-            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">Core Loop</span>
+            <span className="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded font-medium">Core Loop</span>
           </div>
-          <div className="text-sm font-bold text-white line-clamp-2">
+          <div className="text-sm font-bold text-slate-900 line-clamp-2">
             {mvp.coreValueProposition}
           </div>
-          <p className="text-[10px] text-emerald-300/80 leading-snug">
+          <p className="text-[10px] text-emerald-800 leading-snug font-medium">
             Rule: Solve this 1 problem flawlessly before adding any auxiliary features.
           </p>
         </div>
 
         {/* Card 3: First Revenue Milestone */}
-        <div className="p-4 rounded-2xl glass-panel border border-cyan-500/30 bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/20 space-y-2">
-          <div className="flex items-center justify-between text-xs text-cyan-400 font-semibold">
-            <span className="flex items-center gap-1.5">
-              <DollarSign className="w-4 h-4" /> Validation Target
+        <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
+            <span className="flex items-center gap-1.5 text-slate-800">
+              <IndianRupee className="w-4 h-4 text-[#243d78]" /> Validation Target
             </span>
-            <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-mono">Phase 1</span>
+            <span className="text-[10px] bg-blue-50 text-[#243d78] border border-blue-200 px-1.5 py-0.5 rounded font-mono font-medium">Phase 1</span>
           </div>
-          <div className="text-2xl font-black text-cyan-300">5 LOIs (Letters of Intent) / Pilots</div>
-          <p className="text-[11px] text-slate-300 leading-snug">
+          <div className="text-2xl font-black text-[#243d78]">5 LOIs / Pilots</div>
+          <p className="text-[11px] text-slate-600 leading-snug">
             {roadmap.phases[0]?.milestones[2] || "Collect 5 signed customer commitments or paying beta pilots."}
           </p>
         </div>
 
         {/* Card 4: Build vs Buy Speed Strategy */}
-        <div className="p-4 rounded-2xl glass-panel border border-indigo-500/30 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/20 space-y-2">
-          <div className="flex items-center justify-between text-xs text-indigo-400 font-semibold">
-            <span className="flex items-center gap-1.5">
-              <Zap className="w-4 h-4" /> Speed-to-Market Strategy
+        <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
+            <span className="flex items-center gap-1.5 text-slate-800">
+              <Zap className="w-4 h-4 text-indigo-600" /> Speed-to-Market
             </span>
-            <span className="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded">Accelerators</span>
+            <span className="text-[10px] bg-indigo-50 text-indigo-800 border border-indigo-200 px-1.5 py-0.5 rounded font-medium">Accelerators</span>
           </div>
-          <div className="text-sm font-bold text-white truncate">
+          <div className="text-sm font-bold text-slate-900 truncate">
             {mvp.recommendedStack.lowCodeAccelerators[0] || "Serverless & Managed Auth"}
           </div>
-          <p className="text-[11px] text-slate-300 leading-snug">
-            Use pre-built billing, auth, and AI APIs (Application Programming Interfaces) to skip 80% of repetitive infrastructure work.
+          <p className="text-[11px] text-slate-600 leading-snug">
+            Use pre-built billing, auth, and AI APIs to skip 80% of repetitive infrastructure work.
           </p>
         </div>
       </div>
 
       {/* Sub-Tabs Switcher */}
-      <div className="flex border-b border-slate-800 gap-3 sm:gap-6 overflow-x-auto pb-1">
+      <div className="flex border-b border-slate-200 gap-3 sm:gap-6 overflow-x-auto pb-1">
         <button
           type="button"
           onClick={() => setActiveTab("mvp")}
           className={`pb-3 text-xs sm:text-sm font-semibold transition border-b-2 flex items-center gap-2 flex-shrink-0 cursor-pointer ${
             activeTab === "mvp"
-              ? "border-indigo-400 text-indigo-300"
-              : "border-transparent text-slate-400 hover:text-slate-200"
+              ? "border-[#243d78] text-[#243d78]"
+              : "border-transparent text-slate-500 hover:text-slate-800"
           }`}
         >
-          <Rocket className="w-4 h-4" />
-          <span>1. MVP (Minimum Viable Product) Scope &amp; {is2Week ? "2-Week Sprint" : is30Day ? "30-Day Sprint" : is6Month ? "6-Month Plan" : "Phased Beta Plan"}</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-indigo-500/15 text-indigo-400 font-mono">
+          <Rocket className="w-4 h-4 text-[#243d78]" />
+          <span>1. MVP Scope &amp; {is2Week ? "2-Week Sprint" : is30Day ? "30-Day Sprint" : is6Month ? "6-Month Plan" : "Phased Beta Plan"}</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-[#243d78] border border-blue-200 font-mono font-medium">
             {tab1Badge}
           </span>
         </button>
@@ -535,15 +535,15 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
         <button
           type="button"
           onClick={() => setActiveTab("roadmap")}
-          className={`pb-3 text-xs sm:text-sm font-semibold transition border-b-2 flex items-center gap-2 flex-shrink-0 ${
+          className={`pb-3 text-xs sm:text-sm font-semibold transition border-b-2 flex items-center gap-2 flex-shrink-0 cursor-pointer ${
             activeTab === "roadmap"
-              ? "border-emerald-400 text-emerald-300"
-              : "border-transparent text-slate-400 hover:text-slate-200"
+              ? "border-[#243d78] text-[#243d78]"
+              : "border-transparent text-slate-500 hover:text-slate-800"
           }`}
         >
-          <Milestone className="w-4 h-4" />
+          <Milestone className="w-4 h-4 text-[#243d78]" />
           <span>2. 12-Month Phased Business Roadmap</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/15 text-emerald-400 font-mono">
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-mono font-medium">
             4 Funding Phases
           </span>
         </button>
@@ -555,28 +555,28 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
       {activeTab === "mvp" && (
         <div className="space-y-8 animate-in fade-in duration-200">
           {/* MVP Overview Banner */}
-          <div className="glass-panel rounded-2xl p-6 border border-indigo-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl">
+          <div className="rounded-2xl p-6 border border-slate-200 bg-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider">
+                <span className="text-[10px] uppercase font-bold text-[#243d78] tracking-wider">
                   Recommended Initial MVP Scope
                 </span>
-                <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30 font-semibold">
+                <span className="text-xs bg-blue-50 text-[#243d78] px-2 py-0.5 rounded-full border border-blue-200 font-semibold">
                   {timelineWeeksText}
                 </span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black text-white">{mvp.mvpName}</h3>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900">{mvp.mvpName}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
                 {mvp.coreValueProposition}
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-center flex-shrink-0 shadow-inner">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center flex-shrink-0 shadow-sm">
+              <span className="text-[10px] uppercase font-bold text-slate-500 block">
                 Target Launch Timeline
               </span>
-              <span className="text-2xl font-black text-emerald-400 mt-0.5 block">{timelineDaysText}</span>
-              <span className="text-[10px] text-emerald-300/80 font-medium">{targetSpeedBadge}</span>
+              <span className="text-2xl font-black text-emerald-700 mt-0.5 block">{timelineDaysText}</span>
+              <span className="text-[10px] text-emerald-600 font-medium">{targetSpeedBadge}</span>
             </div>
           </div>
 
@@ -584,37 +584,37 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           <div className="space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
-                <h4 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-indigo-400" />
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-[#243d78]" />
                   MoSCoW (Must, Should, Could, Won&apos;t Have) Feature Prioritization &amp; Scope Guardrails
                 </h4>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-600">
                   What MUST be built for day 1 vs what should wait until you have paying customers.
                 </p>
               </div>
-              <span className="text-xs text-slate-400 hidden sm:inline">
+              <span className="text-xs text-slate-500 hidden sm:inline">
                 Rule: Never build Could-Haves before Day 1 revenue
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Must-Have */}
-              <div className="p-5 rounded-2xl glass-panel border-2 border-emerald-500/50 bg-slate-950/80 space-y-3 shadow-lg shadow-emerald-950/20">
+              <div className="p-5 rounded-2xl bg-white border-2 border-emerald-500 space-y-3 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block">
+                    <span className="text-xs font-black text-emerald-700 uppercase tracking-wider block">
                       Must-Have — P0 (Priority 0 Core Loop)
                     </span>
-                    <span className="text-[10px] text-slate-400">Non-negotiable for launch</span>
+                    <span className="text-[10px] text-slate-500">Non-negotiable for launch</span>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                     Day 1 Essential
                   </span>
                 </div>
-                <ul className="space-y-2 text-xs text-slate-200 pt-1">
+                <ul className="space-y-2 text-xs text-slate-800 pt-1">
                   {mvp.featureBacklog.mustHave.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/20">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5 stroke-[2.5]" />
+                    <li key={i} className="flex items-start gap-2 p-2 rounded-lg bg-emerald-50/60 border border-emerald-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5 stroke-[2.5]" />
                       <span className="leading-snug font-medium">{f}</span>
                     </li>
                   ))}
@@ -622,22 +622,22 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
               </div>
 
               {/* Should-Have */}
-              <div className="p-5 rounded-2xl glass-panel border border-indigo-500/40 bg-slate-950/80 space-y-3">
+              <div className="p-5 rounded-2xl bg-white border border-blue-200 space-y-3 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-black text-indigo-300 uppercase tracking-wider block">
+                    <span className="text-xs font-black text-[#243d78] uppercase tracking-wider block">
                       Should-Have — P1 (Priority 1 Retention)
                     </span>
-                    <span className="text-[10px] text-slate-400">Add after first 10 users</span>
+                    <span className="text-[10px] text-slate-500">Add after first 10 users</span>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#243d78] border border-blue-200">
                     Sprint 2 Focus
                   </span>
                 </div>
-                <ul className="space-y-2 text-xs text-slate-200 pt-1">
+                <ul className="space-y-2 text-xs text-slate-800 pt-1">
                   {mvp.featureBacklog.shouldHave.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 p-2 rounded-lg bg-indigo-950/20 border border-indigo-500/20">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" />
+                    <li key={i} className="flex items-start gap-2 p-2 rounded-lg bg-blue-50/40 border border-blue-100">
+                      <CheckCircle2 className="w-4 h-4 text-[#243d78] flex-shrink-0 mt-0.5" />
                       <span className="leading-snug">{f}</span>
                     </li>
                   ))}
@@ -645,22 +645,22 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
               </div>
 
               {/* Could-Have */}
-              <div className="p-5 rounded-2xl glass-panel border border-slate-800 bg-slate-950/60 space-y-3">
+              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-black text-slate-400 uppercase tracking-wider block">
+                    <span className="text-xs font-black text-slate-700 uppercase tracking-wider block">
                       Could-Have — P2 (Priority 2 Scale)
                     </span>
                     <span className="text-[10px] text-slate-500">Do NOT build for MVP</span>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                     Future Backlog
                   </span>
                 </div>
-                <ul className="space-y-2 text-xs text-slate-400 pt-1">
+                <ul className="space-y-2 text-xs text-slate-600 pt-1">
                   {mvp.featureBacklog.couldHave.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                      <div className="w-2 h-2 rounded-full bg-slate-600 mt-1.5 flex-shrink-0" />
+                    <li key={i} className="flex items-start gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200">
+                      <div className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 flex-shrink-0" />
                       <span className="leading-snug">{f}</span>
                     </li>
                   ))}
@@ -672,11 +672,11 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           {/* Rapid Sprint Launch Plan (Visual Stepped Timeline) */}
           <div className="space-y-4">
             <div>
-              <h4 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-emerald-400" />
+              <h4 className="text-sm sm:text-base font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-emerald-600" />
                 {sprintTimelineTitle}
               </h4>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-600">
                 {sprintTimelineDescription}
               </p>
             </div>
@@ -691,35 +691,35 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
               {mvp.fourWeekSprintPlan.map((sprint) => (
                 <div
                   key={sprint.week}
-                  className="p-5 rounded-2xl glass-panel border border-slate-800 hover:border-indigo-500/40 transition space-y-4 flex flex-col justify-between bg-slate-950/70 shadow-lg"
+                  className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#243d78]/40 transition space-y-4 flex flex-col justify-between shadow-sm"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      <span className="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-lg bg-blue-50 text-[#243d78] border border-blue-200">
                         {sprint.periodLabel || `Week 0${sprint.week}`}
                       </span>
-                      <span className="text-[10px] text-slate-400 font-mono">
+                      <span className="text-[10px] text-slate-500 font-mono">
                         {sprint.daysLabel || `Days ${(sprint.week - 1) * 7 + 1} - ${sprint.week * 7}`}
                       </span>
                     </div>
 
-                    <h5 className="text-xs font-bold text-white leading-snug">{sprint.title}</h5>
+                    <h5 className="text-xs font-bold text-slate-900 leading-snug">{sprint.title}</h5>
 
-                    <ul className="space-y-2 text-[11px] text-slate-300">
+                    <ul className="space-y-2 text-[11px] text-slate-600">
                       {sprint.goals.map((g, gi) => (
                         <li key={gi} className="flex items-start gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 mt-0.5" />
+                          <Check className="w-3.5 h-3.5 text-[#243d78] flex-shrink-0 mt-0.5" />
                           <span>{g}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-800/80 space-y-1">
-                    <span className="text-[10px] uppercase font-bold text-emerald-400 block">
+                  <div className="pt-3 border-t border-slate-200 space-y-1">
+                    <span className="text-[10px] uppercase font-bold text-emerald-700 block">
                       Sprint Deliverable:
                     </span>
-                    <p className="text-[11px] text-slate-200 font-medium leading-relaxed bg-slate-900/80 p-2 rounded-lg border border-slate-800">
+                    <p className="text-[11px] text-slate-800 font-medium leading-relaxed bg-slate-50 p-2.5 rounded-lg border border-slate-200">
                       {sprint.deliverable}
                     </p>
                   </div>
@@ -729,56 +729,56 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           </div>
 
           {/* Recommended Build vs Buy Stack & Low-Code Accelerators */}
-          <div className="p-5 rounded-2xl glass-panel border border-slate-800 space-y-4 bg-slate-950/60 shadow-lg">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-4 shadow-sm">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Code2 className="w-4 h-4 text-cyan-400" />
+              <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <Code2 className="w-4 h-4 text-[#243d78]" />
                 {idea.businessType && idea.businessType !== "Tech & Software"
                   ? "Operational Core & Technology Stack (Rapid Route to Market)"
                   : "Build vs. Buy Accelerators (Fastest Time-to-Market)"}
               </h4>
-              <span className="text-xs text-indigo-300 bg-indigo-500/10 px-2.5 py-0.5 rounded-full border border-indigo-500/20 font-semibold">
+              <span className="text-xs text-[#243d78] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 font-semibold">
                 Saves 12+ Weeks of Custom Coding
               </span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold block">
                   {idea.businessType && idea.businessType !== "Tech & Software" ? "Customer Interface / POS (Point of Sale)" : "Frontend Stack"}
                 </span>
-                <span className="text-white font-medium block leading-snug">{mvp.recommendedStack.frontend}</span>
+                <span className="text-slate-900 font-semibold block leading-snug">{mvp.recommendedStack.frontend}</span>
               </div>
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold block">
                   {idea.businessType && idea.businessType !== "Tech & Software" ? "Operations & Core Backend" : "Backend & Edge"}
                 </span>
-                <span className="text-white font-medium block leading-snug">{mvp.recommendedStack.backend}</span>
+                <span className="text-slate-900 font-semibold block leading-snug">{mvp.recommendedStack.backend}</span>
               </div>
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold block">
                   {idea.businessType && idea.businessType !== "Tech & Software" ? "Inventory & Data Layer" : "Database & Store"}
                 </span>
-                <span className="text-white font-medium block leading-snug">{mvp.recommendedStack.database}</span>
+                <span className="text-slate-900 font-semibold block leading-snug">{mvp.recommendedStack.database}</span>
               </div>
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold block">
                   {idea.businessType && idea.businessType !== "Tech & Software" ? "Sourcing & Logistics Model" : "AI (Artificial Intelligence) Inference Model"}
                 </span>
-                <span className="text-emerald-400 font-medium block leading-snug">{mvp.recommendedStack.aiModel}</span>
+                <span className="text-emerald-700 font-semibold block leading-snug">{mvp.recommendedStack.aiModel}</span>
               </div>
             </div>
 
             <div className="pt-2 flex flex-wrap gap-2 text-xs items-center">
-              <span className="text-slate-400 text-[11px] font-semibold">
+              <span className="text-slate-600 text-[11px] font-semibold">
                 {idea.businessType && idea.businessType !== "Tech & Software" ? "Operational & Supply Chain Accelerators:" : "Pre-Configured Turnkey Accelerators:"}
               </span>
               {mvp.recommendedStack.lowCodeAccelerators.map((acc, i) => (
                 <span
                   key={i}
-                  className="px-2.5 py-1 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-[11px] font-semibold flex items-center gap-1"
+                  className="px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-[#243d78] text-[11px] font-semibold flex items-center gap-1"
                 >
-                  <Zap className="w-3 h-3 text-amber-400" />
+                  <Zap className="w-3 h-3 text-amber-500" />
                   <span>{acc}</span>
                 </span>
               ))}
@@ -786,12 +786,12 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           </div>
 
           {/* Sub-Tab Navigation Helper */}
-          <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div className="flex items-center gap-2.5">
               <button
                 type="button"
                 onClick={onBack}
-                className="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:text-white transition text-xs font-medium flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 shadow-sm transition text-xs font-medium flex items-center gap-1.5 cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back to Feasibility</span>
@@ -801,10 +801,10 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
                 <button
                   type="button"
                   onClick={onStartNewValidation}
-                  className="px-3.5 py-2 rounded-xl bg-indigo-950/70 text-indigo-200 border border-indigo-500/40 hover:bg-indigo-900/60 hover:text-white transition text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-white text-[#243d78] border border-blue-200 hover:bg-blue-50 transition text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Start a new startup validation from Step 1"
                 >
-                  <PlusCircle className="w-3.5 h-3.5 text-indigo-400" />
+                  <PlusCircle className="w-3.5 h-3.5 text-[#243d78]" />
                   <span>New Validation</span>
                 </button>
               )}
@@ -817,16 +817,16 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
                   setActiveTab("roadmap");
                   window.scrollTo({ top: 300, behavior: "smooth" });
                 }}
-                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:text-white transition text-xs font-semibold flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-[#243d78] border border-blue-200 hover:border-blue-300 shadow-sm transition text-xs font-semibold flex items-center gap-2 cursor-pointer"
               >
                 <span>Next: Explore 12-Month Business Roadmap</span>
-                <ChevronRight className="w-4 h-4 text-emerald-400" />
+                <ChevronRight className="w-4 h-4 text-[#243d78]" />
               </button>
 
               <button
                 type="button"
                 onClick={onNext}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/30 transition flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white text-xs sm:text-sm font-bold border border-[#12224d] shadow-sm transition flex items-center gap-2 cursor-pointer"
               >
                 <span>View Full Startup Report &amp; Vault</span>
                 <ArrowRight className="w-4 h-4" />
@@ -844,15 +844,15 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
-                <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                  <Milestone className="w-5 h-5 text-emerald-400" />
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <Milestone className="w-5 h-5 text-[#243d78]" />
                   {is6Month ? "18-Month Phased Business Growth & Financing Roadmap" : "12-Month Phased Business Growth & Financing Roadmap"}
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-600">
                   Four sequential execution phases to take your startup from Day 1 validation to scalable Series A readiness.
                 </p>
               </div>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-500 font-medium">
                 4 Phased Milestones
               </span>
             </div>
@@ -861,42 +861,42 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
               {roadmap.phases.map((phase) => (
                 <div
                   key={phase.phase}
-                  className={`p-6 rounded-2xl glass-panel border transition relative ${
+                  className={`p-6 rounded-2xl bg-white border transition relative shadow-sm ${
                     phase.status === "Active"
-                      ? "border-emerald-500/50 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950/25 shadow-xl shadow-emerald-500/10"
-                      : "border-slate-800 bg-slate-950/70"
+                      ? "border-2 border-emerald-500"
+                      : "border-slate-200"
                   }`}
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-3">
                     <div className="flex items-center gap-3">
                       <span
                         className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm ${
                           phase.status === "Active"
-                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/30"
-                            : "bg-slate-800 text-slate-300"
+                            ? "bg-emerald-600 text-white shadow-sm"
+                            : "bg-slate-100 text-slate-700 border border-slate-200"
                         }`}
                       >
                         0{phase.phase}
                       </span>
                       <div>
-                        <h4 className="text-base font-bold text-white">{phase.title}</h4>
-                        <p className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-                          <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+                        <h4 className="text-base font-bold text-slate-900">{phase.title}</h4>
+                        <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                          <Calendar className="w-3.5 h-3.5 text-[#243d78]" />
                           <span>{phase.timeframe}</span>
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3 flex-wrap">
-                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center gap-1.5">
-                        <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-[#243d78] border border-blue-200 flex items-center gap-1.5">
+                        <IndianRupee className="w-3.5 h-3.5 text-emerald-600" />
                         <span>Target: {phase.fundingGoal}</span>
                       </span>
                       <span
                         className={`text-xs font-bold px-3 py-1 rounded-full border ${
                           phase.status === "Active"
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
-                            : "bg-slate-800 text-slate-400 border-slate-700"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            : "bg-slate-100 text-slate-600 border-slate-200"
                         }`}
                       >
                         {phase.status === "Active" ? "● Currently In Focus" : phase.status}
@@ -907,31 +907,31 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
                   {/* Milestones & Key Metrics */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 text-xs">
                     <div className="space-y-2">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+                      <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider block">
                         Concrete Execution Deliverables
                       </span>
-                      <ul className="space-y-2 text-slate-200">
+                      <ul className="space-y-2 text-slate-800">
                         {phase.milestones.map((m, mi) => (
-                          <li key={mi} className="flex items-start gap-2 p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                            <CheckCircle2 className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" />
+                          <li key={mi} className="flex items-start gap-2 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                            <CheckCircle2 className="w-4 h-4 text-[#243d78] flex-shrink-0 mt-0.5" />
                             <span className="leading-snug">{m}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 flex flex-col justify-between">
+                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 flex flex-col justify-between">
                       <div className="space-y-1.5">
-                        <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider block flex items-center gap-1.5">
+                        <span className="text-[10px] uppercase font-bold text-emerald-700 tracking-wider block flex items-center gap-1.5">
                           <TrendingUp className="w-3.5 h-3.5" /> Phase Success Target KPIs (Key Performance Indicators)
                         </span>
-                        <p className="text-xs font-bold text-white leading-relaxed bg-slate-950 p-2.5 rounded-lg border border-slate-800 font-mono">
+                        <p className="text-xs font-bold text-slate-900 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-200 font-mono">
                           {phase.keyMetrics}
                         </p>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-1.5">
-                        <Info className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+                      <div className="pt-2 border-t border-slate-200 text-[11px] text-slate-500 flex items-center gap-1.5">
+                        <Info className="w-3.5 h-3.5 text-[#243d78] flex-shrink-0" />
                         <span>Achieving these validated metrics unlocks advancement to the next funding round.</span>
                       </div>
                     </div>
@@ -942,7 +942,7 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
           </div>
 
           {/* Sub-Tab Navigation Helper */}
-          <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div className="flex items-center gap-2.5">
               <button
                 type="button"
@@ -950,7 +950,7 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
                   setActiveTab("mvp");
                   window.scrollTo({ top: 300, behavior: "smooth" });
                 }}
-                className="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:text-white transition text-xs font-medium flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 shadow-sm transition text-xs font-medium flex items-center gap-1.5 cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back to MVP Sprint Plan</span>
@@ -960,10 +960,10 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
                 <button
                   type="button"
                   onClick={onStartNewValidation}
-                  className="px-3.5 py-2 rounded-xl bg-indigo-950/70 text-indigo-200 border border-indigo-500/40 hover:bg-indigo-900/60 hover:text-white transition text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-white text-[#243d78] border border-blue-200 hover:bg-blue-50 transition text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Start a new startup validation from Step 1"
                 >
-                  <PlusCircle className="w-3.5 h-3.5 text-indigo-400" />
+                  <PlusCircle className="w-3.5 h-3.5 text-[#243d78]" />
                   <span>New Validation</span>
                 </button>
               )}
@@ -972,7 +972,7 @@ export const StepMvpAndRoadmap: React.FC<StepMvpAndRoadmapProps> = ({
             <button
               type="button"
               onClick={onNext}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/30 transition flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white text-xs sm:text-sm font-bold border border-[#12224d] shadow-sm transition flex items-center gap-2 cursor-pointer"
             >
               <span>Ready! View Final Institutional Dossier &amp; Vault</span>
               <ArrowRight className="w-4 h-4" />

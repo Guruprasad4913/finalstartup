@@ -9,7 +9,7 @@ import {
   MapPin,
   CheckCircle2,
   Globe,
-  DollarSign,
+  IndianRupee,
   Layers,
   Rocket,
   ShieldCheck,
@@ -97,7 +97,7 @@ const PROJECT_THEMES = [
 // Helper to safely parse currency string to numeric value
 function parseDollarValue(str?: string): number {
   if (!str) return 0;
-  const match = str.match(/\$([0-9,]+(?:\.[0-9]+)?)/);
+  const match = str.match(/[$₹]([0-9,]+(?:\.[0-9]+)?)/);
   if (match) {
     return parseFloat(match[1].replace(/,/g, ""));
   }
@@ -341,27 +341,27 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-5 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-7xl bg-slate-950 border border-slate-700/80 rounded-3xl shadow-2xl p-5 sm:p-6 overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-3 sm:p-5 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-7xl bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden flex flex-col max-h-[92vh]">
         {/* Glow Top Accent */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-indigo-500 via-cyan-400 to-blue-500" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#4d669a] via-[#243d78] to-[#12224d]" />
 
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800 flex-wrap gap-3">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200 flex-wrap gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500/20 via-blue-500/20 to-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center shadow-lg shadow-cyan-950/30">
+            <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#243d78] border border-blue-200 flex items-center justify-center shadow-sm">
               <Scale className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                   Startup Concept Comparison &amp; Visual Analytics
                 </h2>
-                <span className="text-xs bg-indigo-500/20 text-indigo-300 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-500/30 flex items-center gap-1">
-                  <Activity className="w-3 h-3 text-cyan-400" /> Multi-Concept Evaluator
+                <span className="text-xs bg-blue-50 text-[#243d78] font-bold px-2.5 py-0.5 rounded-full border border-blue-200 flex items-center gap-1">
+                  <Activity className="w-3 h-3 text-[#243d78]" /> Multi-Concept Evaluator
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Side-by-side radar analysis, market sizing (TAM/SAM/SOM), 12-month revenue ramp, and unit economics comparison.
               </p>
             </div>
@@ -369,14 +369,14 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
 
           <div className="flex items-center gap-2">
             {/* View Mode Switcher */}
-            <div className="bg-slate-900/90 border border-slate-800 p-1 rounded-2xl flex items-center gap-1 text-xs">
+            <div className="bg-slate-100 border border-slate-200 p-1 rounded-2xl flex items-center gap-1 text-xs">
               <button
                 type="button"
                 onClick={() => setViewMode("charts")}
                 className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
                   viewMode === "charts"
-                    ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-600/30"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
                 title="Visual comparison charts only"
               >
@@ -388,8 +388,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                 onClick={() => setViewMode("split")}
                 className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
                   viewMode === "split"
-                    ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-600/30"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
                 title="Charts on top, specs below"
               >
@@ -401,8 +401,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                 onClick={() => setViewMode("matrix")}
                 className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
                   viewMode === "matrix"
-                    ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-600/30"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
                 title="Side-by-side spec cards"
               >
@@ -414,16 +414,16 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
             <button
               type="button"
               onClick={handleCopyComparison}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition cursor-pointer"
+              className="p-2 rounded-xl bg-white border border-slate-300 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition cursor-pointer shadow-sm"
               title="Copy comparison summary to clipboard"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-slate-400" />}
+              {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-500" />}
             </button>
 
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
               title="Close Comparison"
             >
               <X className="w-5 h-5" />
@@ -433,9 +433,9 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
 
         {/* Project Selection Chips */}
         {allProjects.length > 1 && (
-          <div className="py-3 border-b border-slate-800/80 flex items-center gap-2 overflow-x-auto text-xs scrollbar-thin">
-            <span className="text-slate-400 font-semibold whitespace-nowrap flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Compare (Select 1-3):
+          <div className="py-3 border-b border-slate-200 flex items-center gap-2 overflow-x-auto text-xs scrollbar-thin">
+            <span className="text-slate-600 font-semibold whitespace-nowrap flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#243d78]" /> Compare (Select 1-3):
             </span>
             {allProjects.map((p, idx) => {
               const isSelected = selectedIds.includes(p.id);
@@ -447,8 +447,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                   onClick={() => toggleSelectProject(p.id)}
                   className={`px-3 py-1.5 rounded-xl transition border text-xs whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                     isSelected
-                      ? "bg-gradient-to-r from-slate-900 to-slate-800 text-white border-cyan-400 shadow-md shadow-cyan-950/20 ring-1 ring-cyan-500/40"
-                      : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700"
+                      ? "bg-blue-50 text-[#243d78] border-[#243d78] shadow-sm font-bold ring-1 ring-[#243d78]"
+                      : "bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 shadow-sm"
                   }`}
                 >
                   <div
@@ -459,7 +459,7 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                   <span className="text-[10px] text-slate-500 font-mono">
                     ({p.feasibility?.overallScore || 0}/100)
                   </span>
-                  {isSelected && <Check className="w-3.5 h-3.5 text-cyan-400 stroke-[3]" />}
+                  {isSelected && <Check className="w-3.5 h-3.5 text-[#243d78] stroke-[3]" />}
                 </button>
               );
             })}
@@ -470,60 +470,60 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
         {comparedProjects.length > 1 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 pb-2 text-xs">
             {/* Viability Winner */}
-            <div className="p-3 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-slate-900/90 border border-emerald-500/30 flex items-center gap-2.5 shadow-sm">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
                 <Award className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-wider block">
+                <span className="text-[10px] text-emerald-700 uppercase font-bold tracking-wider block">
                   Viability Winner
                 </span>
-                <span className="text-white font-extrabold truncate block">
+                <span className="text-slate-900 font-extrabold truncate block">
                   {scoreWinner?.selectedIdea.name} ({scoreWinner?.feasibility?.overallScore}/100)
                 </span>
               </div>
             </div>
 
             {/* TAM Winner */}
-            <div className="p-3 rounded-2xl bg-gradient-to-r from-indigo-950/40 to-slate-900/90 border border-indigo-500/30 flex items-center gap-2.5 shadow-sm">
-              <div className="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 text-[#243d78] flex items-center justify-center shrink-0 border border-blue-200">
                 <Globe className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <span className="text-[10px] text-indigo-300 uppercase font-bold tracking-wider block">
+                <span className="text-[10px] text-[#243d78] uppercase font-bold tracking-wider block">
                   Largest Market TAM
                 </span>
-                <span className="text-white font-extrabold truncate block">
+                <span className="text-slate-900 font-extrabold truncate block">
                   {tamWinner?.selectedIdea.name} ({tamWinner?.validation?.tam?.value})
                 </span>
               </div>
             </div>
 
             {/* Economics Winner */}
-            <div className="p-3 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900/90 border border-cyan-500/30 flex items-center gap-2.5 shadow-sm">
-              <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
-                <DollarSign className="w-4 h-4" />
+            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
+                <IndianRupee className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <span className="text-[10px] text-cyan-300 uppercase font-bold tracking-wider block">
+                <span className="text-[10px] text-emerald-700 uppercase font-bold tracking-wider block">
                   Best LTV : CAC
                 </span>
-                <span className="text-white font-extrabold truncate block">
+                <span className="text-slate-900 font-extrabold truncate block">
                   {economicsWinner?.selectedIdea.name} ({economicsWinner?.feasibility?.revenueModel?.keyUnitEconomics?.ltvCacRatio})
                 </span>
               </div>
             </div>
 
             {/* Speed Winner */}
-            <div className="p-3 rounded-2xl bg-gradient-to-r from-amber-950/40 to-slate-900/90 border border-amber-500/30 flex items-center gap-2.5 shadow-sm">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 border border-amber-200">
                 <Rocket className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <span className="text-[10px] text-amber-300 uppercase font-bold tracking-wider block">
+                <span className="text-[10px] text-amber-800 uppercase font-bold tracking-wider block">
                   Fastest MVP Sprint
                 </span>
-                <span className="text-white font-extrabold truncate block">
+                <span className="text-slate-900 font-extrabold truncate block">
                   {speedWinner?.selectedIdea.name} ({speedWinner?.feasibility?.mvpRecommendation?.timelineWeeks || 4} Weeks)
                 </span>
               </div>
@@ -534,7 +534,7 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
         {/* Modal Body */}
         <div className="overflow-y-auto flex-1 py-3 space-y-6 pr-1">
           {comparedProjects.length === 0 ? (
-            <div className="text-center py-20 text-slate-400 text-sm">
+            <div className="text-center py-20 text-slate-500 text-sm">
               Please select at least one startup concept above to evaluate.
             </div>
           ) : (
@@ -545,7 +545,7 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                   {/* Chart Sub-Tab Switcher */}
                   <div className="flex items-center justify-between flex-wrap gap-2 pb-1">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-xs text-slate-400 font-bold uppercase tracking-wider mr-1">
+                      <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mr-1">
                         Chart Focus:
                       </span>
                       <button
@@ -553,8 +553,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         onClick={() => setChartSubTab("all")}
                         className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
                           chartSubTab === "all"
-                            ? "bg-indigo-600 text-white shadow-sm"
-                            : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                            : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         All Comparison Charts
@@ -564,8 +564,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         onClick={() => setChartSubTab("radar")}
                         className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
                           chartSubTab === "radar"
-                            ? "bg-indigo-600 text-white shadow-sm"
-                            : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                            : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         Feasibility Radar
@@ -575,8 +575,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         onClick={() => setChartSubTab("market")}
                         className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
                           chartSubTab === "market"
-                            ? "bg-indigo-600 text-white shadow-sm"
-                            : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                            : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         Market Sizing (TAM/SAM/SOM)
@@ -586,8 +586,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         onClick={() => setChartSubTab("revenue")}
                         className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
                           chartSubTab === "revenue"
-                            ? "bg-indigo-600 text-white shadow-sm"
-                            : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                            : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         12-Month Revenue Ramp
@@ -597,8 +597,8 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         onClick={() => setChartSubTab("economics")}
                         className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
                           chartSubTab === "economics"
-                            ? "bg-indigo-600 text-white shadow-sm"
-                            : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-[#243d78] text-white shadow-sm border border-[#12224d]"
+                            : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900"
                         }`}
                       >
                         Unit Economics (LTV vs CAC)
@@ -615,7 +615,7 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                               className="w-3 h-3 rounded-full shadow-sm"
                               style={{ backgroundColor: theme.stroke }}
                             />
-                            <span className="text-slate-200 font-bold">{p.selectedIdea.name}</span>
+                            <span className="text-slate-700 font-bold">{p.selectedIdea.name}</span>
                           </div>
                         );
                       })}
@@ -626,19 +626,18 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* CHART 1: MULTI-DIMENSIONAL FEASIBILITY RADAR */}
                     {(chartSubTab === "all" || chartSubTab === "radar") && (
-                      <div className="glass-panel p-5 rounded-3xl border border-indigo-500/25 bg-gradient-to-b from-[#181a28] to-[#12131d] space-y-3 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400" />
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden flex flex-col justify-between">
                         <div>
                           <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                              <Activity className="w-4 h-4 text-cyan-400" />
+                            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                              <Activity className="w-4 h-4 text-[#243d78]" />
                               Multi-Dimensional Feasibility Radar
                             </h3>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-900 text-cyan-300 border border-cyan-500/30">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                               0 - 100 Scale
                             </span>
                           </div>
-                          <p className="text-xs text-slate-400 mt-0.5">
+                          <p className="text-xs text-slate-500 mt-0.5">
                             Compares Technical, Market, Financial, Moat, and Execution scores across selected concepts.
                           </p>
                         </div>
@@ -646,26 +645,25 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         <div className="h-72 w-full pt-2">
                           <ResponsiveContainer width="100%" height="100%">
                             <RadarChart data={radarChartData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
-                              <PolarGrid stroke="#2e384d" />
+                              <PolarGrid stroke="#e2e8f0" />
                               <PolarAngleAxis
                                 dataKey="dimension"
-                                stroke="#94a3b8"
-                                tick={{ fill: "#cbd5e1", fontSize: 11 }}
+                                stroke="#64748b"
+                                tick={{ fill: "#334155", fontSize: 11 }}
                               />
                               <PolarRadiusAxis
                                 angle={30}
                                 domain={[0, 100]}
-                                stroke="#475569"
+                                stroke="#cbd5e1"
                                 tick={{ fill: "#64748b", fontSize: 10 }}
                               />
                               <Tooltip
                                 contentStyle={{
-                                  backgroundColor: "#0f172a",
-                                  borderColor: "#3b82f6",
+                                  backgroundColor: "#ffffff",
+                                  borderColor: "#cbd5e1",
                                   borderRadius: "0.75rem",
                                   fontSize: "12px",
-                                  color: "#fff",
-                                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
+                                  color: "#0f172a",
                                 }}
                               />
                               {comparedProjects.map((p, idx) => {
@@ -684,7 +682,7 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                               })}
                               <Legend
                                 wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
-                                formatter={(value) => <span className="text-slate-300">{value}</span>}
+                                formatter={(value) => <span className="text-slate-700 font-medium">{value}</span>}
                               />
                             </RadarChart>
                           </ResponsiveContainer>
@@ -694,19 +692,18 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
 
                     {/* CHART 2: MARKET SIZING SCALE (TAM / SAM / SOM) */}
                     {(chartSubTab === "all" || chartSubTab === "market") && (
-                      <div className="glass-panel p-5 rounded-3xl border border-indigo-500/25 bg-gradient-to-b from-[#181a28] to-[#12131d] space-y-3 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-400" />
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden flex flex-col justify-between">
                         <div>
                           <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                              <Globe className="w-4 h-4 text-emerald-400" />
+                            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                              <Globe className="w-4 h-4 text-emerald-700" />
                               Market Sizing Comparison (TAM / SAM / SOM)
                             </h3>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-900 text-emerald-300 border border-emerald-500/30">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                               USD ($ Billions)
                             </span>
                           </div>
-                          <p className="text-xs text-slate-400 mt-0.5">
+                          <p className="text-xs text-slate-500 mt-0.5">
                             Total Addressable (TAM), Serviceable (SAM), and Target Obtainable (SOM) market scale.
                           </p>
                         </div>
@@ -714,30 +711,30 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         <div className="h-72 w-full pt-2">
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={marketSizingData} margin={{ top: 15, right: 15, left: -5, bottom: 5 }}>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                               <XAxis
                                 dataKey="tier"
                                 stroke="#64748b"
-                                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                                tick={{ fill: "#475569", fontSize: 11 }}
                               />
                               <YAxis
                                 stroke="#64748b"
                                 tickFormatter={(val) => `$${val}B`}
-                                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                                tick={{ fill: "#475569", fontSize: 11 }}
                               />
                               <Tooltip
                                 formatter={(val: any) => [`$${val}B`, "Estimated Volume"]}
                                 contentStyle={{
-                                  backgroundColor: "#0f172a",
-                                  borderColor: "#10b981",
+                                  backgroundColor: "#ffffff",
+                                  borderColor: "#cbd5e1",
                                   borderRadius: "0.75rem",
                                   fontSize: "12px",
-                                  color: "#fff",
+                                  color: "#0f172a",
                                 }}
                               />
                               <Legend
                                 wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
-                                formatter={(value) => <span className="text-slate-300">{value}</span>}
+                                formatter={(value) => <span className="text-slate-700 font-medium">{value}</span>}
                               />
                               {comparedProjects.map((p, idx) => {
                                 const theme = PROJECT_THEMES[idx % PROJECT_THEMES.length];
@@ -759,19 +756,18 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
 
                     {/* CHART 3: 12-MONTH PROJECTED REVENUE TRAJECTORY */}
                     {(chartSubTab === "all" || chartSubTab === "revenue") && (
-                      <div className="glass-panel p-5 rounded-3xl border border-indigo-500/25 bg-gradient-to-b from-[#181a28] to-[#12131d] space-y-3 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500" />
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden flex flex-col justify-between">
                         <div>
                           <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                              <TrendingUp className="w-4 h-4 text-cyan-400" />
+                            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                              <TrendingUp className="w-4 h-4 text-[#243d78]" />
                               12-Month Financial Ramp &amp; Revenue Curves
                             </h3>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-900 text-cyan-300 border border-cyan-500/30">
-                              Monthly ARR Pace ($)
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                              Monthly ARR Pace (₹)
                             </span>
                           </div>
-                          <p className="text-xs text-slate-400 mt-0.5">
+                          <p className="text-xs text-slate-500 mt-0.5">
                             Simulated month-over-month revenue growth curves comparing scaling velocity.
                           </p>
                         </div>
@@ -791,36 +787,36 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                                       x2="0"
                                       y2="1"
                                     >
-                                      <stop offset="5%" stopColor={theme.stroke} stopOpacity={0.4} />
+                                      <stop offset="5%" stopColor={theme.stroke} stopOpacity={0.3} />
                                       <stop offset="95%" stopColor={theme.stroke} stopOpacity={0.0} />
                                     </linearGradient>
                                   );
                                 })}
                               </defs>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                               <XAxis
                                 dataKey="month"
                                 stroke="#64748b"
-                                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                                tick={{ fill: "#475569", fontSize: 11 }}
                               />
                               <YAxis
                                 stroke="#64748b"
-                                tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}
-                                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                                tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
+                                tick={{ fill: "#475569", fontSize: 11 }}
                               />
                               <Tooltip
-                                formatter={(val: any) => [`$${Number(val).toLocaleString()}/mo`, "Projected Revenue"]}
+                                formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}/mo`, "Projected Revenue"]}
                                 contentStyle={{
-                                  backgroundColor: "#0f172a",
-                                  borderColor: "#6366f1",
+                                  backgroundColor: "#ffffff",
+                                  borderColor: "#cbd5e1",
                                   borderRadius: "0.75rem",
                                   fontSize: "12px",
-                                  color: "#fff",
+                                  color: "#0f172a",
                                 }}
                               />
                               <Legend
                                 wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
-                                formatter={(value) => <span className="text-slate-300">{value}</span>}
+                                formatter={(value) => <span className="text-slate-700 font-medium">{value}</span>}
                               />
                               {comparedProjects.map((p, idx) => {
                                 const theme = PROJECT_THEMES[idx % PROJECT_THEMES.length];
@@ -844,19 +840,18 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
 
                     {/* CHART 4: UNIT ECONOMICS (LTV VS CAC) */}
                     {(chartSubTab === "all" || chartSubTab === "economics") && (
-                      <div className="glass-panel p-5 rounded-3xl border border-indigo-500/25 bg-gradient-to-b from-[#181a28] to-[#12131d] space-y-3 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500" />
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden flex flex-col justify-between">
                         <div>
                           <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                              <DollarSign className="w-4 h-4 text-amber-400" />
+                            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                              <IndianRupee className="w-4 h-4 text-emerald-700" />
                               Unit Economics &amp; Capital Efficiency (LTV vs CAC)
                             </h3>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-900 text-amber-300 border border-amber-500/30">
-                              Amounts in USD ($)
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                              Amounts in INR (₹)
                             </span>
                           </div>
-                          <p className="text-xs text-slate-400 mt-0.5">
+                          <p className="text-xs text-slate-500 mt-0.5">
                             Customer Lifetime Value (LTV) compared against Customer Acquisition Cost (CAC).
                           </p>
                         </div>
@@ -864,30 +859,30 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                         <div className="h-72 w-full pt-2">
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={unitEconomicsData} margin={{ top: 15, right: 15, left: -5, bottom: 5 }}>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                               <XAxis
                                 dataKey="metric"
                                 stroke="#64748b"
-                                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                                tick={{ fill: "#475569", fontSize: 11 }}
                               />
                               <YAxis
                                 stroke="#64748b"
-                                tickFormatter={(val) => `$${val}`}
-                                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                                tickFormatter={(val) => `₹${Number(val).toLocaleString('en-IN')}`}
+                                tick={{ fill: "#475569", fontSize: 11 }}
                               />
                               <Tooltip
-                                formatter={(val: any) => [`$${Number(val).toLocaleString()}`, "Estimated Dollar Value"]}
+                                formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, "Estimated Value (INR)"]}
                                 contentStyle={{
-                                  backgroundColor: "#0f172a",
-                                  borderColor: "#f59e0b",
+                                  backgroundColor: "#ffffff",
+                                  borderColor: "#cbd5e1",
                                   borderRadius: "0.75rem",
                                   fontSize: "12px",
-                                  color: "#fff",
+                                  color: "#0f172a",
                                 }}
                               />
                               <Legend
                                 wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
-                                formatter={(value) => <span className="text-slate-300">{value}</span>}
+                                formatter={(value) => <span className="text-slate-700 font-medium">{value}</span>}
                               />
                               {comparedProjects.map((p, idx) => {
                                 const theme = PROJECT_THEMES[idx % PROJECT_THEMES.length];
@@ -914,11 +909,11 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
               {(viewMode === "matrix" || viewMode === "split") && (
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                      <Scale className="w-4 h-4 text-indigo-400" />
+                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                      <Scale className="w-4 h-4 text-[#243d78]" />
                       Executive Side-by-Side Specification Matrix
                     </h3>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       Comparing {comparedProjects.length} selected concepts
                     </span>
                   </div>
@@ -937,10 +932,10 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                       return (
                         <div
                           key={p.id}
-                          className={`rounded-3xl p-5 border flex flex-col justify-between space-y-5 transition relative overflow-hidden ${
+                          className={`rounded-2xl p-5 border flex flex-col justify-between space-y-5 transition relative overflow-hidden ${
                             isWinner
-                              ? "border-emerald-500/70 bg-gradient-to-b from-[#182320] via-slate-950 to-slate-950 shadow-xl shadow-emerald-950/30"
-                              : "border-slate-800 bg-slate-950/80"
+                              ? "border-emerald-300 bg-white shadow-md ring-1 ring-emerald-200"
+                              : "border-slate-200 bg-white shadow-sm"
                           }`}
                         >
                           <div
@@ -957,26 +952,26 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                                 {p.selectedIdea.domain}
                               </span>
                               {isWinner && (
-                                <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-500 text-white shadow-md flex items-center gap-1">
+                                <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm flex items-center gap-1">
                                   <Award className="w-3 h-3" /> Top Pick
                                 </span>
                               )}
                             </div>
 
                             <div>
-                              <h4 className="text-base sm:text-lg font-black text-white tracking-tight">
+                              <h4 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
                                 {p.selectedIdea.name}
                               </h4>
-                              <p className="text-xs text-slate-300 line-clamp-2 mt-0.5">
+                              <p className="text-xs text-slate-600 line-clamp-2 mt-0.5">
                                 {p.selectedIdea.tagline}
                               </p>
                             </div>
 
                             {/* Score Gauge Pill */}
-                            <div className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800/90 flex items-center justify-between">
-                              <div className="text-xs text-slate-400 font-medium">Algorithmic Viability</div>
+                            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                              <div className="text-xs text-slate-600 font-medium">Algorithmic Viability</div>
                               <div className="flex items-baseline gap-1">
-                                <span className="text-2xl font-black text-emerald-400">
+                                <span className="text-2xl font-black text-emerald-700">
                                   {p.feasibility?.overallScore || 0}
                                 </span>
                                 <span className="text-xs text-slate-500">/100</span>
@@ -985,23 +980,23 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                           </div>
 
                           {/* Metric Rows */}
-                          <div className="space-y-3.5 text-xs border-t border-slate-800/80 pt-3">
+                          <div className="space-y-3.5 text-xs border-t border-slate-200 pt-3">
                             {/* Launch Hub */}
                             <div className="space-y-0.5">
                               <span className="text-[10px] text-slate-500 uppercase font-semibold flex items-center gap-1">
-                                <MapPin className="w-3 h-3 text-emerald-400" /> Target Launch Hub
+                                <MapPin className="w-3 h-3 text-[#243d78]" /> Target Launch Hub
                               </span>
-                              <div className="text-white font-medium">
-                                {loc ? `${loc.city}, ${loc.country}` : "San Francisco, USA"}
+                              <div className="text-slate-900 font-medium">
+                                {loc ? `${loc.city}, ${loc.country}` : "Bengaluru, India"}
                               </div>
                             </div>
 
                             {/* TAM / SAM / SOM */}
                             <div className="space-y-0.5">
                               <span className="text-[10px] text-slate-500 uppercase font-semibold flex items-center gap-1">
-                                <Globe className="w-3.5 h-3.5 text-indigo-400" /> Market Sizing (TAM / SOM)
+                                <Globe className="w-3.5 h-3.5 text-[#243d78]" /> Market Sizing (TAM / SOM)
                               </span>
-                              <div className="text-white font-medium">
+                              <div className="text-slate-900 font-medium">
                                 {p.validation?.tam?.value || "N/A"} · SOM: {p.validation?.som?.value || "N/A"}
                               </div>
                             </div>
@@ -1009,9 +1004,9 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                             {/* Unit Economics */}
                             <div className="space-y-0.5">
                               <span className="text-[10px] text-slate-500 uppercase font-semibold flex items-center gap-1">
-                                <DollarSign className="w-3.5 h-3.5 text-emerald-400" /> Unit Economics (LTV : CAC)
+                                <IndianRupee className="w-3.5 h-3.5 text-emerald-700" /> Unit Economics (LTV : CAC)
                               </span>
-                              <div className="text-emerald-400 font-bold">
+                              <div className="text-emerald-700 font-bold">
                                 {p.feasibility?.revenueModel?.keyUnitEconomics?.ltvCacRatio || "N/A"} (Margin:{" "}
                                 {p.feasibility?.revenueModel?.keyUnitEconomics?.grossMargin || "N/A"})
                               </div>
@@ -1020,29 +1015,29 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
                             {/* MVP Sprint Scope */}
                             <div className="space-y-0.5">
                               <span className="text-[10px] text-slate-500 uppercase font-semibold flex items-center gap-1">
-                                <Rocket className="w-3.5 h-3.5 text-cyan-400" /> MVP Launch Timeline
+                                <Rocket className="w-3.5 h-3.5 text-[#243d78]" /> MVP Launch Timeline
                               </span>
-                              <div className="text-cyan-300 font-medium">
+                              <div className="text-slate-800 font-medium">
                                 {p.feasibility?.mvpRecommendation?.timelineWeeks || 4} Weeks (Cloud:{" "}
-                                {p.feasibility?.cloudArchitecture?.estimatedMonthlyCloudCost?.mvp || "$200/mo"})
+                                {p.feasibility?.cloudArchitecture?.estimatedMonthlyCloudCost?.mvp || "₹15,000/mo"})
                               </div>
                             </div>
 
                             {/* Defensible Moat */}
                             <div className="space-y-0.5">
                               <span className="text-[10px] text-slate-500 uppercase font-semibold flex items-center gap-1">
-                                <ShieldCheck className="w-3 h-3 text-indigo-400" /> Defensible Moat
+                                <ShieldCheck className="w-3 h-3 text-[#243d78]" /> Defensible Moat
                               </span>
-                              <p className="text-slate-300 text-[11px] line-clamp-3">
+                              <p className="text-slate-600 text-[11px] line-clamp-3">
                                 {p.selectedIdea.innovationMoat}
                               </p>
                             </div>
                           </div>
 
                           {/* Bottom Status Verdict */}
-                          <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                            <span className="text-slate-400">Verdict:</span>
-                            <span className="px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                          <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <span className="text-slate-600">Verdict:</span>
+                            <span className="px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                               {p.feasibility?.verdict || "Strong Go"}
                             </span>
                           </div>
@@ -1057,9 +1052,9 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="pt-3 border-t border-slate-800 flex items-center justify-between flex-wrap gap-2">
-          <div className="text-xs text-slate-400 flex items-center gap-1.5">
-            <Activity className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="pt-3 border-t border-slate-200 flex items-center justify-between flex-wrap gap-2">
+          <div className="text-xs text-slate-500 flex items-center gap-1.5">
+            <Activity className="w-3.5 h-3.5 text-[#243d78]" />
             <span>Interactive comparison dynamically generated from multi-stage AI validation models.</span>
           </div>
 
@@ -1067,15 +1062,15 @@ export const CompareProjectsModal: React.FC<CompareProjectsModalProps> = ({
             <button
               type="button"
               onClick={handleCopyComparison}
-              className="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-white text-slate-700 hover:text-slate-900 border border-slate-300 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-cyan-400" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-[#243d78]" />}
               <span>{copied ? "Copied to Clipboard!" : "Copy Summary Table"}</span>
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/25 cursor-pointer"
+              className="px-5 py-2 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white text-xs font-bold transition shadow-sm border border-[#12224d] cursor-pointer"
             >
               Done
             </button>

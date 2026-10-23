@@ -13,11 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-[#0f1013] text-[#f8fafc] min-h-screen selection:bg-indigo-500 selection:text-white antialiased font-sans">
-        <div className="fixed inset-0 bg-grid-pattern opacity-15 pointer-events-none z-0"></div>
-        <div className="fixed top-0 left-1/4 w-[450px] h-[450px] bg-indigo-500/[0.05] rounded-full blur-[140px] pointer-events-none -z-10"></div>
-        <div className="fixed bottom-1/4 right-1/4 w-[450px] h-[450px] bg-emerald-500/[0.04] rounded-full blur-[140px] pointer-events-none -z-10"></div>
+    <html lang="en">
+      <body className="bg-[#f4f6fa] text-slate-800 min-h-screen selection:bg-blue-600 selection:text-white antialiased font-sans">
+        <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none z-0"></div>
+        <div className="fixed top-0 left-1/4 w-[450px] h-[450px] bg-blue-500/[0.04] rounded-full blur-[140px] pointer-events-none -z-10"></div>
+        <div className="fixed bottom-1/4 right-1/4 w-[450px] h-[450px] bg-indigo-500/[0.03] rounded-full blur-[140px] pointer-events-none -z-10"></div>
         <div className="relative z-10">{children}</div>
       </body>
     </html>

@@ -59,8 +59,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Food & Beverage / Cafe",
     badge: "Cafe & Dining",
     icon: Coffee,
-    color: "hover:border-amber-500/50 hover:bg-amber-500/5",
-    activeColor: "border-amber-500 bg-amber-500/10 text-amber-300",
+    color: "hover:border-amber-400 hover:bg-amber-50/50",
+    activeColor: "border-amber-500 bg-amber-50 text-amber-900",
     exampleProblem: "Specialty single-origin micro-roastery cafe chain with whole-bean monthly doorstep subscription club",
     skills: "Culinary Operations, Supply Chain & Hospitality",
     audience: "Urban Professionals & Coffee Enthusiasts",
@@ -72,8 +72,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Physical Products / D2C (Direct-to-Consumer)",
     badge: "Consumer Products",
     icon: Package,
-    color: "hover:border-pink-500/50 hover:bg-pink-500/5",
-    activeColor: "border-pink-500 bg-pink-500/10 text-pink-300",
+    color: "hover:border-pink-400 hover:bg-pink-50/50",
+    activeColor: "border-pink-500 bg-pink-50 text-pink-900",
     exampleProblem: "100% biodegradable bamboo fiber everyday kitchenware and home essentials brand",
     skills: "Product Design, Brand Marketing & Vendor Sourcing",
     audience: "Eco-Conscious Millennial Households",
@@ -85,8 +85,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Manufacturing & Hardware",
     badge: "Hardware & Production",
     icon: Factory,
-    color: "hover:border-blue-500/50 hover:bg-blue-500/5",
-    activeColor: "border-blue-500 bg-blue-500/10 text-blue-300",
+    color: "hover:border-blue-400 hover:bg-blue-50/50",
+    activeColor: "border-blue-500 bg-blue-50 text-blue-900",
     exampleProblem: "Modular decentralized solar cold storage rooms for rural agricultural mandis to prevent crop rot",
     skills: "Mechanical Engineering, Production Ops & Logistics",
     audience: "Commercial Facilities, Mandi Traders & FPOs (Farmer Producer Organizations)",
@@ -98,8 +98,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Construction & Infrastructure",
     badge: "Building & Materials",
     icon: HardHat,
-    color: "hover:border-amber-500/50 hover:bg-amber-500/5",
-    activeColor: "border-amber-500 bg-amber-500/10 text-amber-300",
+    color: "hover:border-amber-400 hover:bg-amber-50/50",
+    activeColor: "border-amber-600 bg-amber-50 text-amber-900",
     exampleProblem: "Factory-manufactured precast modular wall panels and turnkey commercial interior fit-out contracting company",
     skills: "Civil Engineering, Site Contracting & Materials Supply",
     audience: "Contractors, Commercial Developers & Property Owners",
@@ -111,8 +111,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Agriculture & Green Ops",
     badge: "Agri-Supply",
     icon: Sprout,
-    color: "hover:border-emerald-500/50 hover:bg-emerald-500/5",
-    activeColor: "border-emerald-500 bg-emerald-500/10 text-emerald-300",
+    color: "hover:border-emerald-400 hover:bg-emerald-50/50",
+    activeColor: "border-emerald-600 bg-emerald-50 text-emerald-900",
     exampleProblem: "Vertical climate-controlled indoor hydroponic farm producing high-yield saffron and culinary microgreens",
     skills: "Horticulture, Agribusiness & Farm Operations",
     audience: "Luxury Hotels, Restaurants & Supermarkets",
@@ -124,8 +124,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Healthcare & Wellness",
     badge: "Clinics & Studios",
     icon: HeartPulse,
-    color: "hover:border-red-500/50 hover:bg-red-500/5",
-    activeColor: "border-red-500 bg-red-500/10 text-red-300",
+    color: "hover:border-rose-400 hover:bg-rose-50/50",
+    activeColor: "border-rose-600 bg-rose-50 text-rose-900",
     exampleProblem: "Boutique contrast recovery studio offering infrared saunas, cold plunge suites and pneumatic compression",
     skills: "Physiotherapy, Wellness Operations & Studio Management",
     audience: "Everyday Athletes, Gym-Goers & Stressed Executives",
@@ -137,8 +137,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Services & Operations",
     badge: "Operations & Fleet",
     icon: Truck,
-    color: "hover:border-yellow-500/50 hover:bg-yellow-500/5",
-    activeColor: "border-yellow-500 bg-yellow-500/10 text-yellow-300",
+    color: "hover:border-yellow-400 hover:bg-yellow-50/50",
+    activeColor: "border-yellow-600 bg-yellow-50 text-yellow-900",
     exampleProblem: "Waterless on-demand mobile EV fleet detailing and doorstep rapid maintenance vans",
     skills: "Fleet Operations, Vendor Management & Dispatch",
     audience: "Commercial Fleet Operators & Vehicle Owners",
@@ -150,8 +150,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Retail & Storefront",
     badge: "Stores & Experiences",
     icon: Store,
-    color: "hover:border-teal-500/50 hover:bg-teal-500/5",
-    activeColor: "border-teal-500 bg-teal-500/10 text-teal-300",
+    color: "hover:border-teal-400 hover:bg-teal-50/50",
+    activeColor: "border-teal-600 bg-teal-50 text-teal-900",
     exampleProblem: "Zero-waste packaging-free bulk grocery and natural detergent refill dispensary stores",
     skills: "Retail Merchandising & Community Building",
     audience: "Urban Apartment Dwellers & Zero-Waste Families",
@@ -163,8 +163,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Offline Education & Sports",
     badge: "Academies & Clubs",
     icon: GraduationCap,
-    color: "hover:border-cyan-500/50 hover:bg-cyan-500/5",
-    activeColor: "border-cyan-500 bg-cyan-500/10 text-cyan-300",
+    color: "hover:border-cyan-400 hover:bg-cyan-50/50",
+    activeColor: "border-cyan-600 bg-cyan-50 text-cyan-900",
     exampleProblem: "Hands-on weekend robotics, 3D printing and electronics maker labs for K-12 students",
     skills: "Curriculum Design, Coaching & Studio Operations",
     audience: "Parents of K-12 Students & Progressive Schools",
@@ -176,8 +176,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "CleanTech & Green Ops",
     badge: "Clean Energy",
     icon: Leaf,
-    color: "hover:border-green-500/50 hover:bg-green-500/5",
-    activeColor: "border-green-500 bg-green-500/10 text-green-300",
+    color: "hover:border-green-400 hover:bg-green-50/50",
+    activeColor: "border-green-600 bg-green-50 text-green-900",
     exampleProblem: "Decentralized hydrometallurgical micro-hubs recovering pure copper and gold from discarded e-waste",
     skills: "Chemical Engineering & Environmental Compliance",
     audience: "Corporate IT Offices & Municipal Councils",
@@ -189,8 +189,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Tech & Software",
     badge: "Digital Platforms",
     icon: Cpu,
-    color: "hover:border-indigo-500/50 hover:bg-indigo-500/5",
-    activeColor: "border-indigo-500 bg-indigo-500/10 text-indigo-300",
+    color: "hover:border-indigo-400 hover:bg-indigo-50/50",
+    activeColor: "border-indigo-600 bg-indigo-50 text-indigo-900",
     exampleProblem: "API (Application Programming Interface)-first automated real-time accounting audit and dynamic cashflow forecasting",
     skills: "Full-Stack Dev, Machine Learning & Product",
     audience: "Mid-Market SMBs (Small & Midsize Businesses) & B2B (Business-to-Business) Enterprise",
@@ -202,8 +202,8 @@ const INDUSTRY_CATEGORIES = [
     businessType: "Others",
     badge: "Flexible Model",
     icon: Sparkles,
-    color: "hover:border-pink-500/50 hover:bg-pink-500/5",
-    activeColor: "border-pink-500 bg-pink-500/10 text-pink-300",
+    color: "hover:border-purple-400 hover:bg-purple-50/50",
+    activeColor: "border-purple-600 bg-purple-50 text-purple-900",
     exampleProblem: "Fragmented market inefficiencies and underserved customer segments seeking modern innovative alternatives",
     skills: "Domain Expertise & Agile Execution",
     audience: "Target Market Customers & Specialized Segments",
@@ -403,50 +403,50 @@ export const StepInput: React.FC<StepInputProps> = ({
     <div className="w-full max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
       {/* Neat, Clean Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/15 via-blue-500/15 to-emerald-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold shadow-sm">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold shadow-sm">
+          <Sparkles className="w-3.5 h-3.5 text-blue-600 animate-pulse" />
           <span>Step 1 of 6: Founder Profile, Location Map &amp; Venture Vision</span>
           {onOpenHelp && (
             <button
               type="button"
               onClick={onOpenHelp}
-              className="ml-2 pl-2 border-l border-indigo-500/40 text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-bold text-[11px] transition"
+              className="ml-2 pl-2 border-l border-blue-200 text-emerald-700 hover:text-emerald-800 flex items-center gap-1 font-bold text-[11px] transition"
               title="Open 14-Stage Platform Help & Founder Support"
             >
-              <HelpCircle className="w-3 h-3" />
+              <HelpCircle className="w-3 h-3 text-emerald-600" />
               <span>Need Help?</span>
             </button>
           )}
         </div>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900">
           Launch &amp; Validate Any <span className="gradient-text">Startup Concept</span>
         </h1>
-        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
           From Food &amp; Dining, D2C brands, manufacturing, and agriculture to healthcare clinics and AI software — test and validate any concept with live market sizing, competitor analysis, and cloud blueprints.
         </p>
       </div>
 
-      {/* 3-Step Quick Guide Banner */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900 to-cyan-950/30 border border-indigo-500/30 shadow-lg text-left">
+      {/* 3-Step Quick Guide Banner (Clean White Card) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm text-left">
         <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-xl bg-indigo-500/20 text-indigo-300 font-bold text-xs flex items-center justify-center border border-indigo-400/40 flex-shrink-0 mt-0.5 shadow-sm">1</div>
+          <div className="w-7 h-7 rounded-xl bg-blue-50 text-blue-700 font-bold text-xs flex items-center justify-center border border-blue-200 flex-shrink-0 mt-0.5 shadow-sm">1</div>
           <div>
-            <span className="font-bold text-white text-xs block">Choose Industry</span>
-            <span className="text-xs text-slate-300 leading-normal">Click a sector below to auto-fill templates, or enter custom details.</span>
+            <span className="font-bold text-slate-900 text-xs block">Choose Industry</span>
+            <span className="text-xs text-slate-600 leading-normal">Click a sector below to auto-fill templates, or enter custom details.</span>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-xl bg-cyan-500/20 text-cyan-300 font-bold text-xs flex items-center justify-center border border-cyan-400/40 flex-shrink-0 mt-0.5 shadow-sm">2</div>
+          <div className="w-7 h-7 rounded-xl bg-cyan-50 text-cyan-700 font-bold text-xs flex items-center justify-center border border-cyan-200 flex-shrink-0 mt-0.5 shadow-sm">2</div>
           <div>
-            <span className="font-bold text-white text-xs block">Enter Your Vision</span>
-            <span className="text-xs text-slate-300 leading-normal">Describe the problem you solve, target buyer, and your budget.</span>
+            <span className="font-bold text-slate-900 text-xs block">Enter Your Vision</span>
+            <span className="text-xs text-slate-600 leading-normal">Describe the problem you solve, target buyer, and your budget.</span>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs flex items-center justify-center border border-emerald-400/40 flex-shrink-0 mt-0.5 shadow-sm">3</div>
+          <div className="w-7 h-7 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center border border-emerald-200 flex-shrink-0 mt-0.5 shadow-sm">3</div>
           <div>
-            <span className="font-bold text-white text-xs block">Get Full Audit</span>
-            <span className="text-xs text-slate-300 leading-normal">Instant TAM sizing, competitor battlecards, cloud costs, and MVP sprint.</span>
+            <span className="font-bold text-slate-900 text-xs block">Get Full Audit</span>
+            <span className="text-xs text-slate-600 leading-normal">Instant TAM sizing, competitor battlecards, cloud costs, and MVP sprint.</span>
           </div>
         </div>
       </div>
@@ -454,11 +454,11 @@ export const StepInput: React.FC<StepInputProps> = ({
       {/* 1. Industry Category Picker Cards */}
       <div className="space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
-            <Compass className="w-4 h-4 text-indigo-400" />
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+            <Compass className="w-4 h-4 text-blue-600" />
             <span>Select Industry Sector (Tech &amp; Real-World Commercial)</span>
           </label>
-          <span className="text-xs text-slate-300 font-medium">Click to auto-populate domain, skills &amp; problem template</span>
+          <span className="text-xs text-slate-500 font-medium">Click to auto-populate domain, skills &amp; problem template</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -472,23 +472,23 @@ export const StepInput: React.FC<StepInputProps> = ({
                 onClick={() => handleSelectCategory(cat)}
                 className={`p-3.5 rounded-2xl border text-left transition relative flex flex-col justify-between gap-2.5 cursor-pointer group ${
                   isSelected
-                    ? `${cat.activeColor} shadow-xl ring-2 ring-indigo-500/50 scale-[1.02]`
-                    : `bg-slate-900/90 border-slate-800 text-slate-300 ${cat.color} hover:bg-slate-800/80`
+                    ? `${cat.activeColor} shadow-md ring-2 ring-blue-500/30 scale-[1.02]`
+                    : `bg-white border-slate-200 text-slate-700 shadow-sm ${cat.color} hover:bg-slate-50`
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-xl bg-slate-950/80 border border-slate-800 group-hover:scale-105 transition">
+                  <div className="p-2 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 group-hover:scale-105 transition">
                     <Icon className="w-4 h-4" />
                   </div>
                   {isSelected && (
-                    <span className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center shadow-md">
+                    <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-sm">
                       <Check className="w-3 h-3 stroke-[3]" />
                     </span>
                   )}
                 </div>
                 <div>
-                  <div className="text-xs font-bold leading-tight text-white group-hover:text-indigo-300 transition">{cat.label}</div>
-                  <div className="text-[10px] text-slate-400 font-mono mt-0.5">{cat.badge}</div>
+                  <div className="text-xs font-bold leading-tight text-slate-900 group-hover:text-blue-700 transition">{cat.label}</div>
+                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">{cat.badge}</div>
                 </div>
               </button>
             );
@@ -496,34 +496,31 @@ export const StepInput: React.FC<StepInputProps> = ({
         </div>
       </div>
 
-      {/* Neat & Clean Form Container */}
+      {/* Form Container (Clean Crisp White Card) */}
       <form
         onSubmit={handleGenerate}
-        className="glass-panel rounded-3xl p-6 sm:p-9 space-y-6 shadow-2xl border border-slate-700/80 bg-slate-950/80 backdrop-blur-2xl relative"
+        className="rounded-3xl p-6 sm:p-9 space-y-6 shadow-sm border border-slate-200 bg-white relative"
       >
-        {/* Decorative subtle ambient glow */}
-        <div className="absolute top-0 right-1/4 w-80 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
         {/* 1. Core Idea / Problem Statement (Full Width) */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-200 flex items-center justify-between">
+          <label className="text-xs font-semibold text-slate-800 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
-              <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+              <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
               Startup Idea or Problem to Solve
             </span>
-            <span className="text-[10px] text-slate-500 font-mono bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">Optional / Leave blank for AI (Artificial Intelligence) synthesis</span>
+            <span className="text-[10px] text-slate-600 font-mono bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">Optional / Leave blank for AI synthesis</span>
           </label>
           <textarea
             rows={3}
             value={customContext}
             onChange={(e) => setCustomContext(e.target.value)}
-            placeholder="Describe what you want to build or the problem you are solving (e.g. Specialty single-origin micro-roastery cafe chain, bamboo tableware brand, solar cold storage for farmers, or B2B (Business-to-Business) SaaS (Software as a Service))..."
-            className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition resize-none leading-relaxed shadow-inner"
+            placeholder="Describe what you want to build or the problem you are solving (e.g. Specialty single-origin micro-roastery cafe chain, bamboo tableware brand, solar cold storage for farmers, or B2B SaaS)..."
+            className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition resize-none leading-relaxed shadow-sm"
           />
           {hasMismatch && (
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 animate-in fade-in duration-200">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 animate-in fade-in duration-200">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400 flex-shrink-0 animate-pulse" />
+                <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0 animate-pulse" />
                 <span>
                   Notice: Your problem statement belongs to <strong>{matchingCategory.label}</strong>, but domain is set to <strong>{domainsInput}</strong>.
                 </span>
@@ -531,7 +528,7 @@ export const StepInput: React.FC<StepInputProps> = ({
               <button
                 type="button"
                 onClick={() => handleSelectCategory(matchingCategory)}
-                className="px-3 py-1 rounded-lg bg-amber-500/25 hover:bg-amber-500/35 text-amber-300 font-bold border border-amber-500/40 text-[11px] transition cursor-pointer flex-shrink-0"
+                className="px-3 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold border border-amber-300 text-[11px] transition cursor-pointer flex-shrink-0"
               >
                 Auto-Align to {matchingCategory.label}
               </button>
@@ -543,8 +540,8 @@ export const StepInput: React.FC<StepInputProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Target Industry & Domains */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-              <Compass className="w-3.5 h-3.5 text-indigo-400" />
+            <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+              <Compass className="w-3.5 h-3.5 text-blue-600" />
               Target Domain &amp; Industry *
             </label>
             <input
@@ -552,63 +549,63 @@ export const StepInput: React.FC<StepInputProps> = ({
               required
               value={domainsInput}
               onChange={(e) => setDomainsInput(e.target.value)}
-              placeholder="e.g. Food & Beverage, D2C (Direct-to-Consumer), Agriculture, Healthcare"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition shadow-inner"
+              placeholder="e.g. Food & Beverage, D2C, Agriculture, Healthcare"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition shadow-sm"
             />
             <span className="text-[10px] text-slate-500">Industry or product category</span>
           </div>
 
           {/* Business Model / Type */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-              <Store className="w-3.5 h-3.5 text-indigo-400" />
+            <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+              <Store className="w-3.5 h-3.5 text-blue-600" />
               Business Model Type *
             </label>
             <select
               value={businessType}
               onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition shadow-inner cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition shadow-sm cursor-pointer"
             >
               <option value="" disabled className="text-slate-500">
                 Select business model type...
               </option>
-              <option value="Food & Beverage / Cafe" className="bg-slate-950 text-slate-200">
+              <option value="Food & Beverage / Cafe">
                 🍽️ Food &amp; Beverage / Cafe / Dining
               </option>
-              <option value="Construction & Infrastructure" className="bg-slate-950 text-slate-200">
+              <option value="Construction & Infrastructure">
                 🏗️ Construction &amp; Infrastructure
               </option>
-              <option value="Turnkey Contracting & Field Services" className="bg-slate-950 text-slate-200">
+              <option value="Turnkey Contracting & Field Services">
                 🔨 Turnkey Contracting &amp; Field Services
               </option>
-              <option value="Physical Products / D2C" className="bg-slate-950 text-slate-200">
-                📦 Physical Products &amp; D2C (Direct-to-Consumer) Brand
+              <option value="Physical Products / D2C">
+                📦 Physical Products &amp; D2C Brand
               </option>
-              <option value="Manufacturing & Hardware" className="bg-slate-950 text-slate-200">
+              <option value="Manufacturing & Hardware">
                 🏭 Manufacturing &amp; Hardware
               </option>
-              <option value="Agriculture & Green Ops" className="bg-slate-950 text-slate-200">
+              <option value="Agriculture & Green Ops">
                 🌾 Agriculture &amp; Farming
               </option>
-              <option value="Healthcare & Wellness" className="bg-slate-950 text-slate-200">
+              <option value="Healthcare & Wellness">
                 🏥 Healthcare Clinics &amp; Wellness
               </option>
-              <option value="Services & Operations" className="bg-slate-950 text-slate-200">
+              <option value="Services & Operations">
                 🚚 Physical Services &amp; Logistics
               </option>
-              <option value="Retail & Storefront" className="bg-slate-950 text-slate-200">
+              <option value="Retail & Storefront">
                 🛍️ Retail &amp; Brick-and-Mortar Store
               </option>
-              <option value="Offline Education & Sports" className="bg-slate-950 text-slate-200">
+              <option value="Offline Education & Sports">
                 🎓 Offline Education &amp; Sports
               </option>
-              <option value="CleanTech & Green Ops" className="bg-slate-950 text-slate-200">
+              <option value="CleanTech & Green Ops">
                 ♻️ CleanTech &amp; Waste Management
               </option>
-              <option value="Tech & Software" className="bg-slate-950 text-slate-200">
-                💻 Tech, Software &amp; AI (Artificial Intelligence)
+              <option value="Tech & Software">
+                💻 Tech, Software &amp; AI
               </option>
-              <option value="Others" className="bg-slate-950 text-indigo-300 font-semibold">
+              <option value="Others" className="text-blue-700 font-semibold">
                 ✨ Others / Custom Business Model
               </option>
             </select>
@@ -618,8 +615,8 @@ export const StepInput: React.FC<StepInputProps> = ({
                   type="text"
                   value={customBusinessType}
                   onChange={(e) => setCustomBusinessType(e.target.value)}
-                  placeholder="Specify custom model (e.g. Media &amp; Publishing, Agency, Franchise, Real Estate, Consulting)..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-indigo-950/20 border border-indigo-500/50 text-xs text-indigo-200 placeholder-indigo-400/50 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 transition font-medium"
+                  placeholder="Specify custom model (e.g. Media &amp; Publishing, Agency, Franchise, Real Estate)..."
+                  className="w-full px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-300 text-xs text-blue-950 placeholder-blue-500/60 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition font-medium"
                 />
               </div>
             )}
@@ -628,8 +625,8 @@ export const StepInput: React.FC<StepInputProps> = ({
 
           {/* Founder Skills & Strengths */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-              <Rocket className="w-3.5 h-3.5 text-emerald-400" />
+            <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+              <Rocket className="w-3.5 h-3.5 text-emerald-600" />
               Founder Skills &amp; Capabilities *
             </label>
             <input
@@ -638,15 +635,15 @@ export const StepInput: React.FC<StepInputProps> = ({
               value={skillsInput}
               onChange={(e) => setSkillsInput(e.target.value)}
               placeholder="e.g. Culinary Ops, Sourcing, Marketing, Sales, Engineering"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition shadow-inner"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15 transition shadow-sm"
             />
             <span className="text-[10px] text-slate-500">Execution strengths of your team</span>
           </div>
 
           {/* Target Customer Segment */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-              <Users className="w-3.5 h-3.5 text-cyan-400" />
+            <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-cyan-600" />
               Target Customer Segment *
             </label>
             <input
@@ -654,20 +651,20 @@ export const StepInput: React.FC<StepInputProps> = ({
               required
               value={targetAudience}
               onChange={(e) => setTargetAudience(e.target.value)}
-              placeholder="e.g. Urban Professionals, Homeowners, Gym-Goers, FPOs (Farmer Producer Organizations)"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition shadow-inner"
+              placeholder="e.g. Urban Professionals, Homeowners, Gym-Goers, FPOs"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/15 transition shadow-sm"
             />
             <span className="text-[10px] text-slate-500">Primary buyer persona</span>
           </div>
 
           {/* Founder's Email / Gmail */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-200 flex items-center justify-between">
+            <label className="text-xs font-semibold text-slate-800 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-emerald-400" />
+                <Mail className="w-3.5 h-3.5 text-emerald-600" />
                 Founder&apos;s Email / Gmail
               </span>
-              <span className="text-[10px] text-emerald-400/80 font-mono">For Dossier &amp; Alerts</span>
+              <span className="text-[10px] text-emerald-700 font-mono font-medium">For Dossier &amp; Alerts</span>
             </label>
             <div className="relative">
               <input
@@ -675,29 +672,29 @@ export const StepInput: React.FC<StepInputProps> = ({
                 value={founderEmail}
                 onChange={(e) => setFounderEmail(e.target.value)}
                 placeholder="founder@gmail.com"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition shadow-inner"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15 transition shadow-sm"
               />
-              <Mail className="w-4 h-4 text-emerald-400/60 absolute left-3 top-2.5 pointer-events-none" />
+              <Mail className="w-4 h-4 text-emerald-600 absolute left-3 top-2.5 pointer-events-none" />
             </div>
             <span className="text-[10px] text-slate-500">Associated with your 14-stage validation dossier</span>
           </div>
 
           {/* Launch Timeframe */}
           <div className="space-y-1.5 sm:col-span-2">
-            <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-pink-400" />
+            <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-pink-600" />
               MVP (Minimum Viable Product) Launch Timeframe *
             </label>
             <select
               value={timeframe}
               onChange={(e) => setTimeframe(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition shadow-inner cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-pink-600 focus:ring-2 focus:ring-pink-600/15 transition shadow-sm cursor-pointer"
             >
               <option value="" disabled className="text-slate-500">
                 Select launch timeframe...
               </option>
               {TIMEFRAME_OPTIONS.map((opt) => (
-                <option key={opt} value={opt} className="bg-slate-950 text-slate-200">
+                <option key={opt} value={opt}>
                   {opt}
                 </option>
               ))}
@@ -706,13 +703,13 @@ export const StepInput: React.FC<StepInputProps> = ({
           </div>
 
           {/* Budget in Indian Rupees */}
-          <div className="space-y-2 sm:col-span-2 bg-slate-900/50 p-3.5 rounded-2xl border border-slate-800/80">
+          <div className="space-y-2 sm:col-span-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                <IndianRupee className="w-3.5 h-3.5 text-cyan-400" />
+              <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+                <IndianRupee className="w-3.5 h-3.5 text-cyan-600" />
                 Initial Budget &amp; Runway (in ₹ Rupees) *
               </label>
-              <span className="text-[10px] text-cyan-400 font-mono font-semibold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30">INR (Indian Rupee - ₹)</span>
+              <span className="text-[10px] text-cyan-800 font-mono font-semibold px-2 py-0.5 rounded bg-cyan-100 border border-cyan-200">INR (Indian Rupee - ₹)</span>
             </div>
             <div className="relative">
               <input
@@ -721,13 +718,13 @@ export const StepInput: React.FC<StepInputProps> = ({
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 placeholder="e.g. ₹5,00,000 Bootstrapped, ₹25,00,000 Seed Angel, ₹10 Lakhs..."
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition font-medium"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/15 transition font-medium shadow-sm"
               />
-              <IndianRupee className="w-4 h-4 text-cyan-400 absolute left-3 top-3 pointer-events-none" />
+              <IndianRupee className="w-4 h-4 text-cyan-600 absolute left-3 top-3 pointer-events-none" />
             </div>
             {/* Rupee Quick Pill Presets */}
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Presets:</span>
+              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Presets:</span>
               {BUDGET_PRESETS.map((p) => (
                 <button
                   key={p.label}
@@ -735,8 +732,8 @@ export const StepInput: React.FC<StepInputProps> = ({
                   onClick={() => setBudget(p.value)}
                   className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-all duration-200 border ${
                     budget === p.value
-                      ? "bg-cyan-500/20 border-cyan-400 text-cyan-300 font-semibold shadow-sm shadow-cyan-500/20 ring-1 ring-cyan-400/50"
-                      : "bg-slate-900/90 text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700 hover:bg-slate-850"
+                      ? "bg-blue-600 border-blue-600 text-white font-semibold shadow-sm ring-1 ring-blue-600/30"
+                      : "bg-white text-slate-700 border-slate-200 hover:text-slate-900 hover:border-slate-300 hover:bg-slate-100"
                   }`}
                 >
                   {p.label}
@@ -746,14 +743,14 @@ export const StepInput: React.FC<StepInputProps> = ({
           </div>
 
           {/* Target Launch Hub / Ecosystem */}
-          <div className="space-y-2 sm:col-span-2 bg-slate-900/50 p-3.5 rounded-2xl border border-slate-800/80">
+          <div className="space-y-2 sm:col-span-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                <Globe2 className="w-3.5 h-3.5 text-amber-400" />
+              <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+                <Globe2 className="w-3.5 h-3.5 text-amber-600" />
                 Target Launch Hub &amp; Geographic Market *
               </label>
               {targetLocation && (
-                <span className="text-[10px] text-emerald-400 font-mono font-semibold px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30">
+                <span className="text-[10px] text-emerald-800 font-mono font-semibold px-2 py-0.5 rounded bg-emerald-100 border border-emerald-300">
                   Ecosystem Score: {targetLocation.ecosystemScore}/100
                 </span>
               )}
@@ -764,44 +761,44 @@ export const StepInput: React.FC<StepInputProps> = ({
                 const found = GLOBAL_STARTUP_HUBS.find((h) => h.city === e.target.value);
                 if (found) setTargetLocation(found);
               }}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition cursor-pointer shadow-sm"
             >
               <option value="" disabled className="text-slate-500">
                 Select target launch market / hub...
               </option>
               {GLOBAL_STARTUP_HUBS.map((hub) => (
-                <option key={hub.city} value={hub.city} className="bg-slate-950 text-slate-200">
+                <option key={hub.city} value={hub.city}>
                   {hub.city}, {hub.country} (Score: {hub.ecosystemScore}/100)
                 </option>
               ))}
             </select>
             {targetLocation ? (
               <div className="grid grid-cols-3 gap-2 pt-1">
-                <div className="px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800/80 text-[11px]">
+                <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-[11px] shadow-sm">
                   <span className="text-slate-500 block text-[9px] uppercase font-mono">Talent Index</span>
-                  <span className="text-slate-200 font-semibold">{targetLocation.talentIndex}</span>
+                  <span className="text-slate-900 font-semibold">{targetLocation.talentIndex}</span>
                 </div>
-                <div className="px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800/80 text-[11px]">
-                  <span className="text-slate-500 block text-[9px] uppercase font-mono">VC (Venture Capital) Climate</span>
-                  <span className="text-slate-200 font-semibold">{targetLocation.vcFundingClimate}</span>
+                <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-[11px] shadow-sm">
+                  <span className="text-slate-500 block text-[9px] uppercase font-mono">VC Climate</span>
+                  <span className="text-slate-900 font-semibold">{targetLocation.vcFundingClimate}</span>
                 </div>
-                <div className="px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800/80 text-[11px]">
-                  <span className="text-slate-500 block text-[9px] uppercase font-mono">Avg CAC (Customer Acquisition Cost)</span>
-                  <span className="text-emerald-400 font-semibold">{targetLocation.avgCustomerAcquisitionCost}</span>
+                <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-[11px] shadow-sm">
+                  <span className="text-slate-500 block text-[9px] uppercase font-mono">Avg CAC</span>
+                  <span className="text-emerald-700 font-semibold">{targetLocation.avgCustomerAcquisitionCost}</span>
                 </div>
               </div>
             ) : (
               <div className="text-[10px] text-slate-500">
-                Select an ecosystem hub to benchmark regional talent index, VC (Venture Capital) investment, and CAC (Customer Acquisition Cost)
+                Select an ecosystem hub to benchmark regional talent index, VC investment, and CAC
               </div>
             )}
           </div>
 
           {/* Optional: Startup Name (if already decided) */}
-          <div className="space-y-1.5 sm:col-span-2 pt-2 border-t border-slate-800/80">
-            <label className="text-xs font-semibold text-slate-300 flex items-center justify-between">
+          <div className="space-y-1.5 sm:col-span-2 pt-2 border-t border-slate-200">
+            <label className="text-xs font-semibold text-slate-800 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                 Startup Name (Optional)
               </span>
               <span className="text-[10px] text-slate-500">Leave blank if exploring concepts</span>
@@ -811,31 +808,31 @@ export const StepInput: React.FC<StepInputProps> = ({
               value={startupName}
               onChange={(e) => setStartupName(e.target.value)}
               placeholder="e.g. LedgerPulse AI, OmniCare Health, DevPulse"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition shadow-inner"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition shadow-sm"
             />
           </div>
         </div>
 
         {/* Action Button Row */}
-        <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-end gap-3">
+        <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-end gap-3">
           {/* Direct validation button if user entered a specific name/problem */}
           {customContext.trim().length > 10 && (
             <button
               type="button"
               onClick={handleDirectValidate}
               disabled={isLoading}
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-500/50 text-xs font-semibold transition flex items-center justify-center gap-2 disabled:opacity-50 shadow-md shadow-emerald-950/50"
+              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold transition flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
             >
-              <Zap className="w-3.5 h-3.5 text-emerald-400" />
+              <Zap className="w-3.5 h-3.5 text-emerald-600" />
               <span>Validate This Exact Concept Directly</span>
             </button>
           )}
 
-          {/* Primary Action Button */}
+          {/* Primary Action Button (Royal Blue from Karnataka SSP Portal) */}
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-500 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm shadow-xl shadow-indigo-600/25 border border-indigo-400/30 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white font-semibold text-xs sm:text-sm shadow-md border border-[#12224d] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? (
               <>
@@ -844,7 +841,7 @@ export const StepInput: React.FC<StepInputProps> = ({
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 text-indigo-200" />
+                <Sparkles className="w-4 h-4 text-blue-200" />
                 <span>Generate Startup Validation &amp; Market Output</span>
                 <ArrowRight className="w-4 h-4" />
               </>

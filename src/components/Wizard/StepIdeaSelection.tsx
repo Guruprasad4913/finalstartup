@@ -90,14 +90,14 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
       {/* Step Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-semibold mb-2 shadow-sm shadow-cyan-500/10">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-2 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
             Step 2 of 6: AI Concept Selection
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             Select Your Startup Concept to Validate
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 mt-1">
             Our AI engine generated {ideas.length} tailored opportunities. Choose one to perform deep real-time API market scans &amp; cloud blueprinting.
           </p>
         </div>
@@ -109,16 +109,16 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
               type="button"
               onClick={() => onGenerateMore()}
               disabled={isGeneratingMore || isValidating}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white transition text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/25 border border-emerald-400/40 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition text-xs font-bold flex items-center gap-2 shadow-sm border border-emerald-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isGeneratingMore ? "animate-spin text-cyan-200" : "group-hover:rotate-180 transition-transform duration-500 text-emerald-300"}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isGeneratingMore ? "animate-spin text-white" : "group-hover:rotate-180 transition-transform duration-500 text-white"}`} />
               <span>{isGeneratingMore ? "Generating More Plans..." : "Generate More Plans"}</span>
             </button>
           )}
 
           <button
             onClick={() => setIsCustomModalOpen(true)}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white transition text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-indigo-600/25 border border-cyan-400/30 cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white transition text-xs font-bold flex items-center gap-1.5 shadow-sm border border-[#12224d] cursor-pointer"
           >
             <PenTool className="w-3.5 h-3.5" />
             <span>+ Enter Custom Idea</span>
@@ -127,7 +127,7 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
           <button
             onClick={onBack}
             disabled={isValidating}
-            className="px-3.5 py-2 rounded-xl bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-cyan-400 hover:text-white transition text-xs font-medium flex items-center gap-1.5 cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Adjust Inputs</span>
@@ -135,14 +135,14 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
         </div>
       </div>
 
-      {/* Explainer / How It Works Banner */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900 to-cyan-950/30 border border-indigo-500/30 flex items-start gap-3 shadow-lg">
-        <div className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 mt-0.5 flex-shrink-0">
-          <Lightbulb className="w-4 h-4 text-amber-300" />
+      {/* Explainer / How It Works Banner (Clean White Card) */}
+      <div className="p-4 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
+        <div className="p-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 mt-0.5 flex-shrink-0">
+          <Lightbulb className="w-4 h-4 text-amber-500" />
         </div>
         <div className="space-y-1 text-xs">
-          <span className="font-bold text-white block text-sm">How to Choose Your Concept</span>
-          <p className="text-slate-300 leading-relaxed">
+          <span className="font-bold text-slate-900 block text-sm">How to Choose Your Concept</span>
+          <p className="text-slate-600 leading-relaxed">
             Click any idea card below to review its problem statement, proposed solution, and initial viability score. The selected idea will be deep-validated across live market APIs, competitor battlecards, and cloud infrastructure.
           </p>
         </div>
@@ -150,21 +150,21 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
 
       {/* Toast Notification for new ideas */}
       {notification && (
-        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border border-emerald-400/40 text-emerald-200 text-xs font-semibold flex items-center justify-between shadow-lg shadow-emerald-500/10 animate-in fade-in slide-in-from-top-2">
+        <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center justify-between shadow-sm animate-in fade-in slide-in-from-top-2">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <Sparkles className="w-4 h-4 text-emerald-600 animate-pulse" />
             <span>{notification}</span>
           </div>
           <button
             onClick={() => setNotification(null)}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-500 hover:text-slate-800 p-1 rounded-lg hover:bg-emerald-100 transition"
           >
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
-      {/* Idea Grid */}
+      {/* Idea Grid (Clean White Cards) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {ideas.map((idea) => {
           const isSelected = idea.id === selectedId;
@@ -172,15 +172,15 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
             <div
               key={idea.id}
               onClick={() => setSelectedId(idea.id)}
-              className={`relative rounded-3xl p-6 cursor-pointer transition-all duration-300 flex flex-col justify-between ${
+              className={`relative rounded-3xl p-6 cursor-pointer transition-all duration-200 flex flex-col justify-between ${
                 isSelected
-                  ? "bg-gradient-to-b from-[#181a28] to-[#12131d] border-2 border-cyan-400 shadow-2xl shadow-cyan-500/20 ring-2 ring-cyan-500/30 -translate-y-1"
-                  : "bg-gradient-to-b from-[#161822]/80 to-[#12131a]/80 border border-slate-800 hover:border-indigo-500/40 hover:bg-[#181a25] hover:-translate-y-1"
+                  ? "bg-white border-2 border-blue-600 shadow-md ring-2 ring-blue-500/20 -translate-y-1"
+                  : "bg-white border border-slate-200 hover:border-blue-400 hover:shadow-md hover:-translate-y-1"
               }`}
             >
               {/* Selected Badge */}
               {isSelected && (
-                <div className="absolute -top-3.5 right-5 px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white text-[11px] font-bold flex items-center gap-1.5 shadow-lg shadow-cyan-500/30 ring-2 ring-slate-950">
+                <div className="absolute -top-3.5 right-5 px-3 py-1 rounded-full bg-[#243d78] text-white text-[11px] font-bold flex items-center gap-1.5 shadow-md">
                   <Check className="w-3.5 h-3.5 stroke-[3]" /> Selected Concept
                 </div>
               )}
@@ -188,63 +188,63 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-400/30 shadow-sm shadow-blue-500/10">
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
                       {idea.domain}
                     </span>
                     {idea.businessType && (
-                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
                         {idea.businessType}
                       </span>
                     )}
                     {idea.isNew && (
-                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-sm shadow-emerald-500/10 flex items-center gap-1 animate-pulse">
-                        <Sparkles className="w-2.5 h-2.5 text-emerald-300" />
+                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm flex items-center gap-1">
+                        <Sparkles className="w-2.5 h-2.5 text-emerald-600" />
                         Fresh Plan
                       </span>
                     )}
                   </div>
                   {idea.initialFeasibilityScore && (
-                    <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 flex items-center gap-1 shadow-sm shadow-emerald-500/10">
-                      <Zap className="w-3 h-3 text-emerald-400" />
+                    <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1 shadow-sm">
+                      <Zap className="w-3 h-3 text-emerald-600" />
                       {idea.initialFeasibilityScore}/100
                     </span>
                   )}
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-white tracking-tight leading-snug group-hover:text-cyan-300">
+                  <h3 className="text-lg font-bold text-slate-900 tracking-tight leading-snug group-hover:text-blue-700 transition">
                     {idea.name}
                   </h3>
-                  <p className="text-xs text-slate-300 font-medium mt-1 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed line-clamp-2">
                     {idea.tagline}
                   </p>
                 </div>
 
                 {/* Problem & Solution Mini */}
-                <div className="space-y-2.5 pt-3 border-t border-slate-800/80 text-xs">
-                  <div className="bg-slate-950/70 p-3 rounded-xl border border-indigo-500/15">
-                    <span className="text-blue-300 font-bold block text-[10px] uppercase tracking-wider">Problem</span>
-                    <p className="text-slate-200 line-clamp-2 mt-0.5 leading-relaxed">{idea.problemStatement}</p>
+                <div className="space-y-2.5 pt-3 border-t border-slate-200 text-xs">
+                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <span className="text-blue-700 font-bold block text-[10px] uppercase tracking-wider">Problem</span>
+                    <p className="text-slate-800 line-clamp-2 mt-0.5 leading-relaxed">{idea.problemStatement}</p>
                   </div>
-                  <div className="bg-slate-950/70 p-3 rounded-xl border border-cyan-500/15">
-                    <span className="text-cyan-300 font-bold block text-[10px] uppercase tracking-wider">Solution Strategy</span>
-                    <p className="text-slate-200 line-clamp-2 mt-0.5 leading-relaxed">{idea.solution}</p>
+                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <span className="text-cyan-800 font-bold block text-[10px] uppercase tracking-wider">Solution Strategy</span>
+                    <p className="text-slate-800 line-clamp-2 mt-0.5 leading-relaxed">{idea.solution}</p>
                   </div>
                 </div>
 
                 {/* Target persona preview */}
-                <div className="pt-2 border-t border-slate-800/80 text-xs flex items-center gap-2 text-slate-400">
-                  <Target className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
-                  <span className="truncate font-medium text-slate-200">{idea.targetPersona.title}</span>
+                <div className="pt-2 border-t border-slate-200 text-xs flex items-center gap-2 text-slate-500">
+                  <Target className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                  <span className="truncate font-medium text-slate-800">{idea.targetPersona.title}</span>
                 </div>
               </div>
 
               {/* Tags */}
-              <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap gap-1.5">
+              <div className="mt-4 pt-3 border-t border-slate-200 flex flex-wrap gap-1.5">
                 {idea.tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag}
-                    className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800/70 text-cyan-300/80 font-mono border border-slate-700/60"
+                    className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-mono border border-slate-200"
                   >
                     #{tag}
                   </span>
@@ -257,27 +257,24 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
 
       {/* "Need Different Plans?" CTA Banner */}
       {onGenerateMore && (
-        <div className="relative overflow-hidden rounded-3xl p-6 sm:p-7 border border-emerald-500/30 bg-gradient-to-r from-[#102422]/90 via-[#131d2e]/90 to-[#181a28]/90 backdrop-blur-xl shadow-xl shadow-emerald-950/20 flex flex-col sm:flex-row items-center justify-between gap-5">
-          <div className="absolute -left-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
+        <div className="rounded-3xl p-6 sm:p-7 border border-slate-200 bg-white shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center flex-shrink-0 text-emerald-400 shadow-md shadow-emerald-500/10 mt-0.5">
-              <Lightbulb className="w-6 h-6 animate-pulse" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center flex-shrink-0 text-emerald-700 shadow-sm mt-0.5">
+              <Lightbulb className="w-6 h-6 text-emerald-600" />
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300">
                   Alternative Angles &amp; Niches
                 </span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-500">
                   {ideas.length} plans available
                 </span>
               </div>
-              <h4 className="text-base sm:text-lg font-bold text-white">
+              <h4 className="text-base sm:text-lg font-bold text-slate-900">
                 Need a different plan than the {ideas.length <= 3 ? "3" : ideas.length} mentioned?
               </h4>
-              <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
+              <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
                 Looking for another angle, different target audience, or alternative business model? Click below to generate 3 more diverse plans tailored to your profile.
               </p>
             </div>
@@ -288,9 +285,9 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
             type="button"
             onClick={() => onGenerateMore()}
             disabled={isGeneratingMore || isValidating}
-            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 border border-emerald-300/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-md border border-emerald-700 transition flex items-center justify-center gap-2 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
-            <RefreshCw className={`w-4 h-4 ${isGeneratingMore ? "animate-spin text-slate-900" : ""}`} />
+            <RefreshCw className={`w-4 h-4 ${isGeneratingMore ? "animate-spin text-white" : ""}`} />
             <span>{isGeneratingMore ? "Generating 3 More Plans..." : "Generate 3 More Plans"}</span>
           </button>
         </div>
@@ -298,22 +295,21 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
 
       {/* Selected Idea Detailed Preview Drawer */}
       {currentSelectedIdea && (
-        <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-cyan-500/30 space-y-5 bg-gradient-to-br from-[#171926] via-[#151922] to-[#12141c] shadow-2xl shadow-cyan-950/20 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 via-emerald-400 to-indigo-500" />
-          <div className="absolute -top-12 -right-12 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="rounded-3xl p-6 sm:p-7 border border-slate-200 space-y-5 bg-white shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500" />
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-cyan-300 text-[10px] font-bold uppercase tracking-wider mb-2 border border-cyan-400/30 shadow-sm shadow-cyan-500/10">
-                <Sparkles className="w-3 h-3 text-cyan-400" /> Concept Blueprint Selected
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wider mb-2 border border-blue-200">
+                <Sparkles className="w-3 h-3 text-blue-600" /> Concept Blueprint Selected
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{currentSelectedIdea.name}</h3>
-              <p className="text-xs sm:text-sm text-slate-300 mt-0.5">{currentSelectedIdea.tagline}</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{currentSelectedIdea.name}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">{currentSelectedIdea.tagline}</p>
             </div>
             <button
               onClick={() => onSelectIdea(currentSelectedIdea)}
               disabled={isValidating}
-              className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs sm:text-sm shadow-xl shadow-indigo-600/30 border border-cyan-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
+              className="px-7 py-3.5 rounded-2xl bg-[#243d78] hover:bg-[#1a2d5a] text-white font-bold text-xs sm:text-sm shadow-md border border-[#12224d] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
             >
               {isValidating ? (
                 <>
@@ -330,28 +326,28 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 space-y-2">
-              <span className="text-slate-400 font-semibold flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-cyan-400" /> Target Buyer Persona
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-slate-600 font-semibold flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-blue-600" /> Target Buyer Persona
               </span>
-              <p className="text-slate-100 font-semibold text-sm">{currentSelectedIdea.targetPersona.title}</p>
-              <div className="text-slate-400 pt-1 border-t border-slate-900">
-                Willingness to Pay: <strong className="text-emerald-400 font-mono">{currentSelectedIdea.targetPersona.willingnessToPay}</strong>
+              <p className="text-slate-900 font-semibold text-sm">{currentSelectedIdea.targetPersona.title}</p>
+              <div className="text-slate-500 pt-1 border-t border-slate-200">
+                Willingness to Pay: <strong className="text-emerald-700 font-mono">{currentSelectedIdea.targetPersona.willingnessToPay}</strong>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 space-y-2">
-              <span className="text-slate-400 font-semibold flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-amber-400" /> Why Now / Timing Catalyst
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-slate-600 font-semibold flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-amber-600" /> Why Now / Timing Catalyst
               </span>
-              <p className="text-slate-300 leading-relaxed">{currentSelectedIdea.whyNow}</p>
+              <p className="text-slate-700 leading-relaxed">{currentSelectedIdea.whyNow}</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 space-y-2">
-              <span className="text-slate-400 font-semibold flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-indigo-400" /> Innovation Moat
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="text-slate-600 font-semibold flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5 text-indigo-600" /> Innovation Moat
               </span>
-              <p className="text-slate-300 leading-relaxed">{currentSelectedIdea.innovationMoat}</p>
+              <p className="text-slate-700 leading-relaxed">{currentSelectedIdea.innovationMoat}</p>
             </div>
           </div>
         </div>
@@ -359,25 +355,22 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
 
       {/* Manual Custom Concept Modal */}
       {isCustomModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-in fade-in duration-200">
-          <div className="glass-panel w-full max-w-xl rounded-3xl border border-indigo-500/40 p-6 sm:p-7 space-y-5 bg-slate-900/95 shadow-2xl shadow-indigo-950/50 relative overflow-hidden">
-            {/* Ambient decorative glow */}
-            <div className="absolute top-0 right-0 w-64 h-32 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-xl rounded-3xl border border-slate-200 p-6 sm:p-7 space-y-5 bg-white shadow-2xl relative overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-200">
                   <PenTool className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white tracking-tight">Enter Custom Startup Concept</h3>
-                  <p className="text-[11px] text-slate-400">Add your bespoke venture idea into the AI validation funnel</p>
+                  <h3 className="text-base font-bold text-slate-900 tracking-tight">Enter Custom Startup Concept</h3>
+                  <p className="text-[11px] text-slate-500">Add your bespoke venture idea into the AI validation funnel</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setIsCustomModalOpen(false)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -386,74 +379,74 @@ export const StepIdeaSelection: React.FC<StepIdeaSelectionProps> = ({
             <form onSubmit={handleAddCustomIdea} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div className="space-y-1.5">
-                  <label className="font-semibold text-slate-200">Startup Name *</label>
+                  <label className="font-semibold text-slate-800">Startup Name *</label>
                   <input
                     type="text"
                     required
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
                     placeholder="e.g. LedgerPulse AI"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 shadow-inner transition"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 shadow-sm transition"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="font-semibold text-slate-200">Domain / Vertical</label>
+                  <label className="font-semibold text-slate-800">Domain / Vertical</label>
                   <input
                     type="text"
                     value={customDomain}
                     onChange={(e) => setCustomDomain(e.target.value)}
-                    placeholder="e.g. Food & Beverage, D2C (Direct-to-Consumer), Farming, Healthcare, SaaS (Software as a Service)"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 shadow-inner transition"
+                    placeholder="e.g. Food & Beverage, D2C, Farming, Healthcare, SaaS"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 shadow-sm transition"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-semibold text-slate-200">Tagline / One-Liner</label>
+                <label className="font-semibold text-slate-800">Tagline / One-Liner</label>
                 <input
                   type="text"
                   value={customTagline}
                   onChange={(e) => setCustomTagline(e.target.value)}
                   placeholder="e.g. Specialty single-origin roastery, or sustainable bamboo packaging"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 shadow-inner transition"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 shadow-sm transition"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-semibold text-slate-200">Customer Problem Statement *</label>
+                <label className="font-semibold text-slate-800">Customer Problem Statement *</label>
                 <textarea
                   rows={2}
                   required
                   value={customProblem}
                   onChange={(e) => setCustomProblem(e.target.value)}
                   placeholder="What acute customer or market problem are you solving?"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 shadow-inner transition resize-none leading-relaxed"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 shadow-sm transition resize-none leading-relaxed"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-semibold text-slate-200">Business &amp; Value Solution *</label>
+                <label className="font-semibold text-slate-800">Business &amp; Value Solution *</label>
                 <textarea
                   rows={2}
                   value={customSolution}
                   onChange={(e) => setCustomSolution(e.target.value)}
                   placeholder="How does your product, service, or business model operate?"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 shadow-inner transition resize-none leading-relaxed"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 shadow-sm transition resize-none leading-relaxed"
                 />
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-800/80">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setIsCustomModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 text-xs font-medium transition"
+                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/25 border border-indigo-400/30 transition flex items-center gap-1.5 cursor-pointer"
+                  className="px-6 py-2.5 rounded-xl bg-[#243d78] hover:bg-[#1a2d5a] text-white text-xs font-semibold shadow-md border border-[#12224d] transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" /> Add Concept
                 </button>

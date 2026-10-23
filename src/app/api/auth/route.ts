@@ -68,9 +68,9 @@ export async function POST(req: NextRequest) {
           isNewUser: true,
           investorProfile: assignedRole === "investor" ? {
             investorType: "Angel Investor",
-            typicalCheckSize: "$25,000 - $100,000",
+            typicalCheckSize: "₹25 Lakhs - ₹1 Crore",
             preferredSectors: ["AI Agents", "FinTech", "HealthTech", "CleanTech"],
-            totalInvestedCapital: "$450,000",
+            totalInvestedCapital: "₹3,50,00,000",
           } : undefined,
         };
 
@@ -102,9 +102,9 @@ export async function POST(req: NextRequest) {
           isNewUser: true,
           investorProfile: assignedRole === "investor" ? {
             investorType: "Angel Investor",
-            typicalCheckSize: "$25,000 - $100,000",
+            typicalCheckSize: "₹25 Lakhs - ₹1 Crore",
             preferredSectors: ["AI Agents", "FinTech", "HealthTech", "CleanTech"],
-            totalInvestedCapital: "$450,000",
+            totalInvestedCapital: "₹3,50,00,000",
           } : undefined,
         };
 
@@ -148,9 +148,9 @@ export async function POST(req: NextRequest) {
           investorProfile: {
             firmOrSyndicate: "Vance Angel Syndicate / Tier-1 Syndicate",
             investorType: "Angel Investor",
-            typicalCheckSize: "$50,000 - $250,000",
+            typicalCheckSize: "₹50 Lakhs - ₹2.5 Crores",
             preferredSectors: ["AI Agents & SaaS", "HealthTech", "FinTech", "CleanOps"],
-            totalInvestedCapital: "$1,850,000",
+            totalInvestedCapital: "₹15,00,00,000 (₹15 Cr)",
           },
         };
         return NextResponse.json({

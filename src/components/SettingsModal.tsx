@@ -138,24 +138,24 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl p-6 overflow-hidden max-h-[92vh] overflow-y-auto">
-        {/* Glow Header */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-emerald-500 to-cyan-500" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-2xl p-6 overflow-hidden max-h-[92vh] overflow-y-auto">
+        {/* Top Accent Line */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500" />
 
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <div className="p-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200">
               <Key className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Platform &amp; API Settings</h2>
-              <p className="text-xs text-slate-400">Configure your AI engine, market research APIs, and cloud preferences</p>
+              <h2 className="text-lg font-semibold text-slate-900">Platform &amp; API Settings</h2>
+              <p className="text-xs text-slate-500">Configure your AI engine, market research APIs, and cloud preferences</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -163,25 +163,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
         <div className="mt-5 space-y-6">
           {/* Dual AI Engine Notice */}
-          <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-xs text-slate-300 flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex items-start gap-3">
+            <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
             <div>
-              <strong className="text-emerald-300 font-medium">Built-in Neural Engine Active:</strong> You don&apos;t need to provide an API key to validate concepts. The platform includes a comprehensive domain intelligence engine. Optionally enter Gemini or Tavily keys for live dynamic web queries.
+              <strong className="text-slate-900 font-medium">Built-in Neural Engine Active:</strong> You don&apos;t need to provide an API key to validate concepts. The platform includes a comprehensive domain intelligence engine. Optionally enter Gemini or Tavily keys for live dynamic web queries.
             </div>
           </div>
 
           {/* Gemini API Key */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-slate-200 flex items-center gap-1.5">
-                <Cpu className="w-4 h-4 text-indigo-400" />
+              <label className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
+                <Cpu className="w-4 h-4 text-blue-600" />
                 Google Gemini API Key (Optional)
               </label>
               <a
                 href="https://aistudio.google.com/app/apikey"
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-indigo-400 hover:underline flex items-center gap-1"
+                className="text-xs text-blue-700 hover:underline flex items-center gap-1 font-medium"
               >
                 Get Free Gemini Key <ExternalLink className="w-3 h-3" />
               </a>
@@ -191,7 +191,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               placeholder="AIzaSy... (Leave empty to use built-in smart generator)"
               value={localKey}
               onChange={(e) => setLocalKey(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition font-mono"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-blue-600 transition font-mono shadow-sm"
             />
             <p className="mt-1.5 text-xs text-slate-500">
               Keys are stored strictly in your browser&apos;s local storage and never exposed publicly.
@@ -199,10 +199,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Tavily Search API Key (Market Research) */}
-          <div className="pt-2 border-t border-slate-800">
+          <div className="pt-2 border-t border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-slate-200 flex items-center gap-1.5">
-                <Globe className="w-4 h-4 text-cyan-400" />
+              <label className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
+                <Globe className="w-4 h-4 text-cyan-600" />
                 Tavily Search API Key (Market Analysis)
               </label>
               <div className="flex items-center gap-3">
@@ -210,7 +210,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="button"
                   onClick={handleTestTavily}
                   disabled={isTestingTavily || !localTavilyKey.trim()}
-                  className="text-xs text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1 font-semibold disabled:opacity-40 cursor-pointer"
+                  className="text-xs text-cyan-700 hover:text-cyan-800 transition flex items-center gap-1 font-semibold disabled:opacity-40 cursor-pointer"
                 >
                   {isTestingTavily ? (
                     <>
@@ -226,7 +226,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   href="https://tavily.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs text-cyan-400 hover:underline flex items-center gap-1"
+                  className="text-xs text-cyan-700 hover:underline flex items-center gap-1 font-medium"
                 >
                   Get 1,000 Free Searches <ExternalLink className="w-3 h-3" />
                 </a>
@@ -237,7 +237,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               placeholder="tvly-... (Enables live web TAM/SAM market research & real competitor discovery)"
               value={localTavilyKey}
               onChange={(e) => setLocalTavilyKey(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition font-mono"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-cyan-600 transition font-mono shadow-sm"
             />
             <p className="mt-1.5 text-xs text-slate-500">
               Powers real-time market sizing, verified industry reports, and live competitor URLs across all tech &amp; non-tech sectors.
@@ -248,14 +248,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div
                 className={`mt-2.5 p-2.5 rounded-xl text-xs flex items-center justify-between border ${
                   tavilyTestResult.ok
-                    ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
-                    : "bg-amber-950/30 border-amber-500/30 text-amber-300"
+                    ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                    : "bg-amber-50 border-amber-300 text-amber-800"
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-2 h-2 rounded-full ${
-                      tavilyTestResult.ok ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
+                      tavilyTestResult.ok ? "bg-emerald-600 animate-pulse" : "bg-amber-600"
                     }`}
                   />
                   <span>{tavilyTestResult.message}</span>
@@ -268,17 +268,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* MongoDB Database Connection */}
-          <div className="pt-2 border-t border-slate-800">
+          <div className="pt-2 border-t border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-slate-200 flex items-center gap-1.5">
-                <Database className="w-4 h-4 text-emerald-400" />
+              <label className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
+                <Database className="w-4 h-4 text-emerald-600" />
                 MongoDB Connection String
               </label>
               <button
                 type="button"
                 onClick={handleTestConnection}
                 disabled={isTestingDb}
-                className="text-xs text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1 font-semibold disabled:opacity-50"
+                className="text-xs text-emerald-700 hover:text-emerald-800 transition flex items-center gap-1 font-semibold disabled:opacity-50"
               >
                 {isTestingDb ? (
                   <>
@@ -296,7 +296,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               placeholder="mongodb://127.0.0.1:27017/startupgen (or MongoDB Atlas URI)"
               value={mongoUri}
               onChange={(e) => setMongoUri(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition font-mono text-xs"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-emerald-600 transition font-mono text-xs shadow-sm"
             />
             <p className="mt-1 text-[11px] text-slate-500">
               Persists all validation reports, market signals, and business roadmaps directly into your MongoDB cluster.
@@ -307,20 +307,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div
                 className={`mt-2.5 p-2.5 rounded-xl text-xs flex items-center justify-between border ${
                   dbTestResult.ok
-                    ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
-                    : "bg-amber-950/30 border-amber-500/30 text-amber-300"
+                    ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                    : "bg-amber-50 border-amber-300 text-amber-800"
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-2 h-2 rounded-full ${
-                      dbTestResult.ok ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
+                      dbTestResult.ok ? "bg-emerald-600 animate-pulse" : "bg-amber-600"
                     }`}
                   />
                   <span>{dbTestResult.message}</span>
                 </div>
                 {dbTestResult.latencyMs !== undefined && (
-                  <span className="font-mono text-[10px] text-slate-400">
+                  <span className="font-mono text-[10px] text-slate-500">
                     {dbTestResult.latencyMs}ms
                   </span>
                 )}
@@ -329,9 +329,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Cloud Provider Preference */}
-          <div className="pt-2 border-t border-slate-800">
-            <label className="text-sm font-medium text-slate-200 flex items-center gap-1.5 mb-2.5">
-              <Cloud className="w-4 h-4 text-cyan-400" />
+          <div className="pt-2 border-t border-slate-200">
+            <label className="text-sm font-medium text-slate-800 flex items-center gap-1.5 mb-2.5">
+              <Cloud className="w-4 h-4 text-cyan-600" />
               Preferred Cloud Ecosystem Blueprint
             </label>
             <div className="grid grid-cols-3 gap-2.5">
@@ -346,12 +346,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   onClick={() => setLocalCloud(prov.id)}
                   className={`p-3 rounded-xl border text-left transition flex flex-col justify-between ${
                     localCloud === prov.id
-                      ? "bg-indigo-950/40 border-indigo-500 text-white shadow-sm shadow-indigo-500/20"
-                      : "bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                      ? "bg-blue-50 border-blue-600 text-blue-900 shadow-sm"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900"
                   }`}
                 >
-                  <div className="font-semibold text-xs text-slate-200">{prov.id}</div>
-                  <div className="text-[10px] text-slate-400 mt-1">{prov.desc}</div>
+                  <div className="font-semibold text-xs text-slate-900">{prov.id}</div>
+                  <div className="text-[10px] text-slate-500 mt-1">{prov.desc}</div>
                 </button>
               ))}
             </div>
@@ -359,22 +359,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         {/* Modal Actions */}
-        <div className="mt-7 pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+        <div className="mt-7 pt-4 border-t border-slate-200 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="px-4 py-2 rounded-xl text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleSave}
-            className="px-5 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition flex items-center gap-2"
+            className="px-5 py-2 rounded-xl text-sm font-semibold bg-[#243d78] hover:bg-[#1a2d5a] text-white shadow-sm transition flex items-center gap-2"
           >
             {savedStatus ? (
               <>
-                <Check className="w-4 h-4 text-emerald-300" />
+                <Check className="w-4 h-4 text-white" />
                 <span>Saved!</span>
               </>
             ) : (

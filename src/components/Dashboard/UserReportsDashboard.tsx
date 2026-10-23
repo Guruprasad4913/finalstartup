@@ -19,7 +19,6 @@ import {
   Building,
   CheckCircle2,
   ArrowRight,
-  Database,
   RefreshCw,
   Target,
   Briefcase,
@@ -263,33 +262,29 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Top Welcome Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#171924] via-[#1a1d2e] to-[#161a26] border border-indigo-500/25 p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-indigo-950/30">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#4d669a] via-[#243d78] to-[#12224d] border border-blue-300/35 p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-blue-950/60">
         {/* Radiant top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 via-emerald-400 to-indigo-500" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-cyan-300 via-sky-200 to-indigo-300" />
         
-        {/* Colorful ambient glows */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-blue-500/[0.12] rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 -mb-16 w-72 h-72 bg-emerald-500/[0.10] rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 left-0 -ml-16 w-60 h-60 bg-cyan-500/[0.08] rounded-full blur-3xl pointer-events-none" />
+        {/* Soft atmospheric ambient glows matching the portal aesthetic */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-cyan-300/[0.14] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 -mb-16 w-72 h-72 bg-blue-400/[0.16] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-0 -ml-16 w-60 h-60 bg-indigo-300/[0.12] rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2.5 max-w-2xl">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-blue-500/20">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="px-3 py-1 rounded-full bg-blue-950/60 border border-blue-200/40 text-blue-100 text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-blue-950/50 backdrop-blur-sm">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
                 Founder Workspace
-              </span>
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-emerald-500/20">
-                <Database className="w-3.5 h-3.5 text-emerald-400" />
-                MongoDB Cloud Synced
               </span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {currentUser.isNewUser || projects.length === 0 ? "Welcome, " : "Welcome back, "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 font-extrabold">{currentUser.name || currentUser.username}</span>!
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-blue-100 font-extrabold">{currentUser.name || currentUser.username}</span>!
             </h1>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="text-sm text-blue-100/90 leading-relaxed">
               {currentUser.isNewUser || projects.length === 0
                 ? "Start your venture journey by generating institutional startup reports, real-time market sizing, and execution roadmaps with our 14-stage AI validation engine."
                 : "Access your institutional startup reports, real-time market sizing, and execution roadmaps. Review previous validations or spin up a new multi-sector concept."}
@@ -301,10 +296,10 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
               <button
                 type="button"
                 onClick={onOpenCompare}
-                className="px-4 py-3 rounded-2xl bg-slate-900/90 text-slate-200 border border-indigo-500/40 hover:border-cyan-400 hover:text-white transition flex items-center gap-2 text-sm font-semibold shadow-lg hover:shadow-indigo-500/20 cursor-pointer"
+                className="px-4 py-3 rounded-2xl bg-blue-950/80 text-blue-100 border border-blue-300/40 hover:border-cyan-300 hover:text-white transition flex items-center gap-2 text-sm font-semibold shadow-lg hover:shadow-cyan-500/20 cursor-pointer backdrop-blur-md"
                 title="Compare Multiple Saved Concepts"
               >
-                <Scale className="w-4 h-4 text-cyan-400" />
+                <Scale className="w-4 h-4 text-cyan-300" />
                 <span>Compare ({projects.length})</span>
               </button>
             )}
@@ -312,7 +307,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
             <button
               type="button"
               onClick={onStartNewValidation}
-              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:via-indigo-500 hover:to-cyan-400 text-white text-sm font-bold shadow-xl shadow-indigo-600/30 border border-cyan-400/30 transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer whitespace-nowrap"
+              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:via-indigo-500 hover:to-cyan-400 text-white text-sm font-bold shadow-xl shadow-blue-950/50 border border-cyan-300/40 transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer whitespace-nowrap"
             >
               <Plus className="w-4 h-4" />
               <span>Validate New Startup Concept</span>
@@ -323,36 +318,36 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
 
       {/* Active Investor Interest Alert Banner for Founder */}
       {latestInterest && (
-        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-teal-950/70 border-2 border-emerald-500/60 shadow-2xl shadow-emerald-950/40 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5 animate-in fade-in slide-in-from-top-3">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border-2 border-emerald-400 shadow-md relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5 animate-in fade-in slide-in-from-top-3">
           <div className="flex items-start sm:items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-300 flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
-              <Coins className="w-6 h-6 text-emerald-300 animate-pulse" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <Coins className="w-6 h-6 text-emerald-600 animate-pulse" />
             </div>
             <div className="space-y-1 text-left">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 font-extrabold text-xs border border-emerald-400/40 flex items-center gap-1.5 shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs border border-emerald-300 flex items-center gap-1.5 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
                   <span>NEW INVESTOR INTEREST RECEIVED</span>
                 </span>
                 {!latestInterest.read && (
-                  <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-bold border border-cyan-400/40">
+                  <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold border border-blue-300">
                     Unread Inquiry
                   </span>
                 )}
               </div>
-              <h3 className="text-base sm:text-lg font-extrabold text-white">
-                <span className="text-emerald-400">{latestInterest.investorName}</span>
-                {latestInterest.investorFirm && <span className="text-slate-300"> ({latestInterest.investorFirm})</span>}
-                {" "}expressed interest in <span className="text-cyan-300 font-bold underline decoration-cyan-500/50 underline-offset-4">{latestInterest.projectName}</span>!
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                <span className="text-emerald-700">{latestInterest.investorName}</span>
+                {latestInterest.investorFirm && <span className="text-slate-600"> ({latestInterest.investorFirm})</span>}
+                {" "}expressed interest in <span className="text-blue-700 font-bold underline decoration-blue-500/50 underline-offset-4">{latestInterest.projectName}</span>!
               </h3>
-              <p className="text-xs text-slate-300 flex items-center gap-2 flex-wrap">
-                <span>Proposed Check Size: <strong className="text-emerald-400 font-mono text-sm">{latestInterest.checkSize}</strong></span>
+              <p className="text-xs text-slate-600 flex items-center gap-2 flex-wrap">
+                <span>Proposed Check Size: <strong className="text-emerald-700 font-mono text-sm">{latestInterest.checkSize}</strong></span>
                 <span>·</span>
-                <span>Structure: <strong className="text-white">{latestInterest.instrument}</strong></span>
+                <span>Structure: <strong className="text-slate-900">{latestInterest.instrument}</strong></span>
                 {latestInterest.notes && (
                   <>
                     <span>·</span>
-                    <span className="italic text-slate-400">&ldquo;{latestInterest.notes}&rdquo;</span>
+                    <span className="italic text-slate-500">&ldquo;{latestInterest.notes}&rdquo;</span>
                   </>
                 )}
               </p>
@@ -364,7 +359,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
               <button
                 type="button"
                 onClick={onOpenNotifications}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 border border-emerald-400/40 transition flex items-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 border border-emerald-400/40 transition flex items-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
               >
                 <Bell className="w-3.5 h-3.5" />
                 <span>Review Inquiries ({founderNotifications.length})</span>
@@ -372,9 +367,9 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
             )}
             <a
               href={`mailto:${latestInterest.investorEmail}?subject=Re:%20Investment%20Interest%20in%20${encodeURIComponent(latestInterest.projectName)}`}
-              className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-emerald-400 text-xs font-semibold transition flex items-center gap-1.5"
+              className="px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 hover:border-emerald-500 text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
             >
-              <Mail className="w-3.5 h-3.5 text-emerald-400" />
+              <Mail className="w-3.5 h-3.5 text-emerald-600" />
               <span>Contact Investor</span>
             </a>
           </div>
@@ -383,73 +378,73 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
 
       {/* KPI Cards Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Total Saved Reports (Electric Blue / Indigo) */}
-        <div className="p-5 rounded-2xl bg-gradient-to-b from-blue-950/35 via-[#161824] to-[#12131b] border border-blue-500/30 backdrop-blur-md relative overflow-hidden group hover:border-blue-400/60 transition-all shadow-xl shadow-blue-950/20">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400" />
-          <div className="flex items-center justify-between text-slate-400 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-300/90">Total Saved Reports</span>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400 shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform">
+        {/* Card 1: Total Saved Reports */}
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-cyan-500" />
+          <div className="flex items-center justify-between text-slate-500 mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Total Saved Reports</span>
+            <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shadow-sm group-hover:scale-110 transition-transform">
               <FolderHeart className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-300">{stats.total}</div>
-          <div className="text-xs text-blue-200/80 mt-1.5 flex items-center gap-1.5 font-medium">
-            <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
+          <div className="text-3xl font-black text-slate-900">{stats.total}</div>
+          <div className="text-xs text-blue-700 mt-1.5 flex items-center gap-1.5 font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
             <span>Persisted in Cloud Vault & MongoDB</span>
           </div>
         </div>
 
-        {/* Card 2: Peak Viability Score (Emerald / Mint) */}
-        <div className="p-5 rounded-2xl bg-gradient-to-b from-emerald-950/35 via-[#151c1a] to-[#121417] border border-emerald-500/30 backdrop-blur-md relative overflow-hidden group hover:border-emerald-400/60 transition-all shadow-xl shadow-emerald-950/20">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400" />
-          <div className="flex items-center justify-between text-slate-400 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-300/90">Peak Viability Score</span>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+        {/* Card 2: Peak Viability Score */}
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
+          <div className="flex items-center justify-between text-slate-500 mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Peak Viability Score</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-sm group-hover:scale-110 transition-transform">
               <Award className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-emerald-400">
+            <span className="text-3xl font-black text-slate-900">
               {stats.maxScore > 0 ? `${stats.maxScore}/100` : "—"}
             </span>
           </div>
-          <div className="text-xs text-emerald-300/80 mt-1.5 font-medium flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="text-xs text-emerald-700 mt-1.5 font-medium flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>{stats.maxScore > 0 ? `Rating: ${stats.highestScoreVerdict}` : "Awaiting first validation"}</span>
           </div>
         </div>
 
-        {/* Card 3: Top Industry Domain (Amber / Warm Gold) */}
-        <div className="p-5 rounded-2xl bg-gradient-to-b from-amber-950/30 via-[#1c1916] to-[#141315] border border-amber-500/30 backdrop-blur-md relative overflow-hidden group hover:border-amber-400/60 transition-all shadow-xl shadow-amber-950/20">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500" />
-          <div className="flex items-center justify-between text-slate-400 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-300/90">Top Industry Domain</span>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shadow-md shadow-amber-500/20 group-hover:scale-110 transition-transform">
+        {/* Card 3: Top Industry Domain */}
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-400" />
+          <div className="flex items-center justify-between text-slate-500 mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Top Industry Domain</span>
+            <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-sm group-hover:scale-110 transition-transform">
               <Briefcase className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-100 to-orange-300 truncate" title={stats.topDomain}>
+          <div className="text-xl font-black text-slate-900 truncate" title={stats.topDomain}>
             {stats.topDomain}
           </div>
-          <div className="text-xs text-amber-300/80 mt-1.5 font-medium">
+          <div className="text-xs text-slate-500 mt-1.5 font-medium">
             {availableDomains.length > 0 ? `${availableDomains.length} unique sector(s) validated` : "Multi-sector engine ready"}
           </div>
         </div>
 
-        {/* Card 4: Investor Launch Funding (Emerald / Teal) */}
-        <div className="p-5 rounded-2xl bg-gradient-to-b from-emerald-950/35 via-[#131b20] to-[#11161a] border border-emerald-500/30 backdrop-blur-md relative overflow-hidden group hover:border-emerald-400/60 transition-all shadow-xl shadow-emerald-950/20">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400" />
-          <div className="flex items-center justify-between text-slate-400 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-300/90">Investor Launch Deals</span>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+        {/* Card 4: Investor Launch Funding */}
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-emerald-400" />
+          <div className="flex items-center justify-between text-slate-500 mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Investor Launch Deals</span>
+            <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 shadow-sm group-hover:scale-110 transition-transform">
               <Coins className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-teal-100 to-cyan-300">
+          <div className="text-2xl font-black text-slate-900">
             {stats.publishedCount} of {stats.total} Listed
           </div>
-          <div className="text-xs text-emerald-300/80 mt-1.5 font-medium flex items-center gap-1.5">
-            <Globe className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="text-xs text-teal-700 mt-1.5 font-medium flex items-center gap-1.5">
+            <Globe className="w-3.5 h-3.5 text-teal-600" />
             <span>{stats.publishedCount > 0 ? "Live for angel syndicate reviews" : "Allow ideas below to seek funding"}</span>
           </div>
         </div>
@@ -457,21 +452,21 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
 
       {/* Portfolio Comparison Benchmark Chart Card (if 2 or more projects exist) */}
       {projects.length >= 2 && (
-        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181a28] to-[#12131d] border border-indigo-500/25 shadow-xl relative overflow-hidden space-y-4">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 via-cyan-400 to-emerald-400" />
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm relative overflow-hidden space-y-4">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500" />
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-base font-bold text-white tracking-tight">
+                <BarChart3 className="w-4 h-4 text-blue-600" />
+                <h3 className="text-base font-bold text-slate-900 tracking-tight">
                   Portfolio Concept Comparison &amp; Viability Benchmarks
                 </h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                   {projects.length} Saved Concepts
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Side-by-side benchmark of algorithmic viability scores and capital efficiency across your saved portfolio.
               </p>
             </div>
@@ -481,7 +476,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                 <button
                   type="button"
                   onClick={onOpenCompare}
-                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-indigo-600/20 cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-blue-600/20 cursor-pointer"
                   title="Open Deep Comparison Modal with Radar & Revenue Ramp"
                 >
                   <Scale className="w-3.5 h-3.5" />
@@ -491,7 +486,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
               <button
                 type="button"
                 onClick={() => setShowPortfolioChart(!showPortfolioChart)}
-                className="p-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
+                className="p-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-900 transition cursor-pointer"
                 title={showPortfolioChart ? "Collapse Chart" : "Expand Chart"}
               >
                 {showPortfolioChart ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -504,17 +499,17 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
               <div className="h-60 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={portfolioComparisonData} margin={{ top: 15, right: 15, left: -10, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis
                       dataKey="name"
-                      stroke="#64748b"
-                      tick={{ fill: "#94a3b8", fontSize: 11 }}
+                      stroke="#94a3b8"
+                      tick={{ fill: "#64748b", fontSize: 11 }}
                     />
                     <YAxis
                       domain={[0, 100]}
-                      stroke="#64748b"
+                      stroke="#94a3b8"
                       tickFormatter={(val) => `${val}`}
-                      tick={{ fill: "#94a3b8", fontSize: 11 }}
+                      tick={{ fill: "#64748b", fontSize: 11 }}
                     />
                     <Tooltip
                       formatter={(val: any, _name: any, item: any) => [
@@ -522,11 +517,12 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                         item.payload.fullName,
                       ]}
                       contentStyle={{
-                        backgroundColor: "#0f172a",
-                        borderColor: "#3b82f6",
+                        backgroundColor: "#ffffff",
+                        borderColor: "#cbd5e1",
                         borderRadius: "0.75rem",
                         fontSize: "12px",
-                        color: "#fff",
+                        color: "#0f172a",
+                        boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
                       }}
                     />
                     <Bar
@@ -548,12 +544,12 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                 </ResponsiveContainer>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800/80 pt-2 flex-wrap gap-2">
+              <div className="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-100 pt-2 flex-wrap gap-2">
                 <span className="flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                  <Activity className="w-3.5 h-3.5 text-blue-600" />
                   Click any bar to instantly open that startup concept&apos;s full validation memo.
                 </span>
-                <span className="text-slate-500 font-mono">
+                <span className="text-slate-400 font-mono">
                   Scale: 0 - 100 Viability Score
                 </span>
               </div>
@@ -563,20 +559,20 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
       )}
 
       {/* Search, Domain Filter Pills, and Sort Controls */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-[#171924] via-[#161822] to-[#171924] border border-indigo-500/20 backdrop-blur-md flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-lg shadow-black/20">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-sm">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-cyan-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search reports by startup name, sector, tagline, or launch city..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-12 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700/80 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 transition"
+            className="w-full pl-10 pr-12 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 transition"
           />
           {searchTerm && (
             <button
               onClick={() => setSearchTerm("")}
-              className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 absolute right-3 top-1/2 -translate-y-1/2 bg-cyan-950/50 px-2 py-0.5 rounded-md border border-cyan-500/30"
+              className="text-xs font-semibold text-blue-600 hover:text-blue-700 absolute right-3 top-1/2 -translate-y-1/2 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200"
             >
               Clear
             </button>
@@ -588,7 +584,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
             <select
               value={selectedDomainFilter}
               onChange={(e) => setSelectedDomainFilter(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-slate-950 border border-indigo-500/30 text-xs text-indigo-200 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
+              className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer font-medium"
             >
               <option value="all">All Sectors ({projects.length})</option>
               {availableDomains.map((dom) => (
@@ -602,7 +598,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-slate-300 focus:outline-none focus:border-cyan-400 cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer"
           >
             <option value="newest">Sort: Newest First</option>
             <option value="highestScore">Sort: Highest Viability</option>
@@ -613,7 +609,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
             <button
               type="button"
               onClick={onRefreshData}
-              className="p-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/40 transition cursor-pointer"
+              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-300 transition cursor-pointer shadow-sm"
               title="Refresh Reports from Database"
             >
               <RefreshCw className="w-4 h-4" />
@@ -624,20 +620,20 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
 
       {/* Reports Listing */}
       {filteredAndSortedProjects.length === 0 ? (
-        <div className="p-12 sm:p-16 rounded-3xl bg-gradient-to-b from-[#171924]/60 to-[#12131b]/60 border border-indigo-500/20 text-center flex flex-col items-center justify-center shadow-xl">
-          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-blue-500/20 via-indigo-500/20 to-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 mb-4 shadow-xl shadow-cyan-500/10">
+        <div className="p-12 sm:p-16 rounded-3xl bg-white border border-slate-200 text-center flex flex-col items-center justify-center shadow-sm">
+          <div className="w-16 h-16 rounded-3xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-4 shadow-sm">
             <Sparkles className="w-8 h-8" />
           </div>
           {projects.length === 0 ? (
             <>
-              <h3 className="text-xl font-bold text-white">No Validated Reports Yet</h3>
-              <p className="text-sm text-slate-300 max-w-md mt-1.5 mb-6 leading-relaxed">
+              <h3 className="text-xl font-bold text-slate-900">No Validated Reports Yet</h3>
+              <p className="text-sm text-slate-600 max-w-md mt-1.5 mb-6 leading-relaxed">
                 You haven&apos;t generated any startup reports yet. Step through our 14-stage multi-sector validation engine to build your first institutional validation report.
               </p>
               <button
                 type="button"
                 onClick={onStartNewValidation}
-                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-bold shadow-xl shadow-indigo-600/30 border border-cyan-400/30 transition flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-bold shadow-md shadow-blue-600/30 border border-cyan-400/30 transition flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
               >
                 <Plus className="w-4 h-4" />
                 <span>Launch 14-Stage Validation Engine</span>
@@ -645,8 +641,8 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
             </>
           ) : (
             <>
-              <h3 className="text-lg font-bold text-white">No Matching Reports</h3>
-              <p className="text-sm text-slate-300 max-w-md mt-1 mb-4">
+              <h3 className="text-lg font-bold text-slate-900">No Matching Reports</h3>
+              <p className="text-sm text-slate-600 max-w-md mt-1 mb-4">
                 No startup reports match your search term &quot;{searchTerm}&quot; or chosen sector filter.
               </p>
               <button
@@ -655,7 +651,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                   setSearchTerm("");
                   setSelectedDomainFilter("all");
                 }}
-                className="text-xs font-bold text-cyan-400 hover:text-cyan-300 underline underline-offset-4"
+                className="text-xs font-bold text-blue-600 hover:text-blue-700 underline underline-offset-4"
               >
                 Reset Search Filters
               </button>
@@ -675,16 +671,16 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
               <div
                 key={p.id}
                 onClick={() => onSelectProject(p)}
-                className="group relative rounded-2xl bg-gradient-to-b from-[#181a25] to-[#12131c] border border-indigo-500/20 hover:border-cyan-400/60 transition-all duration-300 p-5 flex flex-col justify-between shadow-xl shadow-black/30 hover:shadow-cyan-950/30 cursor-pointer overflow-hidden transform hover:-translate-y-0.5"
+                className="group relative rounded-2xl bg-white border border-slate-200/90 hover:border-blue-400 hover:shadow-md transition-all duration-300 p-5 flex flex-col justify-between shadow-sm cursor-pointer overflow-hidden transform hover:-translate-y-0.5"
               >
                 {/* Top radiant highlight bar */}
                 <div
                   className={`absolute top-0 left-0 right-0 h-1.5 ${
                     isHighScore
-                      ? "bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400"
+                      ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500"
                       : isMediumScore
-                      ? "bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400"
-                      : "bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400"
+                      ? "bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400"
+                      : "bg-gradient-to-r from-amber-500 via-orange-400 to-rose-400"
                   }`}
                 />
 
@@ -692,23 +688,23 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                   {/* Card Header: Badges & Date */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 shadow-sm shadow-blue-500/10">
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
                         {p.selectedIdea?.domain || "Tech / AI"}
                       </span>
                       {p.founderProfile?.businessType && (
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
                           {p.founderProfile.businessType}
                         </span>
                       )}
                       {loc && (
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-950/50 text-emerald-300 border border-emerald-500/40 flex items-center gap-1 shadow-sm shadow-emerald-500/10">
-                          <MapPin className="w-2.5 h-2.5 text-emerald-400" />
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1 shadow-sm">
+                          <MapPin className="w-2.5 h-2.5 text-emerald-600" />
                           {loc.city}
                         </span>
                       )}
                     </div>
-                    <span className="text-[11px] text-slate-400 flex items-center gap-1 font-mono">
-                      <Calendar className="w-3 h-3 text-slate-500" />
+                    <span className="text-[11px] text-slate-500 flex items-center gap-1 font-mono">
+                      <Calendar className="w-3 h-3 text-slate-400" />
                       {new Date(p.createdAt).toLocaleDateString(undefined, {
                         month: "short",
                         day: "numeric",
@@ -719,30 +715,30 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
 
                   {/* Startup Title & Tagline */}
                   <div>
-                    <h2 className="text-lg font-black text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-300 group-hover:to-cyan-300 transition-all">
+                    <h2 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-all">
                       {p.selectedIdea?.name}
                     </h2>
-                    <p className="text-xs text-slate-300 mt-1 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 mt-1 line-clamp-2 leading-relaxed">
                       {p.selectedIdea?.tagline}
                     </p>
                   </div>
 
                   {/* Metric Chips */}
                   <div className="grid grid-cols-2 gap-2 pt-1">
-                    <div className="p-2.5 rounded-xl bg-slate-950/80 border border-indigo-500/20">
-                      <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-                        <Award className="w-3 h-3 text-emerald-400" />
+                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/90">
+                      <div className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
+                        <Award className="w-3 h-3 text-emerald-600" />
                         Viability Score
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-base font-black text-white">{score}/100</span>
+                        <span className="text-base font-black text-slate-900">{score}/100</span>
                         <span
                           className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
                             isHighScore
-                              ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                               : isMediumScore
-                              ? "bg-blue-500/20 text-blue-300 border-blue-500/40"
-                              : "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              : "bg-amber-50 text-amber-800 border-amber-200"
                           }`}
                         >
                           {verdict}
@@ -750,13 +746,13 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-slate-950/80 border border-cyan-500/20">
-                      <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-                        <TrendingUp className="w-3 h-3 text-cyan-400" />
+                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/90">
+                      <div className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3 text-blue-600" />
                         Market TAM
                       </div>
-                      <div className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-blue-300 truncate mt-0.5">
-                        {p.validation?.tam?.value || "₹20,000 Cr ($2.4B)"}
+                      <div className="text-base font-black text-slate-900 truncate mt-0.5">
+                        {p.validation?.tam?.value || "₹20,000 Crores"}
                       </div>
                     </div>
                   </div>
@@ -774,23 +770,23 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                           e.stopPropagation();
                           if (onOpenNotifications) onOpenNotifications();
                         }}
-                        className="p-3 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-950 to-teal-950/70 border-2 border-emerald-500/50 flex items-center justify-between text-xs cursor-pointer hover:border-emerald-400 transition shadow-md shadow-emerald-950/30"
+                        className="p-3 rounded-2xl bg-emerald-50 border-2 border-emerald-300 flex items-center justify-between text-xs cursor-pointer hover:border-emerald-400 transition shadow-sm"
                       >
                         <div className="flex items-center gap-2.5">
-                          <div className="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center flex-shrink-0">
-                            <Coins className="w-4 h-4 text-emerald-300 animate-pulse" />
+                          <div className="w-7 h-7 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                            <Coins className="w-4 h-4 text-emerald-600 animate-pulse" />
                           </div>
                           <div>
-                            <span className="text-white font-bold block">
+                            <span className="text-slate-900 font-bold block">
                               {pInterests.length} Investor{pInterests.length === 1 ? "" : "s"} Interested · Proposed{" "}
-                              <span className="text-emerald-300 font-mono">{latest.checkSize}</span>
+                              <span className="text-emerald-700 font-mono">{latest.checkSize}</span>
                             </span>
-                            <span className="text-[11px] text-slate-300">
+                            <span className="text-[11px] text-slate-600">
                               By {latest.investorName} ({latest.investorFirm || "Accredited Angel"})
                             </span>
                           </div>
                         </div>
-                        <span className="text-cyan-300 hover:text-cyan-200 font-bold text-xs flex items-center gap-1 flex-shrink-0">
+                        <span className="text-blue-600 hover:text-blue-700 font-bold text-xs flex items-center gap-1 flex-shrink-0">
                           <span>View Inquiry</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </span>
@@ -803,8 +799,8 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                     onClick={(e) => e.stopPropagation()}
                     className={`p-3 rounded-2xl border transition-all ${
                       p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
-                        ? "bg-gradient-to-r from-emerald-950/40 to-teal-950/30 border-emerald-500/40 shadow-sm"
-                        : "bg-slate-950/70 border-slate-800/80"
+                        ? "bg-emerald-50/80 border-emerald-300 shadow-sm"
+                        : "bg-slate-50 border-slate-200"
                     }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
@@ -812,24 +808,24 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {p.isPublishedForInvestors || p.fundingAsk?.seekingFunding ? (
                             <>
-                              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                              <span className="text-xs font-bold text-emerald-300">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                              <span className="text-xs font-bold text-emerald-800">
                                 Listed on Investor Dealflow
                               </span>
-                              <span className="text-[11px] font-mono text-emerald-400/90 font-bold bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/30">
-                                Seeking {p.fundingAsk?.targetFundingAmount || "$50k"}
+                              <span className="text-[11px] font-mono text-emerald-800 font-bold bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                                Seeking {p.fundingAsk?.targetFundingAmount || "₹25 Lakhs"}
                               </span>
                             </>
                           ) : (
                             <>
-                              <Lock className="w-3.5 h-3.5 text-slate-500" />
-                              <span className="text-xs font-semibold text-slate-400">
+                              <Lock className="w-3.5 h-3.5 text-slate-400" />
+                              <span className="text-xs font-semibold text-slate-600">
                                 Private Idea (Confidential to You)
                               </span>
                             </>
                           )}
                         </div>
-                        <p className="text-[11px] text-slate-400">
+                        <p className="text-[11px] text-slate-500">
                           {p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
                             ? `${p.fundingAsk?.equityOffered || "Equity"} · ${p.fundingAsk?.fundingStage || "Pre-Seed"} · Visible to active angel syndicate investors`
                             : "Need funding to launch? Allow this idea to be showcased to investors."}
@@ -841,8 +837,8 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                         onClick={() => setFundingModalProject(p)}
                         className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap self-start sm:self-center ${
                           p.isPublishedForInvestors || p.fundingAsk?.seekingFunding
-                            ? "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40"
-                            : "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-black shadow-md shadow-amber-500/20"
+                            ? "bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300"
+                            : "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white shadow-sm shadow-amber-500/20"
                         }`}
                       >
                         <Coins className="w-3.5 h-3.5" />
@@ -857,12 +853,12 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                 </div>
 
                 {/* Card Footer Actions */}
-                <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={(e) => handleDownloadMarkdown(p, e)}
-                      className="p-2 rounded-xl bg-slate-950 text-slate-400 hover:text-cyan-300 hover:border-cyan-500/40 border border-slate-800 transition cursor-pointer"
+                      className="p-2 rounded-xl bg-slate-50 text-slate-500 hover:text-blue-600 hover:border-blue-300 border border-slate-200 transition cursor-pointer shadow-sm"
                       title="Download Markdown Report"
                     >
                       <Download className="w-4 h-4" />
@@ -871,7 +867,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
                       type="button"
                       onClick={(e) => handleDelete(p.id, e)}
                       disabled={deletingId === p.id}
-                      className="p-2 rounded-xl bg-slate-950 text-slate-400 hover:text-rose-400 hover:border-rose-500/40 border border-slate-800 transition disabled:opacity-50 cursor-pointer"
+                      className="p-2 rounded-xl bg-slate-50 text-slate-500 hover:text-rose-600 hover:border-rose-300 border border-slate-200 transition disabled:opacity-50 cursor-pointer shadow-sm"
                       title="Delete Report"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -880,7 +876,7 @@ export const UserReportsDashboard: React.FC<UserReportsDashboardProps> = ({
 
                   <button
                     type="button"
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-lg shadow-indigo-600/20 border border-cyan-400/30 transition-all group-hover:scale-105"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-600/20 border border-cyan-400/30 transition-all group-hover:scale-105"
                   >
                     <span>Open Full Report</span>
                     <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />

@@ -258,7 +258,7 @@ Return ONLY a valid JSON array matching this exact schema:
     "targetPersona": {
       "title": "Specific Buyer or Customer Persona",
       "painPoints": ["Acute Pain 1", "Acute Pain 2", "Acute Pain 3"],
-      "willingnessToPay": "Realistic pricing or customer spend (e.g. ₹250-₹500 per meal, ₹1,200/unit, ₹2,000/mo membership, or $50-$500/mo)"
+      "willingnessToPay": "Realistic pricing or customer spend in Indian Rupees (e.g. ₹250-₹500 per meal, ₹1,200/unit, ₹2,000/mo membership, or ₹4,500 - ₹35,000/mo)"
     },
     "whyNow": "Market catalyst, consumer shift, supply chain evolution, or regulatory tailwind",
     "innovationMoat": "Core competitive advantage (e.g. proprietary formulation, direct farmer sourcing, local catchment density, customer loyalty, or operational efficiency)",
@@ -420,8 +420,8 @@ Return ONLY valid JSON matching this schema:
     "aiInference": "Gemini 1.5 Pro + Claude 3.5 Sonnet fallback via LiteLLM",
     "storageAndCDN": "Amazon S3 + CloudFront Edge Caching",
     "thirdPartyAPIs": [
-      { "name": "Stripe API", "purpose": "Subscription billing and metered credits", "costTier": "2.9% + 30c" },
-      { "name": "Resend / SendGrid", "purpose": "Transactional notifications and report delivery", "costTier": "Free / $20/mo" },
+      { "name": "Razorpay / Stripe API", "purpose": "UPI & Subscription billing and metered credits", "costTier": "2% per transaction" },
+      { "name": "Resend / SendGrid", "purpose": "Transactional notifications and report delivery", "costTier": "Free / ₹1,650/mo" },
       { "name": "OpenAI / Anthropic / Google Gemini APIs", "purpose": "Agentic reasoning & embeddings", "costTier": "Pay-as-you-go" }
     ],
     "diagramComponents": [
@@ -432,29 +432,29 @@ Return ONLY valid JSON matching this schema:
       { "category": "3rd-Party APIs", "name": "Market APIs + Stripe + Webhooks", "details": "Real-time external telemetry and automated billing cycles", "cloudIcon": "api" }
     ],
     "estimatedMonthlyCloudCost": {
-      "mvp": "$45 - $120 / month",
-      "growth": "$400 - $1,100 / month",
-      "scale": "$2,500 - $6,000 / month"
+      "mvp": "₹3,500 - ₹9,500 / month",
+      "growth": "₹32,000 - ₹85,000 / month",
+      "scale": "₹1,80,000 - ₹4,80,000 / month"
     }
   },
   "revenueModel": {
     "primaryModel": "B2B SaaS with Tiered Subscriptions & Usage-based API Credits",
     "pricingTiers": [
-      { "tier": "Starter", "price": "$29", "billing": "/ month", "features": ["100 automated scans/mo", "Basic market reports", "Community support"] },
-      { "tier": "Professional", "price": "$99", "billing": "/ month", "features": ["Unlimited scans", "Real-time competitor tracking", "Custom cloud blueprints", "Priority support"], "highlighted": true },
-      { "tier": "Enterprise", "price": "$499+", "billing": "/ month", "features": ["Dedicated cluster", "SOC2 compliance exports", "Custom fine-tuned models", "SLA guarantees"] }
+      { "tier": "Starter", "price": "₹2,499", "billing": "/ month", "features": ["100 automated scans/mo", "Basic market reports", "Community support"] },
+      { "tier": "Professional", "price": "₹7,999", "billing": "/ month", "features": ["Unlimited scans", "Real-time competitor tracking", "Custom cloud blueprints", "Priority support"], "highlighted": true },
+      { "tier": "Enterprise", "price": "₹39,999+", "billing": "/ month", "features": ["Dedicated cluster", "SOC2 compliance exports", "Custom fine-tuned models", "SLA guarantees"] }
     ],
     "projectedRunway": [
-      { "month": "M1", "revenue": 1200, "cost": 450, "users": 35 },
-      { "month": "M3", "revenue": 5800, "cost": 1200, "users": 160 },
-      { "month": "M6", "revenue": 18400, "cost": 3400, "users": 480 },
-      { "month": "M9", "revenue": 39000, "cost": 7200, "users": 1100 },
-      { "month": "M12", "revenue": 82000, "cost": 14500, "users": 2400 }
+      { "month": "M1", "revenue": 100000, "cost": 35000, "users": 35 },
+      { "month": "M3", revenue: 480000, cost: 100000, users: 160 },
+      { "month": "M6", revenue: 1500000, cost: 280000, users: 480 },
+      { "month": "M9", revenue: 3200000, cost: 600000, users: 1100 },
+      { "month": "M12", revenue: 6800000, cost: 1200000, users: 2400 }
     ],
     "keyUnitEconomics": {
-      "cacEstimate": "$140",
-      "ltvEstimate": "$1,180",
-      "ltvCacRatio": "8.4x",
+      "cacEstimate": "₹11,500",
+      "ltvEstimate": "₹96,000",
+      "ltvCacRatio": "8.3x",
       "grossMargin": "84%"
     }
   },
@@ -589,7 +589,7 @@ function buildExactMatchIdeaFromProfile(
         "Lack of modern, transparent, and direct service models",
         "High distributor markups and fragmented quality standards",
       ],
-      willingnessToPay: profile.budget?.includes("₹") ? "₹2,50,000 - ₹5,00,000 / unit or ₹35,000/mo" : "$500 - $2,500 / month",
+      willingnessToPay: "₹2,50,000 - ₹5,00,000 / unit or ₹35,000/mo",
     },
     whyNow: "Shifting industry regulations, consumer demand for direct transparency, and localized supply chain modernization.",
     innovationMoat: `Proprietary operational agility, direct stakeholder relationships, and founder mastery in ${skills}.`,
@@ -965,7 +965,7 @@ function getAlternativeDomainIdeas(domainKey: string, profile: FounderProfile): 
           targetPersona: {
             title: "Progressive farmers, sugar mills, and corporate carbon credit buyers",
             painPoints: ["Government stubble burning fines", "High fertilizer leaching costs", "Depleted arid agricultural topsoil"],
-            willingnessToPay: "₹8 - ₹15 per kg enriched biochar + $80 per ton of carbon credit"
+            willingnessToPay: "₹8 - ₹15 per kg enriched biochar + ₹6,500 per ton of carbon credit"
           },
           whyNow: "Severe urban smog crises triggering government subsidies for crop residue management, backed by global carbon offset buyers.",
           innovationMoat: "Proprietary microbial inoculation activating inert biochar into high-yield organic bio-fertilizer.",
@@ -2260,15 +2260,15 @@ function generateIntelligentValidation(
   const isNonTech = !isExplicitTech;
 
   const loc = profile.targetLocation || {
-    city: "San Francisco / Silicon Valley",
-    country: "United States",
-    region: "North America",
-    ecosystemScore: 98,
-    talentIndex: "9.8/10 World-Class",
-    vcFundingClimate: "Hyperactive ($32.4B Early-Stage)",
-    regulatoryFriendliness: "Moderate (High litigation awareness)",
-    avgCustomerAcquisitionCost: "$280 - $450",
-    keyHubs: ["SoMa AI Hub", "Palo Alto Sand Hill"]
+    city: "Bengaluru (Bangalore)",
+    country: "India",
+    region: "Asia-Pacific",
+    ecosystemScore: 90,
+    talentIndex: "9.6/10 Engineering Powerhouse",
+    vcFundingClimate: "Rapid Growth (₹70,000 Cr SaaS & B2B)",
+    regulatoryFriendliness: "Fast-Paced (Digital India & DPDP compliance)",
+    avgCustomerAcquisitionCost: "₹4,500 - ₹9,000",
+    keyHubs: ["Koramangala Startup Hub", "Indiranagar", "HSR Layout", "Electronic City"]
   };
 
   let tam = { value: "₹3,20,000 Crores ($38.4B)", numBillions: 38.4, description: `Global and Indian addressable ${idea.domain} market projected through 2030.` };
@@ -2880,8 +2880,8 @@ export function buildMvpAndRoadmap(
                 "Cross $40,000+ MRR ($480k ARR)",
                 "Prepare institutional venture round",
               ],
-          keyMetrics: isNonTech ? "₹30L Monthly Run-Rate · 3 Hubs" : "$40k MRR · 80% Gross Margin",
-          fundingGoal: "$1.0M - $2.5M Seed Round",
+          keyMetrics: isNonTech ? "₹30L Monthly Run-Rate · 3 Hubs" : "₹32L MRR · 80% Gross Margin",
+          fundingGoal: "₹8 Crore - ₹20 Crore Seed / Pre-Series A",
           status: "Planned",
         },
       ],
@@ -3124,8 +3124,8 @@ export function buildMvpAndRoadmap(
                 "Launch integration marketplace with 25 pre-built enterprise connectors",
                 "Cross $80,000+ MRR ($1M ARR)",
               ],
-          keyMetrics: isNonTech ? "₹1 Cr Monthly Run-Rate · 2 Facilities" : "$80k MRR ($1M ARR) · 12x LTV:CAC",
-          fundingGoal: "$3.0M - $6.0M Series A",
+          keyMetrics: isNonTech ? "₹1 Cr Monthly Run-Rate · 2 Facilities" : "₹65L MRR · 12x LTV:CAC",
+          fundingGoal: "₹25 Crore - ₹50 Crore Series A",
           status: "Planned",
         },
         {
@@ -3140,11 +3140,11 @@ export function buildMvpAndRoadmap(
               ]
             : [
                 "Expand enterprise sales into European and Asia-Pacific corridors",
-                "Cross $180,000+ MRR ($2.2M ARR)",
+                "Cross ₹1.5 Crore+ MRR",
                 "Complete institutional Series A venture round",
               ],
-          keyMetrics: isNonTech ? "₹3 Cr Monthly Revenue · Export Operations" : "$180k MRR ($2.2M ARR) · 88% Gross Margin",
-          fundingGoal: "$10.0M+ Series B / Growth Round",
+          keyMetrics: isNonTech ? "₹3 Cr Monthly Revenue · Export Operations" : "₹1.5 Cr MRR · 88% Gross Margin",
+          fundingGoal: "₹80 Crore+ Series B / Growth Round",
           status: "Planned",
         },
       ],
@@ -3408,8 +3408,8 @@ export function buildMvpAndRoadmap(
               "Expand sales channels into European & Asian-Pacific corridors",
               "Cross $100,000+ MRR ($1.2M ARR)",
             ],
-        keyMetrics: isNonTech ? "₹1.2 Cr Monthly Run-Rate · 30+ Network Locations" : "$100k MRR · 10 Enterprise Contracts · 85% Gross Margin",
-        fundingGoal: "$2.5M - $5.0M Series A",
+        keyMetrics: isNonTech ? "₹1.2 Cr Monthly Run-Rate · 30+ Network Locations" : "₹80L MRR · 10 Enterprise Contracts · 85% Gross Margin",
+        fundingGoal: "₹20 Crore - ₹40 Crore Series A",
         status: "Planned",
       },
     ],
@@ -3580,9 +3580,9 @@ function generateIntelligentFeasibility(
         }
       ],
       estimatedMonthlyCloudCost: {
-        mvp: "$25 - $60 / month",
-        growth: "$180 - $450 / month",
-        scale: "$850 - $2,200 / month"
+        mvp: "₹3,500 - ₹8,500 / month",
+        growth: "₹25,000 - ₹55,000 / month",
+        scale: "₹1,20,000 - ₹3,50,000 / month"
       }
     },
     revenueModel: isNonTech
@@ -3642,7 +3642,7 @@ function generateIntelligentFeasibility(
           pricingTiers: [
             {
               tier: "Starter / Prosumer",
-              price: "$29",
+              price: "₹2,499",
               billing: "/ month",
               features: [
                 "Up to 250 automated validations/month",
@@ -3653,7 +3653,7 @@ function generateIntelligentFeasibility(
             },
             {
               tier: "Growth & Scale",
-              price: "$129",
+              price: "₹8,999",
               billing: "/ month",
               features: [
                 "Unlimited idea validations & market scans",
@@ -3666,7 +3666,7 @@ function generateIntelligentFeasibility(
             },
             {
               tier: "Enterprise / Firm",
-              price: "$499+",
+              price: "₹39,999+",
               billing: "/ month",
               features: [
                 "Custom dedicated cloud tenant",
@@ -3677,16 +3677,16 @@ function generateIntelligentFeasibility(
             }
           ],
           projectedRunway: [
-            { month: "Month 1", revenue: 1450, cost: 480, users: 40 },
-            { month: "Month 3", revenue: 6800, cost: 1350, users: 185 },
-            { month: "Month 6", revenue: 21500, cost: 3800, users: 540 },
-            { month: "Month 9", revenue: 47000, cost: 7900, users: 1250 },
-            { month: "Month 12", revenue: 98000, cost: 15600, users: 2750 }
+            { month: "Month 1", revenue: 145000, cost: 48000, users: 40 },
+            { month: "Month 3", revenue: 680000, cost: 135000, users: 185 },
+            { month: "Month 6", revenue: 2150000, cost: 380000, users: 540 },
+            { month: "Month 9", revenue: 4700000, cost: 790000, users: 1250 },
+            { month: "Month 12", revenue: 9800000, cost: 1560000, users: 2750 }
           ],
           keyUnitEconomics: {
-            cacEstimate: "$125 (Inbound organic + targeted dev marketing)",
-            ltvEstimate: "$1,420 (Avg retention 14 months at $101 blended ARPU)",
-            ltvCacRatio: "11.3x (Exceptional capital efficiency)",
+            cacEstimate: "₹9,800 (Inbound organic + targeted dev marketing)",
+            ltvEstimate: "₹1,15,000 (Avg retention 14 months at ₹8,200 blended ARPU)",
+            ltvCacRatio: "11.7x (Exceptional capital efficiency)",
             grossMargin: "84.5% (High software margin with serverless optimization)"
           }
         },
